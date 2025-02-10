@@ -91,6 +91,34 @@ tracks/1/keys = {
 "values": [Vector3(0, -0.741375, 0.612007), Vector3(0, 0.808083, 1.14993)]
 }
 
+[sub_resource type="Animation" id="Animation_ay2nk"]
+resource_name = "eating"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Characer:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 1.7, 1.96667),
+"transitions": PackedFloat32Array(0.435275, 0.517632, 0.554785, 1.03527),
+"update": 0,
+"values": [Vector3(-1.50585, -2.09606, -1.04815), Vector3(-1.17175, -2.99656, -0.137308), Vector3(-1.17175, -2.99656, -0.137308), Vector3(-1.50585, -2.09606, -1.04815)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.733333, 0.966667, 1.2, 1.43333, 1.96667),
+"transitions": PackedFloat32Array(1.23114, 2, 2, 2, 2, 2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.093218, 0), Vector3(0, 0.00671951, 0), Vector3(0, -0.093218, 0), Vector3(0, 0.00671951, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_0y8ya"]
 resource_name = "walk"
 length = 0.8
@@ -136,34 +164,6 @@ tracks/0/keys = {
 "values": [Vector3(-1.50585, -2.09606, -1.04815), Vector3(-1.50585, -2.22715, -1.04815), Vector3(-1.50585, -2.09606, -1.04815), Vector3(-1.50585, -1.97944, -1.04815)]
 }
 
-[sub_resource type="Animation" id="Animation_ay2nk"]
-resource_name = "eating"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Pivot/Characer:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 1.7, 1.96667),
-"transitions": PackedFloat32Array(0.435275, 0.517632, 0.554785, 1.03527),
-"update": 0,
-"values": [Vector3(-1.50585, -2.09606, -1.04815), Vector3(-1.17175, -2.99656, -0.137308), Vector3(-1.17175, -2.99656, -0.137308), Vector3(-1.50585, -2.09606, -1.04815)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Pivot:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.733333, 0.966667, 1.2, 1.43333, 1.96667),
-"transitions": PackedFloat32Array(1.23114, 2, 2, 2, 2, 2),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, -0.093218, 0), Vector3(0, 0.00671951, 0), Vector3(0, -0.093218, 0), Vector3(0, 0.00671951, 0), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wfyv7"]
 _data = {
 "RESET": SubResource("Animation_fdjq7"),
@@ -181,7 +181,6 @@ transform = Transform3D(1, 0, 0, 0, -0.00118677, -0.999999, 0, 0.999999, -0.0011
 shape = SubResource("CapsuleShape3D_ck8vg")
 
 [node name="Pivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="Characer" parent="Pivot" instance=ExtResource("2_dmihm")]
 transform = Transform3D(-0.998417, -0.00352785, -0.0561515, -0.0562366, 0.0323968, 0.997891, -0.0017013, 0.999469, -0.0325439, 0, -0.741375, 0.612007)

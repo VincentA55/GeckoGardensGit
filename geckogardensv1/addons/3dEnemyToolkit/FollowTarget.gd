@@ -78,4 +78,4 @@ func _on_gecko_starved() -> void:
 	isdead = true
 
 func stopMoving(time : int)-> void:
-	pass
+	pass# git testingtesting again again 
