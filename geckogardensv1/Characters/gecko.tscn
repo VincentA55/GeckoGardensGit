@@ -1,0 +1,158 @@
+[gd_scene load_steps=9 format=3 uid="uid://fm5x3cea40hc"]
+
+[ext_resource type="Script" path="res://Scripts/gecko.gd" id="1_61n24"]
+[ext_resource type="PackedScene" uid="uid://dq38hvfftcgds" path="res://models/Gecko1.glb" id="2_ayaag"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4uqtx"]
+radius = 0.747027
+height = 3.41402
+
+[sub_resource type="Animation" id="Animation_hiuw7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot/Character:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.48149, -3.14159, 8.74228e-08)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/Character:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.824196, 0.530238)]
+}
+
+[sub_resource type="Animation" id="Animation_jtlgs"]
+resource_name = "idle"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.33972),
+"transitions": PackedFloat32Array(8.57419, 0.225312),
+"update": 0,
+"values": [Vector3(-1.48149, -3.14159, 8.74228e-08), Vector3(-1.68424, -3.14159, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_t8j0x"]
+resource_name = "t_walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.215322, 0.457133, 0.800623),
+"transitions": PackedFloat32Array(0.329877, 0.329877, 0.329877, 0.329877),
+"update": 0,
+"values": [Vector3(0, -0.824196, 0.530238), Vector3(0, -0.494626, 0.530238), Vector3(0, -0.824196, 0.530238), Vector3(0, -0.498, 0.53)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.219269, 0.459355),
+"transitions": PackedFloat32Array(2.82843, 2.82843, 2.82843),
+"update": 0,
+"values": [Vector3(-1.48149, -3.14159, 8.74228e-08), Vector3(-1.42462, -2.22982, -0.91696), Vector3(-1.48149, -3.14159, 8.74228e-08)]
+}
+
+[sub_resource type="Animation" id="Animation_17iki"]
+resource_name = "temp_walk"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.10714, 0.310652, 0.496651),
+"transitions": PackedFloat32Array(0.5, 0.392292, 0.392292, 0.392292),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.455888, 0), Vector3(0, 0, 0), Vector3(0, 0.44, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.132395, 0.310652, 0.527474),
+"transitions": PackedFloat32Array(1.68179, 1.68179, 1.68179, 0.37893),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.152681), Vector3(0, 0, 0), Vector3(0, 0, -0.141057)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8albj"]
+_data = {
+"RESET": SubResource("Animation_hiuw7"),
+"idle": SubResource("Animation_jtlgs"),
+"t_walk": SubResource("Animation_t8j0x"),
+"temp_walk": SubResource("Animation_17iki")
+}
+
+[node name="Gecko" type="CharacterBody3D"]
+script = ExtResource("1_61n24")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" parent="Pivot" instance=ExtResource("2_ayaag")]
+transform = Transform3D(-1, 2.6125e-06, -2.26107e-07, 7.79703e-09, 0.0891877, 0.996014, 2.62226e-06, 0.996015, -0.0891876, 0, -0.824196, 0.530238)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.00918034, 0.999958, 0, -0.999958, -0.00918034, 0, 0.0852717, -0.115612)
+shape = SubResource("CapsuleShape3D_4uqtx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8albj")
+}

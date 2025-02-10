@@ -1,0 +1,105 @@
+[gd_scene load_steps=15 format=3 uid="uid://dn25sbfiwf5m7"]
+
+[ext_resource type="Texture2D" uid="uid://ggbkkqvsbn07" path="res://textures/tabletop.png" id="1_4ihd0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hjbsl"]
+sky_top_color = Color(0.140322, 0.491161, 0.777004, 1)
+sky_horizon_color = Color(0.578281, 0.71279, 0.738231, 1)
+ground_bottom_color = Color(0.1728, 0.36, 0.17592, 1)
+ground_horizon_color = Color(0.578281, 0.71279, 0.738231, 1)
+
+[sub_resource type="Sky" id="Sky_jbrts"]
+sky_material = SubResource("ProceduralSkyMaterial_hjbsl")
+
+[sub_resource type="Environment" id="Environment_y3u65"]
+background_mode = 2
+sky = SubResource("Sky_jbrts")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7yc1r"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3kuf1"]
+albedo_texture = ExtResource("1_4ihd0")
+roughness = 0.45
+roughness_texture = ExtResource("1_4ihd0")
+roughness_texture_channel = 3
+rim_tint = 0.15
+grow_amount = -0.625
+proximity_fade_distance = 4096.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_7i0gc"]
+lightmap_size_hint = Vector2i(204, 116)
+size = Vector3(50, 1, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bro38"]
+albedo_color = Color(0.211765, 0.427451, 0.258824, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r017g"]
+size = Vector3(8, 5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7w60p"]
+size = Vector3(8, 5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_umo13"]
+albedo_color = Color(0.658824, 0.192157, 0.160784, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r16y5"]
+albedo_color = Color(0.258824, 0.435294, 0.654902, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flkik"]
+albedo_color = Color(0.701961, 0.694118, 0.0352941, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_416un"]
+inner_radius = 2.879
+outer_radius = 3.13
+
+[node name="floor" type="StaticBody3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_y3u65")
+
+[node name="groundcol" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_7yc1r")
+
+[node name="groundmesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_3kuf1")
+mesh = SubResource("BoxMesh_7i0gc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.794638, -0.294825, -0.530688, -0.598662, 0.235447, 0.765617, -0.100774, 0.92609, -0.363595, -30.5509, 9.63276, -15.8459)
+light_color = Color(1, 0.96, 0.96, 1)
+shadow_enabled = true
+
+[node name="greenboxmesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.28643, 0.127471, -15.3492)
+material_override = SubResource("StandardMaterial3D_bro38")
+mesh = SubResource("BoxMesh_r017g")
+
+[node name="greenboxcol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.28643, 0.127471, -15.3492)
+shape = SubResource("BoxShape3D_7w60p")
+
+[node name="redboxmesh2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.940548, 0.339655, -0.00167015, -0.339581, 0.940425, 0.0168909, 0.00730769, -0.0153196, 0.999856, -14.9098, -1.01094, 5.33174)
+material_override = SubResource("StandardMaterial3D_umo13")
+mesh = SubResource("BoxMesh_r017g")
+
+[node name="redboxcol2" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.940548, 0.339655, -0.00167015, -0.339581, 0.940425, 0.0168909, 0.00730769, -0.0153196, 0.999856, -14.9098, -1.01094, 5.33174)
+shape = SubResource("BoxShape3D_7w60p")
+
+[node name="blueboxmesh2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2597, 0.721953, -7.42704)
+material_override = SubResource("StandardMaterial3D_r16y5")
+mesh = SubResource("BoxMesh_r017g")
+
+[node name="blueboxcol2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2597, 0.721953, -7.42704)
+shape = SubResource("BoxShape3D_7w60p")
+
+[node name="ringmesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.09586, 0.438027, 11.242)
+material_override = SubResource("StandardMaterial3D_flkik")
+mesh = SubResource("TorusMesh_416un")
