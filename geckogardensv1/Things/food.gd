@@ -2,7 +2,7 @@ extends Node3D
 
 signal eaten
 
-@export var fill_amount: int = 10 
+@export var fill_amount: int = 40
 @export var food_scene: PackedScene  
  
 #checks if a CharacterBody3D has touched the food

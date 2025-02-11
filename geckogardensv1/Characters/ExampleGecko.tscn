@@ -198,6 +198,9 @@ debug_use_custom = true
 debug_path_custom_color = Color(0.844148, 7.5084e-05, 0.666368, 1)
 script = ExtResource("3_ltf8j")
 
+[node name="StopMovingTimer" type="Timer" parent="FollowTarget3D"]
+one_shot = true
+
 [node name="RandomTarget3D" type="Node3D" parent="."]
 script = ExtResource("4_tfas1")
 MaxRadius = 30.0
@@ -213,10 +216,12 @@ libraries = {
 [node name="HungerTimer" type="Timer" parent="."]
 autostart = true
 
+[connection signal="Hungry" from="." to="SimpleVision3D" method="_on_gecko_hungry"]
 [connection signal="Starved" from="." to="FollowTarget3D" method="_on_gecko_starved"]
 [connection signal="body_entered" from="Pivot/MouthZone" to="." method="_on_mouth_zone_entered"]
 [connection signal="ReachedTarget" from="FollowTarget3D" to="." method="_on_follow_target_3d_reached_target"]
 [connection signal="navigation_finished" from="FollowTarget3D" to="." method="_on_follow_target_3d_navigation_finished"]
+[connection signal="timeout" from="FollowTarget3D/StopMovingTimer" to="FollowTarget3D" method="_on_stop_moving_timer_timeout"]
 [connection signal="GetSight" from="SimpleVision3D" to="." method="_on_simple_vision_3d_get_sight"]
 [connection signal="LostSight" from="SimpleVision3D" to="." method="_on_simple_vision_3d_lost_sight"]
 [connection signal="timeout" from="HungerTimer" to="." method="_on_hunger_timer_timeout"]

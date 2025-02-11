@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 		if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
 			emit_signal("ReachedTarget", target)
 		
-	if not isdead or canMove:
+	if not isdead and canMove:
 		parent.move_and_slide()
 	
 func SetFixedTarget(newTarget : Vector3) -> void:
@@ -63,8 +63,8 @@ func go_to_location(targetPosition : Vector3):
 		return
 	
 	var nextPathPosition = get_next_path_position()
-	var currentEnemyPosition = parent.global_position
-	var newVelocity = (nextPathPosition - currentEnemyPosition).normalized() * Speed
+	var currentTPosition = parent.global_position
+	var newVelocity = (nextPathPosition - currentTPosition).normalized() * Speed
 	
 	if avoidance_enabled:
 		set_velocity(newVelocity.move_toward(newVelocity, 0.25))
@@ -78,4 +78,9 @@ func _on_gecko_starved() -> void:
 	isdead = true
 
 func stopMoving(time : int)-> void:
-	pass# git testingtesting again again 
+	$StopMovingTimer.wait_time = time
+	canMove = false
+	$StopMovingTimer.start()
+
+func _on_stop_moving_timer_timeout() -> void:
+	canMove = true

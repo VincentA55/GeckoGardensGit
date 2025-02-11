@@ -72,3 +72,6 @@ func __BuildVisionShape() -> ConvexPolygonShape3D:
 	result.points = points
 	return result
 	
+
+func _on_gecko_hungry() -> void:
+	LookUpGroup = "food"
