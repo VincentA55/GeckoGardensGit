@@ -140,7 +140,7 @@ _data = {
 "temp_walk": SubResource("Animation_17iki")
 }
 
-[node name="Gecko" type="CharacterBody3D" groups=["player"]]
+[node name="GeckoMover" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_61n24")
 
 [node name="Pivot" type="Node3D" parent="."]

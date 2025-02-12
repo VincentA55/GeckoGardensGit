@@ -8,13 +8,9 @@
 
 [sub_resource type="Curve3D" id="Curve3D_c5mew"]
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_kxt4l"]
-vertices = PackedVector3Array(-13, 0.987446, -18.25, -11.25, 0.987446, -18.5, -11.5, 0.987446, -24.25, -24.25, 0.987446, -13.75, -13, 0.987446, -14, -24.25, 0.987446, -24.25, -5.5, 0.987446, -18.5, -5.25, 0.987446, -24.25, -3.75, 0.987446, -18.25, -3.75, 0.987446, -12.5, -4.25, 0.987446, -12.25, 8.75, 0.987446, -10, 9, 0.987446, -10.5, 10.5, 0.987446, -10.5, 10.25, 0.987446, -24.25, 17.75, 0.987446, -10.5, 18, 0.987446, -6, 24.25, 0.987446, -5.75, 24.25, 0.987446, -24.25, -11.75, 0.987446, -17.25, -11.75, 0.987446, -13.5, -5, 0.987446, -13.5, -5, 0.987446, -17.25, -11.75, 2.98745, -17.25, -11.75, 2.98745, -13.5, -5, 2.98745, -13.5, -5, 2.98745, -17.25, -24.25, 0.987446, 3.75, -19, 0.987446, 4, -18.75, 0.987446, 2.25, -13, 0.987446, -12.5, -12.5, 0.987446, -12.25, -12.75, 0.987446, 2.25, -12.25, 1.23745, 2.75, 8.75, 0.987446, -4.5, 9.25, 0.987446, -4.25, 10, 0.987446, -9.25, 10, 0.987446, -5.5, 16.75, 0.987446, -5.5, 16.75, 0.987446, -9.25, 10, 3.48745, -9.25, 10, 3.48745, -5.5, 16.75, 3.48745, -5.5, 16.75, 3.48745, -9.25, -12.5, 1.23745, 3.5, -17.25, 2.98745, 3.5, -17.5, 2.98745, 7, -12, 0.987446, 7.5, -12.25, 0.987446, 8.5, -13.5, 0.987446, 24.25, 24.25, 0.987446, 24.25, 17.75, 0.987446, -4.25, -13.75, 0.987446, 8.5, -18.75, 0.987446, 8.5, -24.25, 0.987446, 24.25)
-polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 4, 3), PackedInt32Array(2, 0, 5), PackedInt32Array(5, 0, 3), PackedInt32Array(1, 2, 6), PackedInt32Array(6, 2, 7), PackedInt32Array(8, 6, 7), PackedInt32Array(11, 10, 9), PackedInt32Array(11, 9, 12), PackedInt32Array(12, 9, 8), PackedInt32Array(13, 12, 14), PackedInt32Array(14, 12, 8), PackedInt32Array(14, 8, 7), PackedInt32Array(16, 15, 17), PackedInt32Array(17, 15, 18), PackedInt32Array(13, 14, 15), PackedInt32Array(15, 14, 18), PackedInt32Array(22, 21, 19), PackedInt32Array(19, 21, 20), PackedInt32Array(26, 25, 23), PackedInt32Array(23, 25, 24), PackedInt32Array(29, 28, 27), PackedInt32Array(3, 4, 30), PackedInt32Array(30, 31, 3), PackedInt32Array(3, 31, 29), PackedInt32Array(3, 29, 27), PackedInt32Array(31, 32, 29), PackedInt32Array(32, 31, 33), PackedInt32Array(33, 31, 10), PackedInt32Array(33, 10, 34), PackedInt32Array(34, 10, 11), PackedInt32Array(33, 34, 35), PackedInt32Array(39, 38, 36), PackedInt32Array(36, 38, 37), PackedInt32Array(43, 42, 40), PackedInt32Array(40, 42, 41), PackedInt32Array(45, 44, 46), PackedInt32Array(46, 44, 47), PackedInt32Array(44, 33, 47), PackedInt32Array(47, 33, 35), PackedInt32Array(48, 47, 49), PackedInt32Array(49, 47, 35), PackedInt32Array(49, 35, 51), PackedInt32Array(49, 51, 50), PackedInt32Array(16, 17, 51), PackedInt32Array(51, 17, 50), PackedInt32Array(49, 52, 48), PackedInt32Array(27, 28, 53), PackedInt32Array(53, 52, 49), PackedInt32Array(49, 54, 53), PackedInt32Array(53, 54, 27)]
-agent_max_slope = 65.0
-vertices_per_polygon = 8.0
-filter_low_hanging_obstacles = true
-filter_ledge_spans = true
+[sub_resource type="NavigationMesh" id="NavigationMesh_7b4ai"]
+vertices = PackedVector3Array(-11.9636, 2.98745, -17.3492, -11.9636, 2.98745, -13.0992, -4.71362, 2.98745, -13.0992, -4.71362, 2.98745, -17.3492, -13.9636, 1.23745, 2.9008, -18.7136, 2.98745, 2.9008, -18.7136, 2.98745, 7.1508, -13.7136, 1.23745, 7.1508, 11.5364, 0.987446, -8.3492, 11.2864, 0.987446, -13.5992, -3.96362, 0.987446, -12.0992, -13.7136, 0.987446, 8.1508, -13.9636, 0.987446, 1.9008, -12.7136, 0.987446, -12.0992, -12.9636, 0.987446, -13.5992, -19.4636, 0.987446, -13.5992, -19.4636, 0.987446, 1.9008, -19.4636, 0.987446, 8.1508, -19.4636, 0.987446, 13.4008, -3.71362, 0.987446, -13.5992, 19.2864, 0.987446, 13.4008, 19.2864, 0.987446, -8.3492, 12.2864, 3.48745, -13.5992, 12.2864, 3.48745, -9.3492, 19.2864, 3.48745, -9.3492, 19.2864, 3.48745, -13.5992, 12.5364, 0.987446, -13.3492, 12.5364, 0.987446, -9.5992, 19.2864, 0.987446, -9.5992, 19.2864, 0.987446, -13.3492)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 7), PackedInt32Array(7, 8, 11), PackedInt32Array(4, 12, 7), PackedInt32Array(7, 12, 13), PackedInt32Array(7, 13, 10), PackedInt32Array(14, 13, 15), PackedInt32Array(15, 13, 12), PackedInt32Array(15, 12, 16), PackedInt32Array(18, 17, 11), PackedInt32Array(10, 19, 9), PackedInt32Array(21, 20, 8), PackedInt32Array(8, 20, 11), PackedInt32Array(11, 20, 18), PackedInt32Array(25, 24, 22), PackedInt32Array(22, 24, 23), PackedInt32Array(29, 28, 26), PackedInt32Array(26, 28, 27)]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_ijgey")
@@ -22,11 +18,11 @@ geck_scene = ExtResource("2_odeh8")
 food_scene = ExtResource("5_yyr70")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.673219, 0.739444, 0, -0.739444, 0.673219, 0, 7.77275, 17.5126)
+transform = Transform3D(1, 0, 0, 0, 0.457904, 0.889001, 0, -0.889001, 0.457904, 0, 12.3453, 12.2831)
 fov = 87.1
 size = 18.2261
 
-[node name="Gecko" parent="." groups=["player"] instance=ExtResource("2_odeh8")]
+[node name="Gecko" parent="." instance=ExtResource("2_odeh8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.79133, 2.08756, -6.35433)
 
 [node name="SpawnPath" type="Path3D" parent="."]
@@ -35,7 +31,7 @@ curve = SubResource("Curve3D_c5mew")
 [node name="PathLocation" type="PathFollow3D" parent="SpawnPath"]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-navigation_mesh = SubResource("NavigationMesh_kxt4l")
+navigation_mesh = SubResource("NavigationMesh_7b4ai")
 
 [node name="floor" parent="NavigationRegion3D" instance=ExtResource("1_r11pp")]
 

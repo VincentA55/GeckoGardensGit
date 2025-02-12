@@ -32,10 +32,10 @@ func _process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	if not isHungry:
-		$SimpleVision3D.LookUpGroup = "player"
-	else:
+	if isHungry:
 		$SimpleVision3D.LookUpGroup = "food"
+	else:
+		$SimpleVision3D.LookUpGroup = "player"
 		#----------------------------------------------HERE LAST TIME
 
 func ChangeState(newState : States) -> void:

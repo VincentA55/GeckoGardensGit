@@ -10,8 +10,8 @@
 radius = 0.660098
 height = 3.38889
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_asqgg"]
-height = 1.5
+[sub_resource type="BoxShape3D" id="BoxShape3D_xyq7i"]
+size = Vector3(1.68948, 1.36768, 2.83508)
 
 [sub_resource type="Animation" id="Animation_fdjq7"]
 length = 0.001
@@ -188,8 +188,8 @@ transform = Transform3D(-0.998417, -0.00352785, -0.0561515, -0.0562366, 0.032396
 [node name="MouthZone" type="Area3D" parent="Pivot"]
 
 [node name="MouthShape3D" type="CollisionShape3D" parent="Pivot/MouthZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.422057, -1.48235)
-shape = SubResource("CylinderShape3D_asqgg")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00444031, 0.202575, -0.564808)
+shape = SubResource("BoxShape3D_xyq7i")
 
 [node name="FollowTarget3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 2.0
