@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmjpmn0etwsyn"]
+[gd_scene load_steps=9 format=3 uid="uid://cmjpmn0etwsyn"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_ijgey"]
 [ext_resource type="PackedScene" uid="uid://dn25sbfiwf5m7" path="res://testing_floor.tscn" id="1_r11pp"]
 [ext_resource type="PackedScene" uid="uid://fm5x3cea40hc" path="res://Characters/gecko.tscn" id="2_odeh8"]
 [ext_resource type="PackedScene" uid="uid://clid1430bou25" path="res://Characters/ExampleGecko.tscn" id="5_fsc7h"]
 [ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://Things/food.tscn" id="5_yyr70"]
+[ext_resource type="Script" path="res://camera_gimbal.gd" id="6_efmgw"]
 
 [sub_resource type="Curve3D" id="Curve3D_c5mew"]
 
@@ -16,11 +17,6 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Arr
 script = ExtResource("1_ijgey")
 geck_scene = ExtResource("2_odeh8")
 food_scene = ExtResource("5_yyr70")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.457904, 0.889001, 0, -0.889001, 0.457904, 0, 12.3453, 12.2831)
-fov = 87.1
-size = 18.2261
 
 [node name="Gecko" parent="." instance=ExtResource("2_odeh8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.79133, 2.08756, -6.35433)
@@ -37,3 +33,15 @@ navigation_mesh = SubResource("NavigationMesh_7b4ai")
 
 [node name="Gecko2" parent="." instance=ExtResource("5_fsc7h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27465, 1.41147, -2.92543)
+
+[node name="CameraGimbal" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.39065, 0)
+script = ExtResource("6_efmgw")
+target = NodePath("../NavigationRegion3D/floor")
+mouse_control = false
+
+[node name="InnerGimbal" type="Node3D" parent="CameraGimbal"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraGimbal/InnerGimbal"]
+transform = Transform3D(1, 0, 0, 0, 0.91192, 0.410369, 0, -0.410369, 0.91192, 0, 3.0179, 11.9311)
+size = 18.5462
