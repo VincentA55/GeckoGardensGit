@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 		$SimpleVision3D.LookUpGroup = "food"
 	else:
 		$SimpleVision3D.LookUpGroup = "player"
-		#----------------------------------------------HERE LAST TIME
+	
 
 func ChangeState(newState : States) -> void:
 	state = newState
@@ -44,7 +44,7 @@ func ChangeState(newState : States) -> void:
 		States.Walking:
 			$AnimationPlayer.play("wander2")
 			$AnimationPlayer.speed_scale = 3
-			follow_target_3d.ClearTarget()
+			
 			follow_target_3d.Speed = walkSpeed
 			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 			target = null
@@ -56,10 +56,11 @@ func ChangeState(newState : States) -> void:
 		States.Eating:
 			$FollowTarget3D.canMove = false
 			$AnimationPlayer.play("eating")
-			$AnimationPlayer.speed_scale = 0.5 
+			$AnimationPlayer.speed_scale = 1
 			await $AnimationPlayer.animation_finished
 			follow_target_3d.ClearTarget()
 			target = null
+			ChangeState(States.Walking)
 		States.Dead:
 			$SimpleVision3D.Enabled = false
 			follow_target_3d.ClearTarget()

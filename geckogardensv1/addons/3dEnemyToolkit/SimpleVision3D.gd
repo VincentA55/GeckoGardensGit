@@ -33,15 +33,15 @@ func _ready() -> void:
 	visible_vision_mesh = MeshInstance3D.new()
 	visible_vision_mesh.mesh = __BuildVisionMesh()
 	visible_vision_mesh.global_position = global_position  # Align with node
+		# Make the mesh transparent
+	var material = StandardMaterial3D.new()
+	material.albedo_color = Color(1, 1, 1, 0.3)  # White color with 30% opacity
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA  # Enable transparency
+	material.cull_mode = BaseMaterial3D.CULL_BACK  # Optional: Prevents weird rendering issues
+	visible_vision_mesh.set_surface_override_material(0, material)
+	
 	add_child(visible_vision_mesh)
 	
-	
-
-	print("Vision Mesh Added:", visible_vision_mesh.mesh)  # Debug log
-	if visible_vision_mesh.mesh == null:
-		print("⚠️ Vision Mesh NOT created!")
-	else:
-		print("✅ Vision Mesh successfully created!")
 
 func _process(delta: float) -> void:
 	if not Enabled:
@@ -75,79 +75,37 @@ func CheckOverlaping():
 func __BuildVisionShape() -> ConvexPolygonShape3D:
 	var result = ConvexPolygonShape3D.new()
 	var points = PackedVector3Array()
-	points.append(Vector3(0, 0, 0))
-	points.append(Vector3(BaseHeight/2, 0, -BaseConeSize))
-	points.append(Vector3(EndWidth/2, 0, -Distance))
-	points.append(Vector3(-(BaseHeight/2), 0, -BaseConeSize))
-	points.append(Vector3(-(EndWidth/2), 0, -Distance))
-	points.append(Vector3(0, BaseHeight, 0))	
-	points.append(Vector3(BaseHeight/2, BaseHeight, -BaseConeSize))
-	points.append(Vector3(EndWidth/2, BaseHeight, -Distance))
-	points.append(Vector3(-(BaseHeight/2), BaseHeight, -BaseConeSize))
-	points.append(Vector3(-(EndWidth/2), BaseHeight, -Distance))	    
+	
+	var radius = 30.0
+	var height = 10.0
+	var num_segments = 16  # The more segments, the smoother the cylinder
+	
+	# Generate bottom circle points
+	for i in range(num_segments):
+		var angle = i * TAU / num_segments
+		points.append(Vector3(radius * cos(angle), 0, radius * sin(angle)))
+
+	# Generate top circle points
+	for i in range(num_segments):
+		var angle = i * TAU / num_segments
+		points.append(Vector3(radius * cos(angle), height, radius * sin(angle)))
+
+	# Add the center points for the top and bottom circles to help define faces
+	points.append(Vector3(0, 0, 0))       # Center of bottom circle
+	points.append(Vector3(0, height, 0))  # Center of top circle
+
 	result.points = points
 	return result
 
 #notworking ------------------------------MAYBENEOTNEEDED
-func __BuildVisionMesh() -> ArrayMesh:
-	var mesh = ArrayMesh.new()
-	var surfaceTool = SurfaceTool.new()
+func __BuildVisionMesh() -> CylinderMesh:
+	var mesh = CylinderMesh.new()
+	mesh.set_top_radius(30.0)   # Correct method to set radius
+	mesh.set_bottom_radius(30.0)  # Both top and bottom should match for a cylinder
+	mesh.set_height(10.0)       # Correct method to set height
+	mesh.set_radial_segments(16) # Matches the convex shape
 	
-	surfaceTool.begin(Mesh.PRIMITIVE_TRIANGLES)
-
-	# Define vision cone points
-	var points = [
-		Vector3(0, 0, 0),
-		Vector3(BaseHeight/2, 0, -BaseConeSize),
-		Vector3(EndWidth/2, 0, -Distance),
-		Vector3(-(BaseHeight/2), 0, -BaseConeSize),
-		Vector3(-(EndWidth/2), 0, -Distance),
-		Vector3(0, BaseHeight, 0),
-		Vector3(BaseHeight/2, BaseHeight, -BaseConeSize),
-		Vector3(EndWidth/2, BaseHeight, -Distance),
-		Vector3(-(BaseHeight/2), BaseHeight, -BaseConeSize),
-		Vector3(-(EndWidth/2), BaseHeight, -Distance)
-	]
-
-	# Add vertices (manually creating triangles)
-	surfaceTool.add_vertex(points[0])
-	surfaceTool.add_vertex(points[1])
-	surfaceTool.add_vertex(points[2])
 	
-	surfaceTool.add_vertex(points[0])
-	surfaceTool.add_vertex(points[2])
-	surfaceTool.add_vertex(points[3])
-
-	surfaceTool.add_vertex(points[3])
-	surfaceTool.add_vertex(points[2])
-	surfaceTool.add_vertex(points[4])
-
-	surfaceTool.add_vertex(points[0])
-	surfaceTool.add_vertex(points[5])
-	surfaceTool.add_vertex(points[6])
-
-	surfaceTool.add_vertex(points[0])
-	surfaceTool.add_vertex(points[6])
-	surfaceTool.add_vertex(points[7])
-
-	surfaceTool.add_vertex(points[3])
-	surfaceTool.add_vertex(points[4])
-	surfaceTool.add_vertex(points[8])
-
-	surfaceTool.add_vertex(points[4])
-	surfaceTool.add_vertex(points[9])
-	surfaceTool.add_vertex(points[8])
-
-	surfaceTool.generate_normals()
-	surfaceTool.commit(mesh)
-
-	# Apply a semi-transparent material
-	var material = StandardMaterial3D.new()
-	material.albedo_color = Color(0, 1, 0, 0.3)  # Green with transparency
-	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mesh.surface_set_material(0, material)
-
 	return mesh
 
 
