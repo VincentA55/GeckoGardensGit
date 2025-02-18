@@ -216,6 +216,10 @@ libraries = {
 [node name="HungerTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="GraceTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="Hungry" from="." to="SimpleVision3D" method="_on_gecko_hungry"]
 [connection signal="Starved" from="." to="FollowTarget3D" method="_on_gecko_starved"]
 [connection signal="body_entered" from="Pivot/MouthZone" to="." method="_on_mouth_zone_entered"]
@@ -225,3 +229,4 @@ autostart = true
 [connection signal="GetSight" from="SimpleVision3D" to="." method="_on_simple_vision_3d_get_sight"]
 [connection signal="LostSight" from="SimpleVision3D" to="." method="_on_simple_vision_3d_lost_sight"]
 [connection signal="timeout" from="HungerTimer" to="." method="_on_hunger_timer_timeout"]
+[connection signal="timeout" from="GraceTimer" to="." method="_on_grace_timer_timeout"]

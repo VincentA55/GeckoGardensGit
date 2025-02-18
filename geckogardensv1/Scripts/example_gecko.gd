@@ -37,6 +37,15 @@ func _process(delta: float) -> void:
 	else:
 		$SimpleVision3D.LookUpGroup = "player"
 	
+	if hunger > 50:
+		isHungry = false
+		follow_target_3d.ClearTarget()
+	elif hunger <= 50:
+		isHungry = true
+	
+	if hunger <= 10 and not isdead:
+		$GraceTimer.start()
+		
 
 func ChangeState(newState : States) -> void:
 	state = newState
@@ -82,15 +91,11 @@ func _on_hunger_timer_timeout() -> void:
 	if hunger >= 0:
 		hunger -= 10
 		print(hunger)
-	if hunger > 50:
-		isHungry = false
+
 		
-	elif hunger <= 50:
-		isHungry = true
-		
-	if hunger < 10 and not isdead and target == null:
+func _on_grace_timer_timeout() -> void:
+	if hunger <= 0:
 		die()
-		
 
 func die() -> void:
 	ChangeState(States.Dead)
