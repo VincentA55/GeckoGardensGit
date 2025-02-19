@@ -97,7 +97,7 @@ func __BuildVisionShape() -> ConvexPolygonShape3D:
 	result.points = points
 	return result
 
-#notworking ------------------------------MAYBENEOTNEEDED
+
 func __BuildVisionMesh() -> CylinderMesh:
 	var mesh = CylinderMesh.new()
 	mesh.set_top_radius(30.0)   # Correct method to set radius

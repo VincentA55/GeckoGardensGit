@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5p6njla2b0ef"]
+
+[ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_ns0qp"]
+
+[sub_resource type="GDScript" id="GDScript_0imfr"]
+script/source = "
+\"\"\"
+Docs:
+	- Parent character must have hunger properties
+\"\"\"
+extends TextureProgressBar
+
+# The 3D character whose health this bar represents
+@export var character: Node3D
+# Camera to calculate screen-space position
+var camera: Camera3D
+
+func _ready():
+	# Get the active camera
+	camera = get_viewport().get_camera_3d()
+	
+	# Set the initial value to a placeholder (e.g., full health) or could hard code 100
+	if character and \"hunger\" in character:
+		value = character.hunger
+	if character and \"health\" in character:
+		value = character.health
+
+func _process(delta):
+	if not character or not camera:
+		return
+	
+	# Update health bar value
+	if character and \"hunger\" in character:
+		value = character.hunger
+"
+
+[node name="Hungerbar" type="TextureProgressBar"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture_progress = ExtResource("1_ns0qp")
+script = SubResource("GDScript_0imfr")

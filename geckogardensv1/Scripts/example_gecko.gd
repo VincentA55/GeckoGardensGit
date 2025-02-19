@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 	
 	if hunger > 50:
 		isHungry = false
-		follow_target_3d.ClearTarget()
+		
 	elif hunger <= 50:
 		isHungry = true
 	
@@ -53,7 +53,6 @@ func ChangeState(newState : States) -> void:
 		States.Walking:
 			$AnimationPlayer.play("wander2")
 			$AnimationPlayer.speed_scale = 3
-			
 			follow_target_3d.Speed = walkSpeed
 			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 			target = null
@@ -67,8 +66,8 @@ func ChangeState(newState : States) -> void:
 			$AnimationPlayer.play("eating")
 			$AnimationPlayer.speed_scale = 1
 			await $AnimationPlayer.animation_finished
-			follow_target_3d.ClearTarget()
 			target = null
+			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 			ChangeState(States.Walking)
 		States.Dead:
 			$SimpleVision3D.Enabled = false
@@ -80,7 +79,6 @@ func _on_follow_target_3d_navigation_finished() -> void:
 
 #when it sees somthing
 func _on_simple_vision_3d_get_sight(body: Node3D) -> void:
-	#if isHungry and body.is_in_group("food"):
 	target = body
 	ChangeState(States.Pursuit)
 
@@ -107,8 +105,7 @@ func die() -> void:
 func _on_mouth_zone_entered(body: Node3D) -> void:
 	if body not in invalid_targets:# initial check so the body doesnt interact every frame
 		invalid_targets.append(body)  # Mark the food as already processed
-		
-		if body.is_in_group("food") and isHungry:
+		if body.is_in_group("food") and body == target:
 			if body.has_method("get_fill_amount"):
 				ChangeState(States.Eating)
 				hunger += body.get_fill_amount() 

@@ -46,7 +46,7 @@ func SetTarget(newTarget : Node3D) -> void:
 
 func ClearTarget() -> void:
 	target = null
-	targetPosition = parent.global_position #HERE last time, casuing weird behaviour on start up
+	targetPosition = Vector3.ZERO
 	isTargetSet = false
 	
 func go_to_location(targetPosition : Vector3):
