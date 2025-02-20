@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://l6dnstai4wpc"
-path.s3tc="res://.godot/imported/healthfill.png-660267ccd5857b5efbfa64ba606992b6.s3tc.ctex"
+uid="uid://dqjyxtuoafc7"
+path.s3tc="res://.godot/imported/BarUnder.png-0922d4f193b5642e21901ffa1c58745f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://HealthBar/healthfill.png"
-dest_files=["res://.godot/imported/healthfill.png-660267ccd5857b5efbfa64ba606992b6.s3tc.ctex"]
+source_file="res://HealthBar/BarUnder.png"
+dest_files=["res://.godot/imported/BarUnder.png-0922d4f193b5642e21901ffa1c58745f.s3tc.ctex"]
 
 [params]
 

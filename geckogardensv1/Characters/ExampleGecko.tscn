@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://clid1430bou25"]
+[gd_scene load_steps=16 format=3 uid="uid://clid1430bou25"]
 
 [ext_resource type="Script" path="res://Scripts/example_gecko.gd" id="1_qtx8y"]
 [ext_resource type="PackedScene" uid="uid://dq38hvfftcgds" path="res://models/Gecko1.glb" id="2_dmihm"]
 [ext_resource type="Script" path="res://addons/3dEnemyToolkit/FollowTarget.gd" id="3_ltf8j"]
 [ext_resource type="Script" path="res://addons/3dEnemyToolkit/RandomTarget3D.gd" id="4_tfas1"]
 [ext_resource type="Script" path="res://addons/3dEnemyToolkit/SimpleVision3D.gd" id="5_2hpht"]
+[ext_resource type="PackedScene" uid="uid://yf31asvmvsgl" path="res://HealthBar/HealthBarBillboard.tscn" id="6_geyyh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ck8vg"]
 radius = 0.660098
@@ -173,6 +174,9 @@ _data = {
 "wander2": SubResource("Animation_8jrx6")
 }
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_v4kph"]
+viewport_path = NodePath("SubViewport")
+
 [node name="Gecko" type="CharacterBody3D"]
 script = ExtResource("1_qtx8y")
 
@@ -219,6 +223,11 @@ autostart = true
 [node name="GraceTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="Billboard" parent="." node_paths=PackedStringArray("character") instance=ExtResource("6_geyyh")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.23561, 0)
+texture = SubResource("ViewportTexture_v4kph")
+character = NodePath("..")
 
 [connection signal="Hungry" from="." to="SimpleVision3D" method="_on_gecko_hungry"]
 [connection signal="Starved" from="." to="FollowTarget3D" method="_on_gecko_starved"]

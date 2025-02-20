@@ -46,6 +46,7 @@ func _process(delta: float) -> void:
 	if hunger <= 10 and not isdead:
 		$GraceTimer.start()
 		
+	$Billboard._update()
 
 func ChangeState(newState : States) -> void:
 	state = newState
@@ -89,6 +90,7 @@ func _on_hunger_timer_timeout() -> void:
 	if hunger >= 0:
 		hunger -= 10
 		print(hunger)
+		
 
 		
 func _on_grace_timer_timeout() -> void:

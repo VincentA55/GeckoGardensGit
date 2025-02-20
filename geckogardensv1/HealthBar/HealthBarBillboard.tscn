@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://yf31asvmvsgl"]
+
+[ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
+[ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4gejq"]
+resource_local_to_scene = false
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="GDScript" id="GDScript_rcccv"]
+script/source = "extends Sprite3D
+# The 3D character whose health this bar represents
+@export var character: Node3D
+
+func _ready() -> void:
+	$SubViewport/Hungerbar.character = character
+	
+	# set the initial value to a placeholder (e.g., full health) or could hard code 100
+	if character and \"hunger\" in character:
+		$SubViewport/Hungerbar.value = character.hunger
+	if character and \"health\" in character:
+		$SubViewport/Hungerbar.value = character.healt
+
+func _update() -> void:
+	# Update health bar value
+	if character and \"hunger\" in character:
+		$SubViewport/Hungerbar.value = character.hunger
+"
+
+[sub_resource type="GDScript" id="GDScript_0imfr"]
+script/source = "
+\"\"\"
+Docs:
+	- Parent character must have hunger properties
+\"\"\"
+extends TextureProgressBar
+
+# The 3D character whose health this bar represents
+@export var character: Node3D
+# Camera to calculate screen-space position
+var camera: Camera3D
+
+func _ready():
+	# Get the active camera
+	camera = get_viewport().get_camera_3d()
+	
+	# Set the initial value to a placeholder (e.g., full health) or could hard code 100
+	if character and \"hunger\" in character:
+		value = character.hunger
+	if character and \"health\" in character:
+		value = character.health
+
+func _process(delta):
+	if not character or not camera:
+		return
+	
+	# Update health bar value
+	if character and \"hunger\" in character:
+		value = character.hunger
+"
+
+[node name="Billboard" type="Sprite3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_4gejq")
+script = SubResource("GDScript_rcccv")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(2000, 512)
+
+[node name="Hungerbar" type="TextureProgressBar" parent="SubViewport"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 76.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+texture_under = ExtResource("1_qbtn7")
+texture_progress = ExtResource("1_twr61")
+script = SubResource("GDScript_0imfr")

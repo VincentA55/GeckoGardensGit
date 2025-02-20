@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5p6njla2b0ef"]
+[gd_scene load_steps=4 format=3 uid="uid://b5p6njla2b0ef"]
 
+[ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_584al"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_ns0qp"]
 
 [sub_resource type="GDScript" id="GDScript_0imfr"]
@@ -35,7 +36,13 @@ func _process(delta):
 "
 
 [node name="Hungerbar" type="TextureProgressBar"]
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 80.0
+grow_horizontal = 2
+texture_under = ExtResource("1_584al")
 texture_progress = ExtResource("1_ns0qp")
 script = SubResource("GDScript_0imfr")
