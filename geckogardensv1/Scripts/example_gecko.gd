@@ -12,6 +12,7 @@ enum States {
 var isHungry : bool = false
 signal Hungry
 var isdead : bool = false
+var isStarving : bool = false
 signal Starved
 var invalid_targets: Array = []  # List of targets that should be ignored to prevent every frame interactions
 
@@ -43,8 +44,9 @@ func _process(delta: float) -> void:
 	elif hunger <= 50:
 		isHungry = true
 	
-	if hunger <= 10 and not isdead:
-		$GraceTimer.start()
+	if hunger < 10 and not isStarving:
+		isStarving = true
+		$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
 		
 	$Billboard._update()
 
@@ -75,6 +77,7 @@ func ChangeState(newState : States) -> void:
 			follow_target_3d.ClearTarget()
 			return
 
+#ReachedTarget signal from FollowTarget3D
 func _on_follow_target_3d_navigation_finished() -> void:
 		follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 
@@ -90,12 +93,13 @@ func _on_hunger_timer_timeout() -> void:
 	if hunger >= 0:
 		hunger -= 10
 		print(hunger)
-		
 
-		
+
 func _on_grace_timer_timeout() -> void:
 	if hunger <= 0:
 		die()
+	elif isStarving:
+		isStarving = false
 
 func die() -> void:
 	ChangeState(States.Dead)

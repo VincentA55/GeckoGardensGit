@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://yf31asvmvsgl"]
+[gd_scene load_steps=7 format=3 uid="uid://yf31asvmvsgl"]
 
 [ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
@@ -8,7 +8,8 @@ resource_local_to_scene = false
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="GDScript" id="GDScript_rcccv"]
-script/source = "extends Sprite3D
+script/source = "@tool
+extends Sprite3D
 # The 3D character whose health this bar represents
 @export var character: Node3D
 
@@ -20,11 +21,16 @@ func _ready() -> void:
 		$SubViewport/Hungerbar.value = character.hunger
 	if character and \"health\" in character:
 		$SubViewport/Hungerbar.value = character.healt
+	
+	if character and \"isHungry\" in character:
+		$SubViewport/IsHungryBool.text = str(character.isHungry)
 
 func _update() -> void:
 	# Update health bar value
 	if character and \"hunger\" in character:
 		$SubViewport/Hungerbar.value = character.hunger
+	
+	$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
 "
 
 [sub_resource type="GDScript" id="GDScript_0imfr"]
@@ -59,6 +65,12 @@ func _process(delta):
 		value = character.hunger
 "
 
+[sub_resource type="LabelSettings" id="LabelSettings_iqh5g"]
+font_size = 100
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+
 [node name="Billboard" type="Sprite3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 billboard = 1
@@ -72,14 +84,31 @@ handle_input_locally = false
 size = Vector2i(2000, 512)
 
 [node name="Hungerbar" type="TextureProgressBar" parent="SubViewport"]
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = -400.0
+offset_top = -38.0
 offset_right = 400.0
-offset_bottom = 76.0
+offset_bottom = 38.0
 grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 texture_under = ExtResource("1_qbtn7")
 texture_progress = ExtResource("1_twr61")
 script = SubResource("GDScript_0imfr")
+
+[node name="IsHungryBool" type="Label" parent="SubViewport"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -298.0
+offset_right = 298.0
+offset_bottom = 137.0
+grow_horizontal = 2
+text = "testing ehllo"
+label_settings = SubResource("LabelSettings_iqh5g")
+horizontal_alignment = 1
+vertical_alignment = 1

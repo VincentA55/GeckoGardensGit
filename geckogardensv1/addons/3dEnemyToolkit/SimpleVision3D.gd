@@ -9,12 +9,11 @@ signal LostSight
 
 @export_category("Vision Area")
 @export var Distance : float = 50.0
-@export var BaseWidth : float = 10.0
-@export var EndWidth : float = 30.0
-@export var BaseHeight : float = 5.0
-@export var EndHeight : float = 5.0
-@export var BaseConeSize : float = 1.0
+@export var radius : int = 30
+@export var height : int = 10 
+
 @export var VisionArea : CollisionShape3D
+@export var isVisionAreaVisable : bool = false
 
 var vision : Area3D
 var target : Node3D
@@ -40,7 +39,8 @@ func _ready() -> void:
 	material.cull_mode = BaseMaterial3D.CULL_BACK  # Optional: Prevents weird rendering issues
 	visible_vision_mesh.set_surface_override_material(0, material)
 	
-	#add_child(visible_vision_mesh)
+	if isVisionAreaVisable:
+		add_child(visible_vision_mesh)#this adds the visible area
 	
 
 func _process(delta: float) -> void:
@@ -76,8 +76,6 @@ func __BuildVisionShape() -> ConvexPolygonShape3D:
 	var result = ConvexPolygonShape3D.new()
 	var points = PackedVector3Array()
 	
-	var radius = 30.0
-	var height = 10.0
 	var num_segments = 16  # The more segments, the smoother the cylinder
 	
 	# Generate bottom circle points
@@ -96,18 +94,17 @@ func __BuildVisionShape() -> ConvexPolygonShape3D:
 
 	result.points = points
 	return result
-
-
 func __BuildVisionMesh() -> CylinderMesh:
 	var mesh = CylinderMesh.new()
-	mesh.set_top_radius(30.0)   # Correct method to set radius
-	mesh.set_bottom_radius(30.0)  # Both top and bottom should match for a cylinder
-	mesh.set_height(10.0)       # Correct method to set height
+	mesh.set_top_radius(radius)   # Correct method to set radius
+	mesh.set_bottom_radius(radius)  # Both top and bottom should match for a cylinder
+	mesh.set_height(height)       # Correct method to set height
 	mesh.set_radial_segments(16) # Matches the convex shape
-	
 	
 	return mesh
 
 
 func _on_gecko_hungry() -> void:
+	target = null
 	LookUpGroup = "food"
+	#---------------------------------------------HERERERERE

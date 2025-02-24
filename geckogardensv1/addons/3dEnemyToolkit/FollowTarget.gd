@@ -21,15 +21,14 @@ func _ready() -> void:
 	velocity_computed.connect(_on_velocity_computed)
 
 func _process(delta: float) -> void:
-	
-	if fixedTarget:
-		go_to_location(targetPosition)	
-	elif target:
-		go_to_location(target.global_position)
-		if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
-			emit_signal("ReachedTarget", target)
-		
 	if not isdead and canMove:
+		if fixedTarget:
+			go_to_location(targetPosition)	
+		elif target:
+			go_to_location(target.global_position)
+			if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
+				emit_signal("ReachedTarget", target)
+				
 		parent.move_and_slide()
 	
 func SetFixedTarget(newTarget : Vector3) -> void:
@@ -76,6 +75,8 @@ func _on_velocity_computed(safe_velocity: Vector3) -> void:
 
 func _on_gecko_starved() -> void:
 	isdead = true
+	target = null
+	isTargetSet = false
 
 func stopMoving(time : int)-> void:
 	$StopMovingTimer.wait_time = time
