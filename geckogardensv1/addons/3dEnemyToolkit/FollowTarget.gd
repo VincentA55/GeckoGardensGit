@@ -21,15 +21,15 @@ func _ready() -> void:
 	velocity_computed.connect(_on_velocity_computed)
 
 func _process(delta: float) -> void:
-	if not isdead and canMove:
+	if not isdead:
 		if fixedTarget:
 			go_to_location(targetPosition)	
 		elif target:
 			go_to_location(target.global_position)
 			if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
 				emit_signal("ReachedTarget", target)
-				
-		parent.move_and_slide()
+		if canMove:
+			parent.move_and_slide()
 	
 func SetFixedTarget(newTarget : Vector3) -> void:
 	target = null

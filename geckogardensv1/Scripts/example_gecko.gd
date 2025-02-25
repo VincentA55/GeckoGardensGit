@@ -34,9 +34,9 @@ func _process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	
 	if isHungry:
-		$SimpleVision3D.LookUpGroup = "food"
+		find_food()
 	else:
-		$SimpleVision3D.LookUpGroup = "player"
+		$SimpleVision3D.LookUpGroup = "player"#Change target when heungry here i think
 	
 	if hunger > 50:
 		isHungry = false
@@ -71,11 +71,12 @@ func ChangeState(newState : States) -> void:
 			await $AnimationPlayer.animation_finished
 			target = null
 			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
+			
 			ChangeState(States.Walking)
 		States.Dead:
 			$SimpleVision3D.Enabled = false
 			follow_target_3d.ClearTarget()
-			return
+	return
 
 #ReachedTarget signal from FollowTarget3D
 func _on_follow_target_3d_navigation_finished() -> void:
@@ -107,7 +108,6 @@ func die() -> void:
 	isdead = true
 	emit_signal("Starved")
 
-
 func _on_mouth_zone_entered(body: Node3D) -> void:
 	if body not in invalid_targets:# initial check so the body doesnt interact every frame
 		invalid_targets.append(body)  # Mark the food as already processed
@@ -115,5 +115,15 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 			if body.has_method("get_fill_amount"):
 				ChangeState(States.Eating)
 				hunger += body.get_fill_amount() 
-				body.on_eaten()
 				$FollowTarget3D.canMove = true
+				body.on_eaten()
+
+#changes its target from null or something else to "food"
+func find_food()->void:
+	$SimpleVision3D.LookUpGroup = "food"
+	if target == null or not target.is_in_group("food") :
+		$RandomTarget3D.GetNextPoint()
+	
+	
+	
+#------------------------------------WORKINGON EHEHERERERE---------------------

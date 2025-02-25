@@ -28,7 +28,7 @@ func _ready() -> void:
 	vision.add_child(VisionArea)
 	add_child(vision)
 	
-		# Create a visible mesh instance--------MAYBENOTNEDDED
+		# Create a visible mesh instance
 	visible_vision_mesh = MeshInstance3D.new()
 	visible_vision_mesh.mesh = __BuildVisionMesh()
 	visible_vision_mesh.global_position = global_position  # Align with node
