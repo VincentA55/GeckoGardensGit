@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	
 	if isHungry:
-		find_food()
+		find_food()#Change state to hungry if not already
 	else:
 		$SimpleVision3D.LookUpGroup = "player"#Change target when heungry here i think
 	
@@ -59,6 +59,8 @@ func ChangeState(newState : States) -> void:
 			follow_target_3d.Speed = walkSpeed
 			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 			target = null
+		States.Hungry:
+			pass#THIS IS WHERE FIND FOOD GOES -----------------
 		States.Pursuit:
 			$AnimationPlayer.play("walk")
 			$AnimationPlayer.speed_scale = 1
@@ -71,7 +73,6 @@ func ChangeState(newState : States) -> void:
 			await $AnimationPlayer.animation_finished
 			target = null
 			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
-			
 			ChangeState(States.Walking)
 		States.Dead:
 			$SimpleVision3D.Enabled = false
