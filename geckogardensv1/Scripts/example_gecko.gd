@@ -27,29 +27,32 @@ var state : States = States.Walking
 var target : Node3D
 
 func _ready() -> void:	
+	$SimpleVision3D.LookUpGroup = "player"
 	ChangeState(States.Walking)
 
 func _process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	if isHungry:
-		find_food()#Change state to hungry if not already
-	else:
-		$SimpleVision3D.LookUpGroup = "player"#Change target when heungry here i think
 	
 	if hunger > 50:
 		isHungry = false
-		
+		$SimpleVision3D.LookUpGroup = "player"
 	elif hunger <= 50:
 		isHungry = true
 	
+	if isHungry:
+		if state != States.Hungry:
+			ChangeState(States.Hungry)
+			
 	if hunger < 10 and not isStarving:
 		isStarving = true
 		$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
 		
 	$Billboard._update()
 
+
+#This is used the moment a state is changed to prevent the action happening every frame
 func ChangeState(newState : States) -> void:
 	state = newState
 	match state:
@@ -60,7 +63,10 @@ func ChangeState(newState : States) -> void:
 			follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 			target = null
 		States.Hungry:
-			pass#THIS IS WHERE FIND FOOD GOES -----------------
+			$SimpleVision3D.LookUpGroup = "food"
+			find_food()#HERE NOW EATS EVEN WHEN NOT HUNGRY---------------
+			if not isHungry:
+				$SimpleVision3D.LookUpGroup = "player"
 		States.Pursuit:
 			$AnimationPlayer.play("walk")
 			$AnimationPlayer.speed_scale = 1
@@ -96,7 +102,6 @@ func _on_hunger_timer_timeout() -> void:
 		hunger -= 10
 		print(hunger)
 
-
 func _on_grace_timer_timeout() -> void:
 	if hunger <= 0:
 		die()
@@ -121,9 +126,8 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 
 #changes its target from null or something else to "food"
 func find_food()->void:
-	$SimpleVision3D.LookUpGroup = "food"
 	if target == null or not target.is_in_group("food") :
-		$RandomTarget3D.GetNextPoint()
+		follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
 	
 	
 	
