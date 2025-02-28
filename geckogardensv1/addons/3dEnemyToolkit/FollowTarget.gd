@@ -3,9 +3,24 @@ class_name FollowTarget3D
 
 signal ReachedTarget(target : Node3D)
 
+enum State {
+	Neutral,
+	Walking,
+	Pursuit,
+	Hungry,
+	Eating,
+	Dead
+}
 @export var Speed : float = 5.0
 @export var TurnSpeed : float = 0.3
 @export var ReachTargetMinDistance : float = 2
+
+@export var WanderRange : float = 10.0
+@export var MinWanderWait : float = 1.0
+@export var MaxWanderWait : float = 3.0
+
+var startPosition : Vector3
+
 
 var target : Node3D
 var isTargetSet : bool = false
@@ -15,6 +30,7 @@ var fixedTarget : bool = false
 var isdead : bool = false
 var canMove : bool = true
 
+@onready var wanderTimer = Timer.new()
 @onready var parent = get_parent() as CharacterBody3D
 
 func _ready() -> void:
@@ -22,12 +38,18 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if not isdead:
+		match get_parent_state():
+			State.Neutral:
+				handle_neutral_state()
+			# Add other state cases here as needed
+				
 		if fixedTarget:
-			go_to_location(targetPosition)	
+			go_to_location(targetPosition)
 		elif target:
 			go_to_location(target.global_position)
 			if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
 				emit_signal("ReachedTarget", target)
+				
 		if canMove:
 			parent.move_and_slide()
 	
@@ -85,3 +107,29 @@ func stopMoving(time : int)-> void:
 
 func _on_stop_moving_timer_timeout() -> void:
 	canMove = true
+
+
+#ALL BELOW IS NEW AND UNTESTED-------------------------------------------
+func get_parent_state() -> int:
+	if parent and "state" in parent:
+		return parent.state
+	return 0
+
+func handle_neutral_state() -> void:
+	if not isTargetSet and wanderTimer.is_stopped():
+		start_wandering()
+
+func start_wandering() -> void:
+	var random_angle = randf() * TAU
+	var random_distance = randf() * WanderRange
+	var offset = Vector3(
+		cos(random_angle) * random_distance,
+		0,
+		sin(random_angle) * random_distance
+	)
+	SetFixedTarget(startPosition + offset)
+	wanderTimer.wait_time = randf_range(MinWanderWait, MaxWanderWait)
+
+func _on_wander_timer_timeout() -> void:
+	if get_parent_state() == State.Neutral:
+		start_wandering()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://yf31asvmvsgl"]
+[gd_scene load_steps=8 format=3 uid="uid://yf31asvmvsgl"]
 
 [ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
@@ -24,6 +24,9 @@ func _ready() -> void:
 	
 	if character and \"isHungry\" in character:
 		$SubViewport/IsHungryBool.text = str(character.isHungry)
+	
+	if character and \"state\" in character:
+		$SubViewport/StateLabel.text = str(character.stateString)
 
 func _update() -> void:
 	# Update health bar value
@@ -31,6 +34,12 @@ func _update() -> void:
 		$SubViewport/Hungerbar.value = character.hunger
 	
 	$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
+	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
+"
+
+[sub_resource type="GDScript" id="GDScript_51572"]
+script/source = "@tool
+extends SubViewport
 "
 
 [sub_resource type="GDScript" id="GDScript_0imfr"]
@@ -82,6 +91,7 @@ disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(2000, 512)
+script = SubResource("GDScript_51572")
 
 [node name="Hungerbar" type="TextureProgressBar" parent="SubViewport"]
 anchors_preset = 8
@@ -108,7 +118,16 @@ offset_left = -298.0
 offset_right = 298.0
 offset_bottom = 137.0
 grow_horizontal = 2
-text = "testing ehllo"
+text = "HungryBool"
+label_settings = SubResource("LabelSettings_iqh5g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StateLabel" type="Label" parent="SubViewport"]
+offset_right = 596.0
+offset_bottom = 137.0
+text = "StateLabel
+"
 label_settings = SubResource("LabelSettings_iqh5g")
 horizontal_alignment = 1
 vertical_alignment = 1

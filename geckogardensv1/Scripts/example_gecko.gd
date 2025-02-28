@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 enum States {
+	Neutral,
 	Walking,
 	Pursuit,
 	Hungry,
@@ -24,13 +25,15 @@ var invalid_targets: Array = []  # List of targets that should be ignored to pre
 @onready var random_target_3d: RandomTarget3D = $RandomTarget3D
 
 var state : States = States.Walking
+var stateString : String
 var target : Node3D
 
 func _ready() -> void:	
 	$SimpleVision3D.LookUpGroup = "player"
-	ChangeState(States.Walking)
+	ChangeState(States.Neutral)#Just changed this was orignally Walking
 
 func _process(delta: float) -> void:
+	stateString = States.keys()[state]
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
