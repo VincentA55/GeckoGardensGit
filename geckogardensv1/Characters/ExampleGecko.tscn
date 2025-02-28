@@ -174,7 +174,7 @@ _data = {
 "wander2": SubResource("Animation_8jrx6")
 }
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_dlvnf"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_rcv8d"]
 viewport_path = NodePath("SubViewport")
 
 [node name="Gecko" type="CharacterBody3D"]
@@ -227,7 +227,7 @@ one_shot = true
 
 [node name="Billboard" parent="." node_paths=PackedStringArray("character") instance=ExtResource("6_geyyh")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.06091, 0)
-texture = SubResource("ViewportTexture_dlvnf")
+texture = SubResource("ViewportTexture_rcv8d")
 character = NodePath("..")
 
 [connection signal="Hungry" from="." to="SimpleVision3D" method="_on_gecko_hungry"]

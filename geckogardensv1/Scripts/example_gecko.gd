@@ -33,7 +33,7 @@ func _ready() -> void:
 	ChangeState(States.Neutral)#Just changed this was orignally Walking
 
 func _process(delta: float) -> void:
-	stateString = States.keys()[state]
+	stateString = States.keys()[state]#for debugging and billboard
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	

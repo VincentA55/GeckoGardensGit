@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 		match get_parent_state():
 			State.Neutral:
 				handle_neutral_state()
-			# Add other state cases here as needed
+			# Add other state cases here as needed--------HEHRE LAST NOT SURE HOW TO IMPLEMETN
 				
 		if fixedTarget:
 			go_to_location(targetPosition)
