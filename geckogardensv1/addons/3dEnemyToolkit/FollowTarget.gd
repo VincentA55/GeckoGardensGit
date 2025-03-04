@@ -3,7 +3,7 @@ class_name FollowTarget3D
 
 signal ReachedTarget(target : Node3D)
 
-enum State {
+enum States {
 	Neutral,
 	Walking,
 	Pursuit,
@@ -17,7 +17,7 @@ enum State {
 
 @export var WanderRange : float = 10.0
 @export var MinWanderWait : float = 1.0
-@export var MaxWanderWait : float = 3.0
+@export var MaxWanderWait : float = 2
 
 var startPosition : Vector3
 
@@ -37,21 +37,23 @@ func _ready() -> void:
 	velocity_computed.connect(_on_velocity_computed)
 
 func _process(delta: float) -> void:
+	var state = get_parent_state()
 	if not isdead:
-		match get_parent_state():
-			State.Neutral:
-				handle_neutral_state()
-			# Add other state cases here as needed--------HEHRE LAST NOT SURE HOW TO IMPLEMETN
-				
-		if fixedTarget:
-			go_to_location(targetPosition)
-		elif target:
-			go_to_location(target.global_position)
-			if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
-				emit_signal("ReachedTarget", target)
-				
-		if canMove:
-			parent.move_and_slide()
+		match state:
+			States.Neutral:
+				handle_neutral_state()#HEREGERE---------------------------------------------------
+			States.Walking:
+				handle_target_state()
+			States.Hungry:
+				handle_target_state()
+			States.Pursuit:
+				handle_target_state()
+			States.Eating:
+				pass
+			States.Dead:
+				pass
+	if canMove:
+		parent.move_and_slide()
 	
 func SetFixedTarget(newTarget : Vector3) -> void:
 	target = null
@@ -99,6 +101,7 @@ func _on_gecko_starved() -> void:
 	isdead = true
 	target = null
 	isTargetSet = false
+	canMove = false
 
 func stopMoving(time : int)-> void:
 	$StopMovingTimer.wait_time = time
@@ -114,6 +117,15 @@ func get_parent_state() -> int:
 	if parent and "state" in parent:
 		return parent.state
 	return 0
+
+#The idea is this is for any state that has a target ie:pursuit, hungry, etc
+func handle_target_state() -> void:
+	if fixedTarget:
+		go_to_location(targetPosition)
+	elif target:
+		go_to_location(target.global_position)
+		if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
+			emit_signal("ReachedTarget", target)
 
 func handle_neutral_state() -> void:
 	if not isTargetSet and wanderTimer.is_stopped():
@@ -131,5 +143,5 @@ func start_wandering() -> void:
 	wanderTimer.wait_time = randf_range(MinWanderWait, MaxWanderWait)
 
 func _on_wander_timer_timeout() -> void:
-	if get_parent_state() == State.Neutral:
+	if get_parent_state() == States.Neutral:
 		start_wandering()

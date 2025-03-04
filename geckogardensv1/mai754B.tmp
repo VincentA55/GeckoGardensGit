@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://cmjpmn0etwsyn"]
+
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_ijgey"]
+[ext_resource type="PackedScene" uid="uid://dn25sbfiwf5m7" path="res://testing_floor.tscn" id="1_r11pp"]
+[ext_resource type="PackedScene" uid="uid://fm5x3cea40hc" path="res://Characters/gecko.tscn" id="2_odeh8"]
+[ext_resource type="PackedScene" uid="uid://clid1430bou25" path="res://Characters/ExampleGecko.tscn" id="5_fsc7h"]
+[ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://Things/food.tscn" id="5_yyr70"]
+[ext_resource type="Script" path="res://camera_gimbal.gd" id="6_efmgw"]
+
+[sub_resource type="Curve3D" id="Curve3D_c5mew"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_7b4ai"]
+vertices = PackedVector3Array(-11.9636, 2.98745, -17.3492, -11.9636, 2.98745, -13.0992, -4.71362, 2.98745, -13.0992, -4.71362, 2.98745, -17.3492, -13.9636, 1.23745, 2.9008, -18.7136, 2.98745, 2.9008, -18.7136, 2.98745, 7.1508, -13.7136, 1.23745, 7.1508, 11.5364, 0.987446, -8.3492, 11.2864, 0.987446, -13.5992, -3.96362, 0.987446, -12.0992, -13.7136, 0.987446, 8.1508, -13.9636, 0.987446, 1.9008, -12.7136, 0.987446, -12.0992, -12.9636, 0.987446, -13.5992, -19.4636, 0.987446, -13.5992, -19.4636, 0.987446, 1.9008, -19.4636, 0.987446, 8.1508, -19.4636, 0.987446, 13.4008, -3.71362, 0.987446, -13.5992, 19.2864, 0.987446, 13.4008, 19.2864, 0.987446, -8.3492, 12.2864, 3.48745, -13.5992, 12.2864, 3.48745, -9.3492, 19.2864, 3.48745, -9.3492, 19.2864, 3.48745, -13.5992, 12.5364, 0.987446, -13.3492, 12.5364, 0.987446, -9.5992, 19.2864, 0.987446, -9.5992, 19.2864, 0.987446, -13.3492)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 7), PackedInt32Array(7, 8, 11), PackedInt32Array(4, 12, 7), PackedInt32Array(7, 12, 13), PackedInt32Array(7, 13, 10), PackedInt32Array(14, 13, 15), PackedInt32Array(15, 13, 12), PackedInt32Array(15, 12, 16), PackedInt32Array(18, 17, 11), PackedInt32Array(10, 19, 9), PackedInt32Array(21, 20, 8), PackedInt32Array(8, 20, 11), PackedInt32Array(11, 20, 18), PackedInt32Array(25, 24, 22), PackedInt32Array(22, 24, 23), PackedInt32Array(29, 28, 26), PackedInt32Array(26, 28, 27)]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_ijgey")
+geck_scene = ExtResource("2_odeh8")
+food_scene = ExtResource("5_yyr70")
+
+[node name="Gecko" parent="." instance=ExtResource("2_odeh8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.79133, 2.08756, -6.35433)
+
+[node name="SpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_c5mew")
+
+[node name="PathLocation" type="PathFollow3D" parent="SpawnPath"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_7b4ai")
+
+[node name="floor" parent="NavigationRegion3D" instance=ExtResource("1_r11pp")]
+
+[node name="Gecko2" parent="." instance=ExtResource("5_fsc7h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27465, 1.41147, -2.92543)
+
+[node name="CameraGimbal" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.39065, 0)
+script = ExtResource("6_efmgw")
+target = NodePath("../NavigationRegion3D/floor")
+mouse_control = false
+
+[node name="InnerGimbal" type="Node3D" parent="CameraGimbal"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraGimbal/InnerGimbal"]
+transform = Transform3D(1, 0, 0, 0, 0.91192, 0.410369, 0, -0.410369, 0.91192, 0, 3.0179, 11.9311)
+size = 18.5462

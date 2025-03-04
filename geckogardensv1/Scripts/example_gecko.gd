@@ -29,25 +29,23 @@ var stateString : String
 var target : Node3D
 
 func _ready() -> void:	
-	$SimpleVision3D.LookUpGroup = "player"
 	ChangeState(States.Neutral)#Just changed this was orignally Walking
 
 func _process(delta: float) -> void:
 	stateString = States.keys()[state]#for debugging and billboard
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
 	
 	if hunger > 50:
 		isHungry = false
-		$SimpleVision3D.LookUpGroup = "player"
+		ChangeState(States.Neutral)
 	elif hunger <= 50:
 		isHungry = true
-	
-	if isHungry:
-		if state != States.Hungry:
-			ChangeState(States.Hungry)
-			
+		ChangeState(States.Hungry)
+		
+
 	if hunger < 10 and not isStarving:
 		isStarving = true
 		$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
@@ -59,6 +57,8 @@ func _process(delta: float) -> void:
 func ChangeState(newState : States) -> void:
 	state = newState
 	match state:
+		States.Neutral:
+			return
 		States.Walking:
 			$AnimationPlayer.play("wander2")
 			$AnimationPlayer.speed_scale = 3
