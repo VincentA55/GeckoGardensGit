@@ -43,17 +43,19 @@ func _process(delta: float) -> void:
 			States.Neutral:
 				handle_neutral_state()#HEREGERE---------------------------------------------------
 			States.Walking:
-				handle_target_state()
+				pass
 			States.Hungry:
-				handle_target_state()
+				#handle_target_state()
+				pass
 			States.Pursuit:
-				handle_target_state()
+				pass
 			States.Eating:
 				pass
 			States.Dead:
 				pass
 	if canMove:
 		parent.move_and_slide()
+		handle_target_state()
 	
 func SetFixedTarget(newTarget : Vector3) -> void:
 	target = null
@@ -128,19 +130,12 @@ func handle_target_state() -> void:
 			emit_signal("ReachedTarget", target)
 
 func handle_neutral_state() -> void:
-	if not isTargetSet and wanderTimer.is_stopped():
+	if not isTargetSet:
 		start_wandering()
 
 func start_wandering() -> void:
-	var random_angle = randf() * TAU
-	var random_distance = randf() * WanderRange
-	var offset = Vector3(
-		cos(random_angle) * random_distance,
-		0,
-		sin(random_angle) * random_distance
-	)
-	SetFixedTarget(startPosition + offset)
-	wanderTimer.wait_time = randf_range(MinWanderWait, MaxWanderWait)
+	SetFixedTarget($"../RandomTarget3D".GetNextPoint())
+	
 
 func _on_wander_timer_timeout() -> void:
 	if get_parent_state() == States.Neutral:

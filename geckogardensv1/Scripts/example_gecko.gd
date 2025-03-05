@@ -32,24 +32,23 @@ func _ready() -> void:
 	ChangeState(States.Neutral)#Just changed this was orignally Walking
 
 func _process(delta: float) -> void:
+	if not isdead:
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		
+		if hunger > 50:
+			isHungry = false
+			ChangeState(States.Neutral)
+		elif hunger <= 50:
+			isHungry = true
+			ChangeState(States.Hungry)
+			
+		if hunger < 10 and not isStarving:
+			isStarving = true
+			$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
+			
+			
 	stateString = States.keys()[state]#for debugging and billboard
-	
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	
-	
-	if hunger > 50:
-		isHungry = false
-		ChangeState(States.Neutral)
-	elif hunger <= 50:
-		isHungry = true
-		ChangeState(States.Hungry)
-		
-
-	if hunger < 10 and not isStarving:
-		isStarving = true
-		$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
-		
 	$Billboard._update()
 
 
@@ -98,12 +97,14 @@ func _on_simple_vision_3d_get_sight(body: Node3D) -> void:
 	ChangeState(States.Pursuit)
 
 func _on_simple_vision_3d_lost_sight() -> void:
-	ChangeState(States.Walking)
+	if not isdead:
+		ChangeState(States.Walking)
 
 func _on_hunger_timer_timeout() -> void:
-	if hunger >= 0:
-		hunger -= 10
-		print(hunger)
+	if not isdead:
+		if hunger >= 0:
+			hunger -= 10
+			print(hunger)
 
 func _on_grace_timer_timeout() -> void:
 	if hunger <= 0:

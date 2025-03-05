@@ -201,6 +201,7 @@ debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.844148, 7.5084e-05, 0.666368, 1)
 script = ExtResource("3_ltf8j")
+MaxWanderWait = 5.0
 
 [node name="StopMovingTimer" type="Timer" parent="FollowTarget3D"]
 one_shot = true
