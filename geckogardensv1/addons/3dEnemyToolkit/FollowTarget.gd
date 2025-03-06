@@ -45,14 +45,14 @@ func _process(delta: float) -> void:
 			States.Walking:
 				pass
 			States.Hungry:
-				#handle_target_state()
+				handle_target_state()#HEREGERE-------------------
 				pass
 			States.Pursuit:
 				pass
 			States.Eating:
-				pass
+				canMove = false
 			States.Dead:
-				pass
+				isdead = true
 	if canMove:
 		parent.move_and_slide()
 		handle_target_state()
@@ -122,12 +122,15 @@ func get_parent_state() -> int:
 
 #The idea is this is for any state that has a target ie:pursuit, hungry, etc
 func handle_target_state() -> void:
-	if fixedTarget:
-		go_to_location(targetPosition)
-	elif target:
-		go_to_location(target.global_position)
-		if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
-			emit_signal("ReachedTarget", target)
+	if target != null:
+		if fixedTarget:
+			go_to_location(targetPosition)
+		elif target:
+			go_to_location(target.global_position)
+			if target and parent.global_position.distance_to(target.global_position) <= ReachTargetMinDistance:
+				emit_signal("ReachedTarget", target)
+	else:
+		start_wandering()
 
 func handle_neutral_state() -> void:
 	if not isTargetSet:

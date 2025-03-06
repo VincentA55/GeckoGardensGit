@@ -5,7 +5,7 @@ signal GetSight(body : Node3D)
 signal LostSight
 
 @export var Enabled : bool = true
-@export var LookUpGroup : String = "food"
+@export var LookUpGroup : String = "nothing"
 
 @export_category("Vision Area")
 @export var Distance : float = 50.0
@@ -102,9 +102,4 @@ func __BuildVisionMesh() -> CylinderMesh:
 	mesh.set_radial_segments(16) # Matches the convex shape
 	
 	return mesh
-
-
-func _on_gecko_hungry() -> void:
-	target = null
-	LookUpGroup = "food"
-	#---------------------------------------------HERERERERE
+	
