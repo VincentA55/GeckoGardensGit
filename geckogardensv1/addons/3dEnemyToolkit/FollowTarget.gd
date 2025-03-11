@@ -41,6 +41,7 @@ func _process(delta: float) -> void:
 	if not isdead:
 		match state:
 			States.Neutral:
+				avoidance_enabled = false
 				handle_neutral_state()#HEREGERE---------------------------------------------------
 			States.Walking:
 				pass
@@ -48,9 +49,11 @@ func _process(delta: float) -> void:
 				handle_target_state()#HEREGERE-------------------
 				pass
 			States.Pursuit:
+				avoidance_enabled = true
 				pass
 			States.Eating:
-				canMove = false
+				velocity = Vector3(0,0,0)
+				Speed = 0
 			States.Dead:
 				isdead = true
 	if canMove:
@@ -120,7 +123,7 @@ func get_parent_state() -> int:
 		return parent.state
 	return 0
 
-#The idea is this is for any state that has a target ie:pursuit, hungry, etc
+#The idea is; this is for any state that has a target ie:pursuit, hungry, etc
 func handle_target_state() -> void:
 	if target != null:
 		if fixedTarget:

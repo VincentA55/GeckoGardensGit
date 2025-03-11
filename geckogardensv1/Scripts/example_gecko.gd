@@ -57,8 +57,10 @@ func ChangeState(newState : States) -> void:
 	match state:
 		States.Neutral:
 			isHungry = false
+			$SimpleVision3D.LookUpGroup = "nothing"
 			return
 		States.Walking:
+			$FollowTarget3D.canMove = true
 			$FollowTarget3D.ClearTarget()
 			$AnimationPlayer.play("wander2")
 			$AnimationPlayer.speed_scale = 3
@@ -69,7 +71,9 @@ func ChangeState(newState : States) -> void:
 			isHungry = true
 			$SimpleVision3D.LookUpGroup = "food"
 			
+			
 		States.Pursuit:
+			$FollowTarget3D.canMove = true
 			$AnimationPlayer.play("walk")
 			$AnimationPlayer.speed_scale = 1
 			follow_target_3d.Speed = runSpeed
@@ -81,9 +85,9 @@ func ChangeState(newState : States) -> void:
 			await $AnimationPlayer.animation_finished
 			target = null
 			if isHungry:
-				ChangeState(States.Hungry)
+				pass
+				#ChangeState(States.Hungry)
 			#follow_target_3d.SetFixedTarget(random_target_3d.GetNextPoint())
-			#ChangeState(States.Neutral)
 		States.Dead:
 			$SimpleVision3D.Enabled = false
 			follow_target_3d.ClearTarget()
@@ -104,7 +108,7 @@ func _on_simple_vision_3d_lost_sight() -> void:
 		pass
 
 func _on_hunger_timer_timeout() -> void:
-	if not isdead:
+	if not isdead or state != States.Eating:
 		if hunger >= 0:
 			hunger -= 10
 			print(hunger)
@@ -128,7 +132,6 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 			if body.has_method("get_fill_amount"):
 				ChangeState(States.Eating)
 				hunger += body.get_fill_amount() 
-				$FollowTarget3D.canMove = true
 				body.on_eaten()
 	
 	
