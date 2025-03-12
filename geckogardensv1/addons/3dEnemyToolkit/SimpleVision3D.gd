@@ -13,6 +13,7 @@ signal LostSight
 @export var height : int = 10 
 
 @export var VisionArea : CollisionShape3D
+
 @export var isVisionAreaVisable : bool = false
 
 var vision : Area3D

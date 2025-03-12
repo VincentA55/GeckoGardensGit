@@ -58,6 +58,8 @@ func ChangeState(newState : States) -> void:
 		States.Neutral:
 			isHungry = false
 			$SimpleVision3D.LookUpGroup = "nothing"
+			$FollowTarget3D.ClearTarget()
+			
 			return
 		States.Walking:
 			$FollowTarget3D.canMove = true
