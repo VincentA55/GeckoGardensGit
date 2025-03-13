@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://tdt5gdk3lgnu"]
+
+[ext_resource type="PackedScene" uid="uid://dldo4rj3q25nk" path="res://models/gecko_11.tscn" id="1_0upnf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2cuwr"]
+size = Vector3(1.42759, 1.02844, 4.21759)
+
+[node name="NewGeck" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0109291, 0.509944, -0.681203)
+shape = SubResource("BoxShape3D_2cuwr")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Gecko11" parent="Pivot" instance=ExtResource("1_0upnf")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

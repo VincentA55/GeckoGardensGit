@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dldo4rj3q25nk"]
+
+[ext_resource type="PackedScene" uid="uid://dq38hvfftcgds" path="res://models/Gecko1.glb" id="1_0ocff"]
+
+[node name="Gecko11" instance=ExtResource("1_0ocff")]
+transform = Transform3D(1, 0, 0, 0, 0.0879729, 0.996123, 0, -0.996123, 0.0879729, 0, -0.113119, -0.615782)
