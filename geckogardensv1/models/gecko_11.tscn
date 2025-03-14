@@ -1,6 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://dldo4rj3q25nk"]
+[gd_scene load_steps=5 format=3 uid="uid://dldo4rj3q25nk"]
 
 [ext_resource type="PackedScene" uid="uid://dq38hvfftcgds" path="res://models/Gecko1.glb" id="1_0ocff"]
 
+[sub_resource type="Gradient" id="Gradient_tnwfm"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kbai7"]
+gradient = SubResource("Gradient_tnwfm")
+fill = 1
+fill_from = Vector2(0.803419, 0.615385)
+fill_to = Vector2(0.961538, 0.311966)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ejl2"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.180073, 0.617271, 0.431759, 1)
+albedo_texture = SubResource("GradientTexture2D_kbai7")
+clearcoat_roughness = 1.0
+
 [node name="Gecko11" instance=ExtResource("1_0ocff")]
 transform = Transform3D(1, 0, 0, 0, 0.0879729, 0.996123, 0, -0.996123, 0.0879729, 0, -0.113119, -0.615782)
+
+[node name="Sphere" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_8ejl2")
