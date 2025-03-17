@@ -216,7 +216,6 @@ MaxRadius = 30.0
 [node name="SimpleVision3D" type="Node3D" parent="."]
 script = ExtResource("5_2hpht")
 height = 7
-isVisionAreaVisable = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
