@@ -16,6 +16,11 @@ var state : States = States.Neutral
 @export var walkSpeed : float = 7.0
 @export var runSpeed : float = 10.0
 
+func _ready() -> void:	
+	ChangeState(States.Neutral)
+	get_random_position()
+
+#Gives random target position everytime jump is pressed
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("jump"):
 		var random_position := Vector3.ZERO
@@ -24,6 +29,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
+	if state == States.Walking:
+		move_to_location(delta)
+
+
+func _on_navigation_finished() -> void:
+	velocity = Vector3.ZERO 
+	ChangeState(States.Neutral)
+
+#Moves geck to next path position while navigation is not finished
+func move_to_location(delta:float)->void:
 	if navigation_agent.is_navigation_finished():  
 		velocity = Vector3.ZERO  
 		return  
@@ -44,23 +59,26 @@ func _physics_process(delta: float) -> void:
 	velocity = direction * walkSpeed
 	move_and_slide() 
 
-
-func _on_navigation_finished() -> void:
-	velocity = Vector3.ZERO 
-
 #This is used the moment a state is changed to prevent the action happening every frame
 func ChangeState(newState : States) -> void:
 	state = newState
 	match state:
 		States.Neutral:
+			$WanderTimer.start()
+			
+			
 			return
 		States.Walking: 
 			pass
 
-#HEREHRERHE---------------------------------------CHECKNTOES
+
 func _on_wander_timer_timeout() -> void:
 	if state == States.Neutral:
-		var random_position := Vector3.ZERO
-		random_position.x = randf_range(-9,15.0)
-		random_position.z = randf_range(-9,15.0)
-		navigation_agent.set_target_position(random_position)
+		ChangeState(States.Walking)
+		get_random_position()
+
+func get_random_position()->void:
+	var random_position := Vector3.ZERO
+	random_position.x = randf_range(-9,15.0)
+	random_position.z = randf_range(-9,15.0)
+	navigation_agent.set_target_position(random_position)
