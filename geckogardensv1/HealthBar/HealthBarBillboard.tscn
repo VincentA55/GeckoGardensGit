@@ -31,10 +31,10 @@ func _update() -> void:
 	# Update health bar value
 	if character and \"hunger\" in character:
 		$SubViewport/Hungerbar.value = character.hunger
+		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
+		$SubViewport/CanMoveLabel.text = \"Move: \" + str(character.canMove)
 	
-	$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
-	$SubViewport/CanMoveLabel.text = \"Move: \" + str(character.canMove)
 "
 
 [sub_resource type="GDScript" id="GDScript_51572"]

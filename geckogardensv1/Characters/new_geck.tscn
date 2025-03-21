@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://tdt5gdk3lgnu"]
+[gd_scene load_steps=11 format=3 uid="uid://tdt5gdk3lgnu"]
 
 [ext_resource type="PackedScene" uid="uid://dldo4rj3q25nk" path="res://models/gecko_11.tscn" id="1_0upnf"]
 [ext_resource type="Script" path="res://Characters/NewGeck.gd" id="1_istnc"]
+[ext_resource type="PackedScene" uid="uid://yf31asvmvsgl" path="res://HealthBar/HealthBarBillboard.tscn" id="3_beqfe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2cuwr"]
 size = Vector3(1.42759, 1.02844, 4.21759)
@@ -19,6 +20,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, -0.113119, 0.734227)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Gecko11:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.48353, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ypnxv"]
@@ -38,14 +51,64 @@ tracks/0/keys = {
 "values": [Vector3(0, -0.113119, 0.734227), Vector3(0, -0.016464, 0.734227), Vector3(0, -0.113119, 0.734227)]
 }
 
+[sub_resource type="Animation" id="Animation_xmsw2"]
+resource_name = "spin"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Gecko11:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1.2, 1.6, 2),
+"transitions": PackedFloat32Array(0.0915054, 0.0915054, 0.0915054, 0.0915054, 0.0915054, 0.0915054),
+"update": 0,
+"values": [Vector3(-1.48353, 3.14159, 0), Vector3(-1.48353, 2.0944, 0), Vector3(-1.48353, 0, 0), Vector3(-1.48353, -1.06814, 0), Vector3(-1.48353, -2.0944, 0), Vector3(-1.48353, -3.14159, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bkedc"]
+resource_name = "sit"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Gecko11:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.366667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.113119, 0.734227), Vector3(0, -0.283108, 0.734227)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Gecko11:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.366667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.48353, 3.14159, 0), Vector3(-1.68424, 3.14159, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_my5t1"]
 _data = {
 "RESET": SubResource("Animation_xx32c"),
+"sit": SubResource("Animation_bkedc"),
+"spin": SubResource("Animation_xmsw2"),
 "wander": SubResource("Animation_ypnxv")
 }
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_ot8bk"]
+viewport_path = NodePath("SubViewport")
+
 [node name="NewGeck" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.62988)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.569336)
 collision_layer = 2
 script = ExtResource("1_istnc")
 
@@ -59,7 +122,7 @@ disabled = true
 transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, 0.0144598, 0, 0.511428)
 
 [node name="Gecko11" parent="Pivot" instance=ExtResource("1_0upnf")]
-transform = Transform3D(1, 3.47858e-05, -3.04426e-06, 4.95855e-10, 0.0871558, 0.996195, 3.49237e-05, -0.996195, 0.0871558, 0, -0.113119, 0.734227)
+transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, -0.113119, 0.734227)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
@@ -71,12 +134,18 @@ debug_use_custom = true
 debug_path_custom_color = Color(0.238052, 0.545284, 0.375596, 1)
 
 [node name="WanderTimer" type="Timer" parent="."]
+wait_time = 4.0
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_my5t1")
 }
+
+[node name="Billboard" parent="." node_paths=PackedStringArray("character") instance=ExtResource("3_beqfe")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.79636, 0)
+texture = SubResource("ViewportTexture_ot8bk")
+character = NodePath("..")
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
 [connection signal="timeout" from="WanderTimer" to="." method="_on_wander_timer_timeout"]
