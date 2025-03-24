@@ -19,7 +19,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, -0.113119, 0.734227)]
+"values": [Vector3(2.41519e-07, -0.113119, -0.86528)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -31,12 +31,36 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-1.48353, 0, 0)]
+"values": [Vector3(-1.48353, 1.42109e-14, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.0103471)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -3.14159, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_ypnxv"]
-resource_name = "wander"
-length = 0.3
+[sub_resource type="Animation" id="Animation_fihee"]
+resource_name = "walk"
+length = 0.2
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -45,15 +69,30 @@ tracks/0/path = NodePath("Pivot/Gecko11:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(2.98023e-08, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1.68179, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(0.329877, 3.249, 8.63169e-05),
 "update": 0,
-"values": [Vector3(0, -0.113119, 0.734227), Vector3(0, -0.016464, 0.734227), Vector3(0, -0.113119, 0.734227)]
+"values": [Vector3(2.41519e-07, -0.113119, -0.86528), Vector3(2.41519e-07, 0.231835, -0.86528), Vector3(2.41519e-07, -0.113119, -0.86528)]
 }
 
-[sub_resource type="Animation" id="Animation_xmsw2"]
+[sub_resource type="Animation" id="Animation_xxgvx"]
+resource_name = "sit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Gecko11:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.48353, 1.42109e-14, 0), Vector3(-1.76802, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_lbmea"]
 resource_name = "spin"
-length = 2.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -62,67 +101,37 @@ tracks/0/path = NodePath("Pivot/Gecko11:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.8, 1.2, 1.6, 2),
-"transitions": PackedFloat32Array(0.0915054, 0.0915054, 0.0915054, 0.0915054, 0.0915054, 0.0915054),
+"times": PackedFloat32Array(0, 0.2, 0.433333, 0.666667, 1),
+"transitions": PackedFloat32Array(1.03527, 1.03527, 1.03527, 1.03527, 1.03527),
 "update": 0,
-"values": [Vector3(-1.48353, 3.14159, 0), Vector3(-1.48353, 2.0944, 0), Vector3(-1.48353, 0, 0), Vector3(-1.48353, -1.06814, 0), Vector3(-1.48353, -2.0944, 0), Vector3(-1.48353, -3.14159, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_bkedc"]
-resource_name = "sit"
-length = 5.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Pivot/Gecko11:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.366667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, -0.113119, 0.734227), Vector3(0, -0.283108, 0.734227)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Pivot/Gecko11:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.366667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-1.48353, 3.14159, 0), Vector3(-1.68424, 3.14159, 0)]
+"values": [Vector3(-1.48353, 1.42109e-14, 0), Vector3(-1.48353, -1.5708, 0), Vector3(-1.48353, -3.14159, 0), Vector3(-1.48353, -4.71239, 0), Vector3(-1.48353, -6.28319, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_my5t1"]
 _data = {
 "RESET": SubResource("Animation_xx32c"),
-"sit": SubResource("Animation_bkedc"),
-"spin": SubResource("Animation_xmsw2"),
-"wander": SubResource("Animation_ypnxv")
+"sit": SubResource("Animation_xxgvx"),
+"spin": SubResource("Animation_lbmea"),
+"wander": SubResource("Animation_fihee")
 }
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ot8bk"]
 viewport_path = NodePath("SubViewport")
 
 [node name="NewGeck" type="CharacterBody3D"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.569336)
 collision_layer = 2
 script = ExtResource("1_istnc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 1.19248)
-visible = false
+transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 0.572955)
 shape = SubResource("BoxShape3D_2cuwr")
 disabled = true
 
 [node name="Pivot" type="Node3D" parent="."]
-transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, 0.0144598, 0, 0.511428)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, -0.0103471)
 
 [node name="Gecko11" parent="Pivot" instance=ExtResource("1_0upnf")]
-transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, -0.113119, 0.734227)
+transform = Transform3D(0.999999, -1.41568e-14, 1.23855e-15, 0, 0.0871554, 0.996195, -1.42108e-14, -0.996194, 0.0871554, 2.41519e-07, -0.113119, -0.86528)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5

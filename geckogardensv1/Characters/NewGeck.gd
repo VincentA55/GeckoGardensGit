@@ -14,9 +14,9 @@ enum States {
 var state : States = States.Neutral
 var stateString : String 
 # Gecko's action weights
-var Spin: int = 3
+var Spin: int = 4
 var Sit: int = 5
-var Wander: int = 3
+var Wander: int = 8
 
 @export var walkSpeed : float = 7.0
 @export var runSpeed : float = 10.0
@@ -76,10 +76,10 @@ func get_random_position()->void:
 	
 #This is used the moment a state is changed to prevent the action happening every frame
 func ChangeState(newState : States) -> void:
+	$AnimationPlayer.play("RESET")
 	state = newState
 	match state:
 		States.Neutral:
-			$AnimationPlayer.play("RESET")
 			$WanderTimer.start()
 			
 			
@@ -90,12 +90,14 @@ func ChangeState(newState : States) -> void:
 
 #This is when it makes the "decision" to do next
 func _on_wander_timer_timeout() -> void:
+	$AnimationPlayer.play("RESET")
 	if state == States.Neutral:
 		perform_wander_action()
 
 #Recieves the choice as a string and does it
 func perform_wander_action():
 	var action = choose_wander_action()
+	$AnimationPlayer.play("RESET")
 	print("Gecko chose: ", action)  # Debugging
 
 	if action == "spin":
@@ -108,7 +110,7 @@ func perform_wander_action():
 		ChangeState(States.Walking)
 		get_random_position()
 	else:
-		#$AnimationPlayer.play("idle")  
+		$AnimationPlayer.play("idle")  
 		pass
 		
 #using math and numbers to choose return an actions string

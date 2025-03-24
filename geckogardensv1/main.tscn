@@ -48,4 +48,4 @@ transform = Transform3D(1, 0, 0, 0, 0.91192, 0.410369, 0, -0.410369, 0.91192, 0,
 size = 18.5462
 
 [node name="NewGeck" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02067, 0.5, -1.4688)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.02067, 0.5, -1.4688)
