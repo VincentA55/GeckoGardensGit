@@ -18,6 +18,14 @@ var Spin: int = 4
 var Sit: int = 5
 var Wander: int = 8
 
+@export var hunger : int = 100
+var isHungry : bool = false
+var isdead : bool = false
+var isStarving : bool = false
+signal Starved
+var invalid_targets: Array = []  # List of targets that should be ignored to prevent every frame interactions
+
+
 @export var walkSpeed : float = 7.0
 @export var runSpeed : float = 10.0
 
@@ -37,10 +45,19 @@ func _physics_process(delta: float) -> void:
 	if state == States.Walking:
 		move_to_location(delta)
 		
-		
 	stateString = States.keys()[state]#for debugging and billboard
 	$Billboard._update()
 
+func _process(delta: float) -> void:
+	if not isdead:
+		if hunger > 50:
+			ChangeState(States.Neutral)
+		elif hunger <= 50:
+			ChangeState(States.Hungry)
+			
+		if hunger < 10 and not isStarving:
+			isStarving = true
+			$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
 
 func _on_navigation_finished() -> void:
 	velocity = Vector3.ZERO 
@@ -82,11 +99,13 @@ func ChangeState(newState : States) -> void:
 		States.Neutral:
 			$WanderTimer.start()
 			
-			
 			return
 		States.Walking: 
 			$AnimationPlayer.play("wander")
 			pass
+			
+		States.Hungry:
+			isHungry = true
 
 #This is when it makes the "decision" to do next
 func _on_wander_timer_timeout() -> void:
@@ -127,3 +146,24 @@ func choose_wander_action() -> String:
 		return "sit"  
 	else:
 		return "wander" 
+
+#The rate at which the hunger goes down
+func _on_hunger_timer_timeout() -> void:
+	if not isdead or state != States.Eating:
+		if hunger >= 0:
+			hunger -= 10
+			print("NewGeck:")
+			print(hunger)
+
+#So the geck doesnt die immediatly after hitting zero
+func _on_grace_timer_timeout() -> void:
+	if hunger <= 0:
+		die()
+	elif isStarving:
+		isStarving = false
+
+func die() -> void:
+	ChangeState(States.Dead)
+	$AnimationPlayer.play("die")
+	isdead = true
+	emit_signal("Starved")

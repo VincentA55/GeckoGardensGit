@@ -32,7 +32,6 @@ func _update() -> void:
 	if character and \"hunger\" in character:
 		$SubViewport/Hungerbar.value = character.hunger
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
-		$SubViewport/CanMoveLabel.text = \"Move: \" + str(character.canMove)
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
 "
@@ -123,19 +122,6 @@ vertical_alignment = 1
 offset_right = 596.0
 offset_bottom = 137.0
 text = "StateLabel
-"
-label_settings = SubResource("LabelSettings_iqh5g")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CanMoveLabel" type="Label" parent="SubViewport"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -709.0
-offset_bottom = 137.0
-grow_horizontal = 0
-text = "CanMoveLabel
 "
 label_settings = SubResource("LabelSettings_iqh5g")
 horizontal_alignment = 1
