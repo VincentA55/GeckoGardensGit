@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj1aofiab3pg4"]
+
+[sub_resource type="GDScript" id="GDScript_osbvm"]
+script/source = "extends Node
+
+var food_items: Array[Node3D] = []  # Stores all food objects
+
+# Add food to the list
+func add_food(food: Node3D) -> void:
+	food_items.append(food)
+	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
+
+# Remove food when eaten
+func remove_food(food: Node3D) -> void:
+	if food in food_items:
+		food_items.erase(food)
+		food.queue_free()
+		
+
+# Get closest food to a position
+func get_nearest_food(from_position: Vector3) -> Node3D:
+	if food_items.is_empty():
+		return null  # No food available
+	
+	var nearest_food = food_items[0]
+	var shortest_distance = from_position.distance_to(nearest_food.global_position)
+
+	for food in food_items:
+		var distance = from_position.distance_to(food.global_position)
+		if distance < shortest_distance:
+			nearest_food = food
+			shortest_distance = distance
+	
+	return nearest_food  # Return closest food object
+
+
+# Handle the signal when the food is eaten
+func _on_food_eaten(food: Node3D) -> void:
+	# Remove the food from the list
+	if food in food_items:
+		food_items.erase(food)
+		food.queue_free()  # Free the food object from the scene
+		update_food_list()
+
+# Update the label to reflect the current list of food
+func update_food_list() -> void:
+	var food_names : Array = []
+	for food in food_items:
+		if food != null:  # Make sure we don't try to access a null entry
+			food_names.append(food.food_name)  # Assuming each food has a 'food_name' property
+	
+	# Update the label's text with the current list of food
+	$\"../HUD/food_list_label\".text = \"Food available:\\n\" + String(\", \").join(food_names)
+"
+
+[node name="FoodManager" type="Node3D"]
+script = SubResource("GDScript_osbvm")

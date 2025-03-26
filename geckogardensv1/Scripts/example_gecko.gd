@@ -9,7 +9,7 @@ enum States {
 	Dead
 }
 
-@export var hunger : int = 100
+@export var hungerBar : int = 100
 var isHungry : bool = false
 var isdead : bool = false
 var isStarving : bool = false
@@ -36,12 +36,12 @@ func _process(delta: float) -> void:
 		if not is_on_floor():
 			velocity += get_gravity() * delta
 		
-		if hunger > 50:
+		if hungerBar > 50:
 			ChangeState(States.Neutral)
-		elif hunger <= 50:
+		elif hungerBar <= 50:
 			ChangeState(States.Hungry)
 			
-		if hunger < 10 and not isStarving:
+		if hungerBar < 10 and not isStarving:
 			isStarving = true
 			$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
 			
@@ -105,18 +105,18 @@ func _on_simple_vision_3d_get_sight(body: Node3D) -> void:
 	ChangeState(States.Pursuit)
 
 func _on_simple_vision_3d_lost_sight() -> void:
-	if not isdead and hunger > 0:
+	if not isdead and hungerBar > 0:
 		#ChangeState(States.Walking)
 		pass
 
 func _on_hunger_timer_timeout() -> void:
 	if not isdead or state != States.Eating:
-		if hunger >= 0:
-			hunger -= 10
-			print(hunger)
+		if hungerBar >= 0:
+			hungerBar -= 10
+			print(hungerBar)
 
 func _on_grace_timer_timeout() -> void:
-	if hunger <= 0:
+	if hungerBar <= 0:
 		die()
 	elif isStarving:
 		isStarving = false
@@ -133,7 +133,7 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 		if body.is_in_group("food") and body == target:
 			if body.has_method("get_fill_amount"):
 				ChangeState(States.Eating)
-				hunger += body.get_fill_amount() 
+				hungerBar += body.get_fill_amount() 
 				body.on_eaten()
 	
 	

@@ -16,10 +16,10 @@ func _ready() -> void:
 	$SubViewport/Hungerbar.character = character
 	
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
-	if character and \"hunger\" in character:
-		$SubViewport/Hungerbar.value = character.hunger
+	if character and \"hungerBar\" in character:
+		$SubViewport/Hungerbar.value = character.hungerBar
 	if character and \"health\" in character:
-		$SubViewport/Hungerbar.value = character.healt
+		$SubViewport/Hungerbar.value = character.health
 	
 	if character and \"isHungry\" in character:
 		$SubViewport/IsHungryBool.text = str(character.isHungry)
@@ -29,8 +29,8 @@ func _ready() -> void:
 
 func _update() -> void:
 	# Update health bar value
-	if character and \"hunger\" in character:
-		$SubViewport/Hungerbar.value = character.hunger
+	if character and \"hungerBar\" in character:
+		$SubViewport/Hungerbar.value = character.hungerBar
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)

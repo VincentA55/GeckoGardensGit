@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdai15w516wen"]
+
+[sub_resource type="GDScript" id="GDScript_8ish4"]
+script/source = "extends Control
+
+@onready var food_list_label: Label = $FoodListLabel  # Reference to the Label
+
+func _process(delta):
+	update_food_list()  # Update food list every frame
+
+func update_food_list():
+	var food_manager = $\"../FoodManager\"
+	var food_display_text = \"Food Available:\\n\"
+
+	for food in food_manager.food_items:
+			# When removing food, ensure it exists
+		if food == null:
+			FoodManager.remove_food(food)
+		food_display_text += food.foodName + \" - \" + str(food.typeString) + \"\\n\"
+		food_list_label.text = food_display_text
+"
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_8ish4")
+
+[node name="FoodListLabel" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Food Available:"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cmjpmn0etwsyn"]
+[gd_scene load_steps=12 format=3 uid="uid://cmjpmn0etwsyn"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_ijgey"]
 [ext_resource type="PackedScene" uid="uid://dn25sbfiwf5m7" path="res://testing_floor.tscn" id="1_r11pp"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://Things/food.tscn" id="5_yyr70"]
 [ext_resource type="Script" path="res://camera_gimbal.gd" id="6_efmgw"]
 [ext_resource type="PackedScene" uid="uid://tdt5gdk3lgnu" path="res://Characters/new_geck.tscn" id="7_t74j3"]
+[ext_resource type="PackedScene" uid="uid://dj1aofiab3pg4" path="res://Scripts/food_manager.tscn" id="8_00cgl"]
+[ext_resource type="PackedScene" uid="uid://cdai15w516wen" path="res://Scripts/hud.tscn" id="9_34ofc"]
 
 [sub_resource type="Curve3D" id="Curve3D_c5mew"]
 
@@ -49,3 +51,7 @@ size = 18.5462
 
 [node name="NewGeck" parent="." instance=ExtResource("7_t74j3")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.02067, 0.5, -1.4688)
+
+[node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
+
+[node name="HUD" parent="." instance=ExtResource("9_34ofc")]
