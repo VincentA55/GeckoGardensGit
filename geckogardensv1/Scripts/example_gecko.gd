@@ -71,7 +71,7 @@ func ChangeState(newState : States) -> void:
 			target = null
 		States.Hungry:
 			isHungry = true
-			$SimpleVision3D.LookUpGroup = "food"
+			#$SimpleVision3D.LookUpGroup = "food"
 			
 			
 		States.Pursuit:

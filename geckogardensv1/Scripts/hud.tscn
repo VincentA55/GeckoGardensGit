@@ -3,21 +3,20 @@
 [sub_resource type="GDScript" id="GDScript_8ish4"]
 script/source = "extends Control
 
-@onready var food_list_label: Label = $FoodListLabel  # Reference to the Label
+@onready var food_list_container: VBoxContainer = $FoodListLabel/ScrollContainer/VBoxContainer # The container for labels
 
-func _process(delta):
-	update_food_list()  # Update food list every frame
+# Function to add a food item to the UI
+func add_food_ui(food_name: String,type:String, food_id: int) -> void:
+	var food_label = Label.new()
+	food_label.name = str(food_id)  # Unique identifier
+	food_label.text = food_name + \": \" + type
+	food_list_container.add_child(food_label)
 
-func update_food_list():
-	var food_manager = $\"../FoodManager\"
-	var food_display_text = \"Food Available:\\n\"
-
-	for food in food_manager.food_items:
-			# When removing food, ensure it exists
-		if food == null:
-			FoodManager.remove_food(food)
-		food_display_text += food.foodName + \" - \" + str(food.typeString) + \"\\n\"
-		food_list_label.text = food_display_text
+# Function to remove a food item from the UI
+func remove_food_ui(food_id: int) -> void:
+	var food_label = food_list_container.get_node_or_null(str(food_id))
+	if food_label:
+		food_label.queue_free()  # Remove the label
 "
 
 [node name="HUD" type="Control"]
@@ -28,7 +27,19 @@ offset_bottom = 40.0
 script = SubResource("GDScript_8ish4")
 
 [node name="FoodListLabel" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
+layout_mode = 2
+offset_right = 117.0
 offset_bottom = 23.0
 text = "Food Available:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="FoodListLabel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 19.0
+offset_right = 119.0
+offset_bottom = 249.0
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FoodListLabel/ScrollContainer"]
+layout_mode = 2

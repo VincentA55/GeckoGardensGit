@@ -4,18 +4,27 @@
 script/source = "extends Node
 
 var food_items: Array[Node3D] = []  # Stores all food objects
+@onready var hud = $\"../HUD\"  # Finds the HUD in the scene
 
 # Add food to the list
 func add_food(food: Node3D) -> void:
 	food_items.append(food)
-	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
+	print(\"Adding food: \", food)
+	print(\"Calling HUD: \", hud)
 
-# Remove food when eaten
+	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
+	#	# Update HUD UI
+	if hud:
+		hud.add_food_ui(food.foodName,food.typeString, food.get_instance_id())
+
+
 func remove_food(food: Node3D) -> void:
 	if food in food_items:
 		food_items.erase(food)
-		food.queue_free()
-		
+		if is_instance_valid(food):
+			food.queue_free()
+	print(\"Food removed:\", food)
+
 
 # Get closest food to a position
 func get_nearest_food(from_position: Vector3) -> Node3D:
@@ -36,22 +45,15 @@ func get_nearest_food(from_position: Vector3) -> Node3D:
 
 # Handle the signal when the food is eaten
 func _on_food_eaten(food: Node3D) -> void:
+		print(\"Food eaten: \", food)
 	# Remove the food from the list
-	if food in food_items:
-		food_items.erase(food)
-		food.queue_free()  # Free the food object from the scene
-		update_food_list()
-
-# Update the label to reflect the current list of food
-func update_food_list() -> void:
-	var food_names : Array = []
-	for food in food_items:
-		if food != null:  # Make sure we don't try to access a null entry
-			food_names.append(food.food_name)  # Assuming each food has a 'food_name' property
-	
-	# Update the label's text with the current list of food
-	$\"../HUD/food_list_label\".text = \"Food available:\\n\" + String(\", \").join(food_names)
+		if food in food_items:
+			food_items.erase(food)
+		# Remove from HUD UI
+		if hud:
+			hud.remove_food_ui(food.get_instance_id())
+		food.queue_free()  # Free the food object
 "
 
-[node name="FoodManager" type="Node3D"]
+[node name="FoodManager" type="Node3D" groups=["food_manager"]]
 script = SubResource("GDScript_osbvm")

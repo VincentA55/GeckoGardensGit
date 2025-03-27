@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
+@onready var food_manager = get_tree().get_first_node_in_group("food_manager")
+
 
 enum States {
 	Neutral,
@@ -29,6 +31,7 @@ var isStarving : bool = false
 signal Starved
 var invalid_targets: Array = []  # List of targets that should be ignored to prevent every frame interactions
 
+var target : Node3D
 
 @export var walkSpeed : float = 7.0
 @export var runSpeed : float = 10.0
@@ -106,6 +109,13 @@ func ChangeState(newState : States) -> void:
 			
 		States.Hungry:
 			isHungry = true
+			find_food()
+		States.Pursuit:
+			if target:
+				navigation_agent.set_target_position(target.global_position)  # 🟢 Move to food
+				$AnimationPlayer.play("wander")  # Change to walk animation
+		States.Eating:
+			pass
 			
 		States.Dead:
 			$AnimationPlayer.play("die")
@@ -169,3 +179,38 @@ func _on_grace_timer_timeout() -> void:
 
 func die() -> void:
 	ChangeState(States.Dead)
+
+func _on_mouth_zone_entered(body: Node3D) -> void:
+	if body not in invalid_targets:# initial check so the body doesnt interact every frame
+		invalid_targets.append(body)  # Mark the food as already processed
+		if body.is_in_group("food") and body == target:
+			if body.has_method("get_fill_amount"):
+				ChangeState(States.Eating)
+				hungerBar += body.get_fill_amount()
+				food_manager.remove_food(body)  # 🔹 Tell FoodManager it's gone
+				body.on_eaten()  # 🔹 Trigger food's on_eaten signal
+				target = null  # Reset target
+
+func find_food() -> void:
+	if food_manager:#EHEHEHEEHEHEHRHEHREHEE-------------------------------
+		var nearest_food = get_nearest_food()
+		if nearest_food:
+			target = nearest_food
+			ChangeState(States.Pursuit)  # 🟢 Switch to pursuit mode and move toward food
+			print("Gecko is now pursuing food:", target)
+
+
+func get_nearest_food() -> Node3D:
+	var nearest_food = null
+	var nearest_distance = INF
+
+	for food in food_manager.food_items:
+		if food == null or not is_instance_valid(food):  # Skip null/invalid food
+			continue
+		
+		var distance = global_position.distance_to(food.global_position)
+		if distance < nearest_distance:
+			nearest_food = food
+			nearest_distance = distance
+
+	return nearest_food

@@ -23,6 +23,7 @@ FoodManager="*res://Scripts/food_manager.tscn"
 
 player=""
 food=""
+food_manager=""
 
 [input]
 
