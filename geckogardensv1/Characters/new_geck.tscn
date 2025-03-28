@@ -167,7 +167,7 @@ transform = Transform3D(0.999999, -1.41568e-14, 1.23856e-15, 0, 0.0871555, 0.996
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
-target_desired_distance = 0.5
+target_desired_distance = 2.0
 path_height_offset = 0.5
 avoidance_enabled = true
 debug_enabled = true
@@ -204,6 +204,7 @@ wait_time = 5.0
 one_shot = true
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
+[connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]
 [connection signal="timeout" from="WanderTimer" to="." method="_on_wander_timer_timeout"]
 [connection signal="timeout" from="HungerTimer" to="." method="_on_hunger_timer_timeout"]
 [connection signal="timeout" from="GraceTimer" to="." method="_on_grace_timer_timeout"]

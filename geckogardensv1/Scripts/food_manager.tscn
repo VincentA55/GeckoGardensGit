@@ -11,6 +11,7 @@ func add_food(food: Node3D) -> void:
 	food_items.append(food)
 	print(\"Adding food: \", food)
 	print(\"Calling HUD: \", hud)
+	print(\"✅ Food added! Current list:\", food_items) 
 
 	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
 	#	# Update HUD UI

@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var food_manager = get_tree().get_first_node_in_group("food_manager")
+@onready var food_manager = get_node("/root/Main/FoodManager")
 
 
 enum States {
@@ -31,7 +31,7 @@ var isStarving : bool = false
 signal Starved
 var invalid_targets: Array = []  # List of targets that should be ignored to prevent every frame interactions
 
-var target : Node3D
+var target : Node3D = null
 
 @export var walkSpeed : float = 7.0
 @export var runSpeed : float = 10.0
@@ -50,6 +50,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	if state == States.Walking:
+		move_to_location(delta)
+	if state == States.Pursuit and target:
 		move_to_location(delta)
 		
 	stateString = States.keys()[state]#for debugging and billboard
@@ -112,8 +114,8 @@ func ChangeState(newState : States) -> void:
 			find_food()
 		States.Pursuit:
 			if target:
-				navigation_agent.set_target_position(target.global_position)  # 🟢 Move to food
 				$AnimationPlayer.play("wander")  # Change to walk animation
+				navigation_agent.set_target_position(target.global_position)  # move to target
 		States.Eating:
 			pass
 			
@@ -167,8 +169,8 @@ func _on_hunger_timer_timeout() -> void:
 	if not isdead or state != States.Eating:
 		if hungerBar >= 0:
 			hungerBar -= hungerGreed
-			print("NewGeck:")
-			print(hungerBar)
+			#print("NewGeck:")
+			#print(hungerBar)
 
 #So the geck doesnt die immediatly after hitting zero
 func _on_grace_timer_timeout() -> void:
@@ -185,18 +187,18 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 		invalid_targets.append(body)  # Mark the food as already processed
 		if body.is_in_group("food") and body == target:
 			if body.has_method("get_fill_amount"):
+				target = null 
 				ChangeState(States.Eating)
 				hungerBar += body.get_fill_amount()
-				food_manager.remove_food(body)  # 🔹 Tell FoodManager it's gone
-				body.on_eaten()  # 🔹 Trigger food's on_eaten signal
-				target = null  # Reset target
+				food_manager.remove_food(body)  #Tell FoodManager it's gone
+				body.on_eaten() 
 
 func find_food() -> void:
-	if food_manager:#EHEHEHEEHEHEHRHEHREHEE-------------------------------
-		var nearest_food = get_nearest_food()
-		if nearest_food:
+	if food_manager and state != States.Pursuit:
+		var nearest_food = food_manager.get_nearest_food(global_position)
+		if nearest_food and target != null:
 			target = nearest_food
-			ChangeState(States.Pursuit)  # 🟢 Switch to pursuit mode and move toward food
+			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
 			print("Gecko is now pursuing food:", target)
 
 
