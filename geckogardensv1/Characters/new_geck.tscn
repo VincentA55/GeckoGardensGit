@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://tdt5gdk3lgnu"]
+[gd_scene load_steps=14 format=3 uid="uid://tdt5gdk3lgnu"]
 
 [ext_resource type="PackedScene" uid="uid://dldo4rj3q25nk" path="res://models/gecko_11.tscn" id="1_0upnf"]
 [ext_resource type="Script" path="res://Characters/NewGeck.gd" id="1_istnc"]
@@ -137,10 +137,27 @@ tracks/0/keys = {
 "values": [Vector3(2.41519e-07, -0.113119, -0.86528), Vector3(2.41519e-07, 0.231835, -0.86528), Vector3(2.41519e-07, -0.113119, -0.86528)]
 }
 
+[sub_resource type="Animation" id="Animation_qgie8"]
+resource_name = "eat"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Gecko11:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0264211, 0.115292, 0.143154, 0.237577),
+"transitions": PackedFloat32Array(4.59479, 4.59479, 0.217638, 4.59479, 4.59479),
+"update": 0,
+"values": [Vector3(-1.48353, 1.42109e-14, 0), Vector3(-1.08949, -2.0579e-06, 2.10247e-06), Vector3(-1.48353, 1.42109e-14, 0), Vector3(-1.08949, -2.0579e-06, 2.10247e-06), Vector3(-1.48353, 1.42109e-14, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_my5t1"]
 _data = {
 "RESET": SubResource("Animation_xx32c"),
 "die": SubResource("Animation_ob644"),
+"eat": SubResource("Animation_qgie8"),
 "sit": SubResource("Animation_xxgvx"),
 "spin": SubResource("Animation_lbmea"),
 "wander": SubResource("Animation_fihee")
@@ -152,7 +169,7 @@ viewport_path = NodePath("SubViewport")
 [node name="NewGeck" type="CharacterBody3D"]
 collision_layer = 3
 script = ExtResource("1_istnc")
-hungerBar = 100
+hungerBar = 200
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 0.572955)

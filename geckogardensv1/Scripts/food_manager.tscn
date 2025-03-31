@@ -24,7 +24,7 @@ func remove_food(food: Node3D) -> void:
 		food_items.erase(food)
 		if is_instance_valid(food):
 			food.queue_free()
-	print(\"Food removed:\", food)
+	print(\"remove_food:\", food)
 
 
 # Get closest food to a position
@@ -46,7 +46,7 @@ func get_nearest_food(from_position: Vector3) -> Node3D:
 
 # Handle the signal when the food is eaten
 func _on_food_eaten(food: Node3D) -> void:
-		print(\"Food eaten: \", food)
+		print(\"_on_food_eaten: \", food)
 	# Remove the food from the list
 		if food in food_items:
 			food_items.erase(food)

@@ -21,7 +21,7 @@ var Sit: int = 5
 var Wander: int = 8
 
 #The size of the hungerbar, zero is empty
-@export var hungerBar : int = 1000
+@export var hungerBar : int 
 #How much it decreases by
 @export var hungerGreed : int = 10
 
@@ -117,8 +117,13 @@ func ChangeState(newState : States) -> void:
 				$AnimationPlayer.play("wander")  # Change to walk animation
 				navigation_agent.set_target_position(target.global_position)  # move to target
 		States.Eating:
-			pass
-			
+			$AnimationPlayer.play("eat")
+			await $AnimationPlayer.animation_finished
+			if hungerBar <= 50:
+				ChangeState(States.Hungry)
+			else:
+				ChangeState(States.Neutral)
+
 		States.Dead:
 			$AnimationPlayer.play("die")
 			isdead = true
@@ -190,13 +195,15 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 				target = null 
 				ChangeState(States.Eating)
 				hungerBar += body.get_fill_amount()
-				food_manager.remove_food(body)  #Tell FoodManager it's gone
+				#food_manager._on_food_eaten(body)  #Tell FoodManager it's gone
 				body.on_eaten() 
+
 
 func find_food() -> void:
 	if food_manager and state != States.Pursuit:
 		var nearest_food = food_manager.get_nearest_food(global_position)
-		if nearest_food and target != null:
+		if nearest_food :
+			#and target != null this stops it?
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
 			print("Gecko is now pursuing food:", target)

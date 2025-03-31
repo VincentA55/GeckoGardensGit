@@ -4,6 +4,7 @@ signal eaten
 
 @export var fill_amount: int = 40
 @export var food_scene: PackedScene  
+@onready var food_manager = get_node("/root/Main/FoodManager")
 
 enum Types{
 	Sweet,
@@ -27,6 +28,8 @@ func get_fill_amount() -> int:
 
 
 func on_eaten()-> void:
-	#$AnimationPlayer.play("eaten")
+	$AnimationPlayer.play("eaten")
+	await $AnimationPlayer.animation_finished
 	eaten.emit(fill_amount)
+	food_manager._on_food_eaten(self)
 	
