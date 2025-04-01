@@ -49,10 +49,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
-	if state == States.Walking:
+	if state == States.Walking or state == States.Pursuit:
+		print("Moving towards:", navigation_agent.get_target_position())
 		move_to_location(delta)
-	if state == States.Pursuit and target:
-		move_to_location(delta)
+	if state == States.Pursuit and (target == null or not is_instance_valid(target)):
+		print("Lost food target, finding new food...")
+		find_food()
 		
 	stateString = States.keys()[state]#for debugging and billboard
 	$Billboard._update()
@@ -73,6 +75,7 @@ func _on_navigation_finished() -> void:
 #Moves geck to next path position while navigation is not finished
 func move_to_location(delta:float)->void:
 	if navigation_agent.is_navigation_finished():  
+		print("nav_finished")
 		velocity = Vector3.ZERO  
 		return  
 	var destination = navigation_agent.get_next_path_position()
@@ -113,9 +116,8 @@ func ChangeState(newState : States) -> void:
 			isHungry = true
 			find_food()
 		States.Pursuit:
-			if target:
-				$AnimationPlayer.play("wander")  # Change to walk animation
-				navigation_agent.set_target_position(target.global_position)  # move to target
+			$AnimationPlayer.play("wander")  # Change to walk animation
+			navigation_agent.set_target_position(target.global_position)  # move to target
 		States.Eating:
 			$AnimationPlayer.play("eat")
 			await $AnimationPlayer.animation_finished
@@ -202,7 +204,7 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 func find_food() -> void:
 	if food_manager and state != States.Pursuit:
 		var nearest_food = food_manager.get_nearest_food(global_position)
-		if nearest_food :
+		if nearest_food:
 			#and target != null this stops it?
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food

@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cmjpmn0etwsyn"]
+[gd_scene load_steps=11 format=3 uid="uid://cmjpmn0etwsyn"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_ijgey"]
 [ext_resource type="PackedScene" uid="uid://dn25sbfiwf5m7" path="res://testing_floor.tscn" id="1_r11pp"]
 [ext_resource type="PackedScene" uid="uid://fm5x3cea40hc" path="res://Characters/gecko.tscn" id="2_odeh8"]
-[ext_resource type="PackedScene" uid="uid://clid1430bou25" path="res://Characters/ExampleGecko.tscn" id="5_fsc7h"]
 [ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://Things/food.tscn" id="5_yyr70"]
 [ext_resource type="Script" path="res://camera_gimbal.gd" id="6_efmgw"]
 [ext_resource type="PackedScene" uid="uid://tdt5gdk3lgnu" path="res://Characters/new_geck.tscn" id="7_t74j3"]
@@ -21,9 +20,6 @@ script = ExtResource("1_ijgey")
 geck_scene = ExtResource("2_odeh8")
 food_scene = ExtResource("5_yyr70")
 
-[node name="Gecko" parent="." instance=ExtResource("2_odeh8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.79133, 2.08756, -6.35433)
-
 [node name="SpawnPath" type="Path3D" parent="."]
 curve = SubResource("Curve3D_c5mew")
 
@@ -33,9 +29,6 @@ curve = SubResource("Curve3D_c5mew")
 navigation_mesh = SubResource("NavigationMesh_7b4ai")
 
 [node name="floor" parent="NavigationRegion3D" instance=ExtResource("1_r11pp")]
-
-[node name="Gecko2" parent="." instance=ExtResource("5_fsc7h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27465, 1.41147, -2.92543)
 
 [node name="CameraGimbal" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.39065, 0)
