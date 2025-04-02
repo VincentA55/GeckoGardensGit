@@ -49,6 +49,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
+	print("State:", stateString)
 	if state == States.Walking or state == States.Pursuit:
 		print("Moving towards:", navigation_agent.get_target_position())
 		move_to_location(delta)
@@ -61,7 +62,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	if not isdead:
-		if hungerBar <= 50:
+		if hungerBar <= 50 and not isHungry:
 			ChangeState(States.Hungry)
 			
 		if hungerBar < 10 and not isStarving:
@@ -93,6 +94,7 @@ func move_to_location(delta:float)->void:
 		rotation.y = lerp_angle(rotation.y, flat_rotation.y, delta * 10.0)
 	
 	velocity = direction * walkSpeed
+	print("MovenSlide")
 	move_and_slide() 
 
 func get_random_position()->void:
@@ -124,6 +126,7 @@ func ChangeState(newState : States) -> void:
 			if hungerBar <= 50:
 				ChangeState(States.Hungry)
 			else:
+				isHungry = false
 				ChangeState(States.Neutral)
 
 		States.Dead:
@@ -197,15 +200,14 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 				target = null 
 				ChangeState(States.Eating)
 				hungerBar += body.get_fill_amount()
-				#food_manager._on_food_eaten(body)  #Tell FoodManager it's gone
 				body.on_eaten() 
 
 
 func find_food() -> void:
 	if food_manager and state != States.Pursuit:
 		var nearest_food = food_manager.get_nearest_food(global_position)
-		if nearest_food:
-			#and target != null this stops it?
+		if nearest_food and target == null:
+			# this stops it?
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
 			print("Gecko is now pursuing food:", target)
