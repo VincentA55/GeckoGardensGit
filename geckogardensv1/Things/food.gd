@@ -17,10 +17,16 @@ var type : Types
 var typeString : String 
 var foodName : String = "TestFood"
 
+
+
+
 func _ready():
 	type = Types.values()[randi() % Types.size()]  # Pick a random type, for testing
 	typeString = Types.keys()[type]#for debugging 
 
+func _process(delta: float) -> void:
+	if global_position.y < -10: 
+		food_manager.remove_food(self)
 
 
 func get_fill_amount() -> int:

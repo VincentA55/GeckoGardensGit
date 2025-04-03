@@ -32,6 +32,8 @@ signal Starved
 var invalid_targets: Array = []  # List of targets that should be ignored to prevent every frame interactions
 
 var target : Node3D = null
+var targetPosition : Vector3 = Vector3.ZERO
+var lastTargetPosition : Vector3 = Vector3.ZERO
 
 @export var walkSpeed : float = 7.0
 @export var runSpeed : float = 10.0
@@ -49,7 +51,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
-	print("State:", stateString)
+	
 	if state == States.Walking or state == States.Pursuit:
 		print("Moving towards:", navigation_agent.get_target_position())
 		move_to_location(delta)
@@ -82,19 +84,36 @@ func move_to_location(delta:float)->void:
 	var destination = navigation_agent.get_next_path_position()
 	var local_destination = destination - global_position
 	var direction = local_destination.normalized()
-	
-	# 🔄 Rotate only on the Y-axis (prevent flipping)
+	#
+	# 🔄 Rotate only on the Y-axis (prevent flipping)--
 	if direction.length() > 0.01:
 		var target_basis = Basis().looking_at(direction, Vector3.UP)  
 		var target_rotation = target_basis.get_euler()  
 
-		# Lock rotation to Y-axis only (ignore X and Z tilting)
+		# Lock rotation to Y-axis only (ignore X and Z tilting)--
 		var flat_rotation = Vector3(0, target_rotation.y, 0)  
 
 		rotation.y = lerp_angle(rotation.y, flat_rotation.y, delta * 10.0)
 	
 	velocity = direction * walkSpeed
-	print("MovenSlide")
+	
+	
+	if lastTargetPosition != targetPosition:
+		navigation_agent.set_target_position(targetPosition)
+		lastTargetPosition = targetPosition
+		
+
+	#---------------------------------------------------------------------ExampleGecko code
+	var nextPathPosition = navigation_agent.get_next_path_position()
+	var currentTPosition = global_position
+	var newVelocity = (nextPathPosition - currentTPosition).normalized() * walkSpeed
+	
+	if  navigation_agent.avoidance_enabled:
+		set_velocity(newVelocity.move_toward(newVelocity, 0.25))
+	else:
+		velocity = newVelocity.move_toward(newVelocity, 0.25)
+#---------------------------------------------------------------------
+
 	move_and_slide() 
 
 func get_random_position()->void:
@@ -117,6 +136,8 @@ func ChangeState(newState : States) -> void:
 		States.Hungry:
 			isHungry = true
 			find_food()
+			if target:
+				ChangeState(States.Pursuit)
 		States.Pursuit:
 			$AnimationPlayer.play("wander")  # Change to walk animation
 			navigation_agent.set_target_position(target.global_position)  # move to target
@@ -133,6 +154,7 @@ func ChangeState(newState : States) -> void:
 			$AnimationPlayer.play("die")
 			isdead = true
 			emit_signal("Starved")
+	print("State:", stateString)
 
 #This is when it makes the "decision" to do next
 func _on_wander_timer_timeout() -> void:
@@ -179,9 +201,9 @@ func _on_hunger_timer_timeout() -> void:
 	if not isdead or state != States.Eating:
 		if hungerBar >= 0:
 			hungerBar -= hungerGreed
-			#print("NewGeck:")
-			#print(hungerBar)
-
+	if target == null:
+		find_food()
+		
 #So the geck doesnt die immediatly after hitting zero
 func _on_grace_timer_timeout() -> void:
 	if hungerBar <= 0:
@@ -206,7 +228,7 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 func find_food() -> void:
 	if food_manager and state != States.Pursuit:
 		var nearest_food = food_manager.get_nearest_food(global_position)
-		if nearest_food and target == null:
+		if nearest_food and nearest_food != target:
 			# this stops it?
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
