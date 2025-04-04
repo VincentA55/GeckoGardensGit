@@ -51,7 +51,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
-	
 	if state == States.Walking or state == States.Pursuit:
 		print("Moving towards:", navigation_agent.get_target_position())
 		move_to_location(delta)
@@ -66,10 +65,6 @@ func _process(delta: float) -> void:
 	if not isdead:
 		if hungerBar <= 50 and not isHungry:
 			ChangeState(States.Hungry)
-			
-		if hungerBar < 10 and not isStarving:
-			isStarving = true
-			$GraceTimer.start()#So the Gecko doesnt die immediatly when hunger hits zero
 
 func _on_navigation_finished() -> void:
 	velocity = Vector3.ZERO 
@@ -96,13 +91,11 @@ func move_to_location(delta:float)->void:
 		rotation.y = lerp_angle(rotation.y, flat_rotation.y, delta * 10.0)
 	
 	velocity = direction * walkSpeed
-	
-	
+
 	if lastTargetPosition != targetPosition:
 		navigation_agent.set_target_position(targetPosition)
 		lastTargetPosition = targetPosition
 		
-
 	#---------------------------------------------------------------------ExampleGecko code
 	var nextPathPosition = navigation_agent.get_next_path_position()
 	var currentTPosition = global_position
@@ -113,7 +106,6 @@ func move_to_location(delta:float)->void:
 	else:
 		velocity = newVelocity.move_toward(newVelocity, 0.25)
 #---------------------------------------------------------------------
-
 	move_and_slide() 
 
 func get_random_position()->void:
@@ -149,7 +141,6 @@ func ChangeState(newState : States) -> void:
 			else:
 				isHungry = false
 				ChangeState(States.Neutral)
-
 		States.Dead:
 			$AnimationPlayer.play("die")
 			isdead = true
@@ -198,18 +189,14 @@ func choose_wander_action() -> String:
 
 #The rate at which the hunger goes down
 func _on_hunger_timer_timeout() -> void:
-	if not isdead or state != States.Eating:
-		if hungerBar >= 0:
+	if not isdead and state != States.Eating:
+		if hungerBar >= -40:
 			hungerBar -= hungerGreed
-	if target == null:
-		find_food()
-		
-#So the geck doesnt die immediatly after hitting zero
-func _on_grace_timer_timeout() -> void:
-	if hungerBar <= 0:
-		die()
-	elif isStarving:
-		isStarving = false
+		if isHungry and target == null:
+			find_food()
+		if hungerBar <= -50:
+			die()
+
 
 func die() -> void:
 	ChangeState(States.Dead)

@@ -45,6 +45,18 @@ size = 18.5462
 [node name="NewGeck" parent="." instance=ExtResource("7_t74j3")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.02067, 0.5, -1.4688)
 
+[node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -11.6895, 0.5, -6.06314)
+
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
 [node name="HUD" parent="." instance=ExtResource("9_34ofc")]
+
+[node name="foodSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.03701, 4.34705, 10.9502)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
