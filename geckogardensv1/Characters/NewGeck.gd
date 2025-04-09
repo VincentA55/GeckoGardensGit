@@ -68,6 +68,9 @@ func _process(delta: float) -> void:
 
 func _on_navigation_finished() -> void:
 	velocity = Vector3.ZERO 
+	if state == States.Pursuit:
+			if target and global_position.distance_to(target.global_position) < 2:
+				_on_mouth_zone_entered(target)  # force interaction when close
 	ChangeState(States.Neutral)
 
 #Moves geck to next path position while navigation is not finished
@@ -97,14 +100,14 @@ func move_to_location(delta:float)->void:
 		lastTargetPosition = targetPosition
 		
 	#---------------------------------------------------------------------ExampleGecko code
-	var nextPathPosition = navigation_agent.get_next_path_position()
-	var currentTPosition = global_position
-	var newVelocity = (nextPathPosition - currentTPosition).normalized() * walkSpeed
-	
-	if  navigation_agent.avoidance_enabled:
-		set_velocity(newVelocity.move_toward(newVelocity, 0.25))
-	else:
-		velocity = newVelocity.move_toward(newVelocity, 0.25)
+	#var nextPathPosition = navigation_agent.get_next_path_position()
+	#var currentTPosition = global_position
+	#var newVelocity = (nextPathPosition - currentTPosition).normalized() * walkSpeed
+	#
+	#if  navigation_agent.avoidance_enabled:
+		#set_velocity(newVelocity.move_toward(newVelocity, 0.25))
+	#else:
+		#velocity = newVelocity.move_toward(newVelocity, 0.25)
 #---------------------------------------------------------------------
 	move_and_slide() 
 

@@ -184,7 +184,7 @@ transform = Transform3D(0.999999, -1.41568e-14, 1.23856e-15, 0, 0.0871555, 0.996
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
-target_desired_distance = 2.0
+target_desired_distance = 0.5
 path_height_offset = 0.5
 avoidance_enabled = true
 height = 5.0
