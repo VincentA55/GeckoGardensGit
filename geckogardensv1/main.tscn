@@ -50,7 +50,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.0206
 [node name="HUD" parent="." instance=ExtResource("9_34ofc")]
 
 [node name="foodSpawner" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.03701, 4.34705, 10.9502)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.6184, 5.49365, 4.97629)
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0

@@ -35,8 +35,8 @@ var target : Node3D = null
 var targetPosition : Vector3 = Vector3.ZERO
 var lastTargetPosition : Vector3 = Vector3.ZERO
 
-@export var walkSpeed : float = 7.0
-@export var runSpeed : float = 10.0
+@export var walkSpeed : float = 9.0
+@export var runSpeed : float = 12.0
 
 func _ready() -> void:	
 	ChangeState(States.Neutral)
@@ -54,6 +54,7 @@ func _physics_process(delta: float) -> void:
 	if state == States.Walking or state == States.Pursuit:
 		print("Moving towards:", navigation_agent.get_target_position())
 		move_to_location(delta)
+
 	if state == States.Pursuit and (target == null or not is_instance_valid(target)):
 		print("Lost food target, finding new food...")
 		find_food()
@@ -69,12 +70,15 @@ func _process(delta: float) -> void:
 func _on_navigation_finished() -> void:
 	velocity = Vector3.ZERO 
 	if state == States.Pursuit:
-			if target and global_position.distance_to(target.global_position) < 2:
+			if target and global_position.distance_to(target.global_position) < 2 and target.is_in_group("food"):
 				_on_mouth_zone_entered(target)  # force interaction when close
 	ChangeState(States.Neutral)
 
 #Moves geck to next path position while navigation is not finished
 func move_to_location(delta:float)->void:
+	if target and lastTargetPosition != target.global_position:
+		navigation_agent.set_target_position(target.global_position)
+		lastTargetPosition = target.global_position
 	if navigation_agent.is_navigation_finished():  
 		print("nav_finished")
 		velocity = Vector3.ZERO  
@@ -82,7 +86,7 @@ func move_to_location(delta:float)->void:
 	var destination = navigation_agent.get_next_path_position()
 	var local_destination = destination - global_position
 	var direction = local_destination.normalized()
-	#
+	
 	# 🔄 Rotate only on the Y-axis (prevent flipping)--
 	if direction.length() > 0.01:
 		var target_basis = Basis().looking_at(direction, Vector3.UP)  
@@ -94,22 +98,8 @@ func move_to_location(delta:float)->void:
 		rotation.y = lerp_angle(rotation.y, flat_rotation.y, delta * 10.0)
 	
 	velocity = direction * walkSpeed
-
-	if lastTargetPosition != targetPosition:
-		navigation_agent.set_target_position(targetPosition)
-		lastTargetPosition = targetPosition
-		
-	#---------------------------------------------------------------------ExampleGecko code
-	#var nextPathPosition = navigation_agent.get_next_path_position()
-	#var currentTPosition = global_position
-	#var newVelocity = (nextPathPosition - currentTPosition).normalized() * walkSpeed
-	#
-	#if  navigation_agent.avoidance_enabled:
-		#set_velocity(newVelocity.move_toward(newVelocity, 0.25))
-	#else:
-		#velocity = newVelocity.move_toward(newVelocity, 0.25)
-#---------------------------------------------------------------------
 	move_and_slide() 
+
 
 func get_random_position()->void:
 	var random_position := Vector3.ZERO
@@ -123,6 +113,7 @@ func ChangeState(newState : States) -> void:
 	state = newState
 	match state:
 		States.Neutral:
+			target = null
 			$WanderTimer.start()
 		
 		States.Walking: 
@@ -135,6 +126,7 @@ func ChangeState(newState : States) -> void:
 				ChangeState(States.Pursuit)
 		States.Pursuit:
 			$AnimationPlayer.play("wander")  # Change to walk animation
+			lastTargetPosition = target.global_position
 			navigation_agent.set_target_position(target.global_position)  # move to target
 		States.Eating:
 			$AnimationPlayer.play("eat")
@@ -213,6 +205,7 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 				ChangeState(States.Eating)
 				hungerBar += body.get_fill_amount()
 				body.on_eaten() 
+		invalid_targets.erase(body)
 
 
 func find_food() -> void:
