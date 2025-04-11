@@ -20,6 +20,7 @@ func add_food(food: Node3D) -> void:
 
 func remove_food(food: Node3D) -> void:
 	if food in food_items:
+		hud.remove_food_ui(food.get_instance_id())
 		food_items.erase(food)
 		if is_instance_valid(food):
 			food.queue_free()

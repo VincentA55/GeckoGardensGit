@@ -39,6 +39,7 @@ var lastTargetPosition : Vector3 = Vector3.ZERO
 @export var runSpeed : float = 12.0
 
 func _ready() -> void:	
+	hungerGreed = randi_range(5, 15)
 	ChangeState(States.Neutral)
 	get_random_position()
 
@@ -70,13 +71,13 @@ func _process(delta: float) -> void:
 func _on_navigation_finished() -> void:
 	velocity = Vector3.ZERO 
 	if state == States.Pursuit:
-			if target and global_position.distance_to(target.global_position) < 2 and target.is_in_group("food"):
+			if target != null and global_position.distance_to(target.global_position) < 2 and target.is_in_group("food"):
 				_on_mouth_zone_entered(target)  # force interaction when close
 	ChangeState(States.Neutral)
 
 #Moves geck to next path position while navigation is not finished
 func move_to_location(delta:float)->void:
-	if target and lastTargetPosition != target.global_position:
+	if target != null and lastTargetPosition != target.global_position:
 		navigation_agent.set_target_position(target.global_position)
 		lastTargetPosition = target.global_position
 	if navigation_agent.is_navigation_finished():  
