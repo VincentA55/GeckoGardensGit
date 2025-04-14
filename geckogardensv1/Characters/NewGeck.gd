@@ -52,16 +52,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
-	if state == States.Walking or state == States.Pursuit:
-		print("Moving towards:", navigation_agent.get_target_position())
-		move_to_location(delta)
+	if not isdead:
+		if state == States.Walking or state == States.Pursuit:
+			print("Moving towards:", navigation_agent.get_target_position())
+			move_to_location(delta)
 
-	if state == States.Pursuit and (target == null or not is_instance_valid(target)):
-		print("Lost food target, finding new food...")
-		find_food()
-		
-	stateString = States.keys()[state]#for debugging and billboard
-	$Billboard._update()
+		if state == States.Pursuit and (target == null or not is_instance_valid(target)):
+			print("Lost food target, finding new food...")
+			velocity = Vector3.ZERO
+			move_and_slide()  # Apply the stop immediately
+			navigation_agent.set_target_position(global_position)  # Cancel navigation
+			find_food()
+			
+		stateString = States.keys()[state]#for debugging and billboard
+		$Billboard._update()
 
 func _process(delta: float) -> void:
 	if not isdead:
@@ -138,8 +142,9 @@ func ChangeState(newState : States) -> void:
 				isHungry = false
 				ChangeState(States.Neutral)
 		States.Dead:
-			$AnimationPlayer.play("die")
 			isdead = true
+			print("dead")
+			$AnimationPlayer.play("die")
 			emit_signal("Starved")
 	print("State:", stateString)
 
@@ -186,12 +191,12 @@ func choose_wander_action() -> String:
 #The rate at which the hunger goes down
 func _on_hunger_timer_timeout() -> void:
 	if not isdead and state != States.Eating:
+		if hungerBar <= -40:
+			die()
 		if hungerBar >= -40:
 			hungerBar -= hungerGreed
 		if isHungry and target == null:
 			find_food()
-		if hungerBar <= -50:
-			die()
 
 
 func die() -> void:

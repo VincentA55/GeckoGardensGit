@@ -135,7 +135,3 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 				ChangeState(States.Eating)
 				hungerBar += body.get_fill_amount() 
 				body.on_eaten()
-	
-	
-	
-#------------------------------------WORKINGON EHEHERERERE---------------------
