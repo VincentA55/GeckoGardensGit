@@ -114,38 +114,39 @@ func get_random_position()->void:
 	
 #This is used the moment a state is changed to prevent the action happening every frame
 func ChangeState(newState : States) -> void:
-	$AnimationPlayer.play("RESET")
-	state = newState
-	match state:
-		States.Neutral:
-			target = null
-			$WanderTimer.start()
-		
-		States.Walking: 
-			$AnimationPlayer.play("wander")
+	if not isdead:
+		$AnimationPlayer.play("RESET")
+		state = newState
+		match state:
+			States.Neutral:
+				target = null
+				$WanderTimer.start()
 			
-		States.Hungry:
-			isHungry = true
-			find_food()
-			if target:
-				ChangeState(States.Pursuit)
-		States.Pursuit:
-			$AnimationPlayer.play("wander")  # Change to walk animation
-			lastTargetPosition = target.global_position
-			navigation_agent.set_target_position(target.global_position)  # move to target
-		States.Eating:
-			$AnimationPlayer.play("eat")
-			await $AnimationPlayer.animation_finished
-			if hungerBar <= 50:
-				ChangeState(States.Hungry)
-			else:
-				isHungry = false
-				ChangeState(States.Neutral)
-		States.Dead:
-			isdead = true
-			print("dead")
-			$AnimationPlayer.play("die")
-			emit_signal("Starved")
+			States.Walking: 
+				$AnimationPlayer.play("wander")
+				
+			States.Hungry:
+				isHungry = true
+				find_food()
+				if target:
+					ChangeState(States.Pursuit)
+			States.Pursuit:
+				$AnimationPlayer.play("wander")  # Change to walk animation
+				lastTargetPosition = target.global_position
+				navigation_agent.set_target_position(target.global_position)  # move to target
+			States.Eating:
+				$AnimationPlayer.play("eat")
+				await $AnimationPlayer.animation_finished
+				if hungerBar <= 50:
+					ChangeState(States.Hungry)
+				else:
+					isHungry = false
+					ChangeState(States.Neutral)
+			States.Dead:
+				isdead = true
+				print("dead")
+				$AnimationPlayer.play("die")
+				emit_signal("Starved")
 	print("State:", stateString)
 
 #This is when it makes the "decision" to do next
