@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://c5y11dpeantfq"]
+
+[ext_resource type="PackedScene" uid="uid://bo7qvmolccecs" path="res://Things/Table.glb" id="1_nh8by"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cgw1g"]
+sky_top_color = Color(0.21, 0.4725, 0.84, 1)
+sky_horizon_color = Color(0.8352, 0.84854, 0.87, 1)
+sky_curve = 0.113679
+ground_bottom_color = Color(0.208, 0.4, 0.144, 1)
+ground_horizon_color = Color(0.2625, 0.75, 0.37625, 1)
+
+[sub_resource type="Sky" id="Sky_y3pw4"]
+sky_material = SubResource("ProceduralSkyMaterial_cgw1g")
+
+[sub_resource type="Environment" id="Environment_7nfgd"]
+background_mode = 2
+sky = SubResource("Sky_y3pw4")
+ambient_light_source = 3
+
+[node name="BasicGarden" type="Node3D"]
+
+[node name="Table" parent="." instance=ExtResource("1_nh8by")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.533629, 0.845719, 0, -0.845719, -0.533629, -31.5559, 87.1963, -68.6772)
+light_color = Color(0.81, 0.756, 0.7452, 1)
+light_indirect_energy = 1.611
+light_volumetric_fog_energy = 2.588
+light_angular_distance = 13.59
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7nfgd")

@@ -14,12 +14,20 @@ enum States {
 	Dead
 }
 var state : States = States.Neutral
-var stateString : String 
+var stateString : String  #for the billboard
 # Gecko's action weights
 var Spin: int = 4
 var Sit: int = 5
 var Wander: int = 8
 
+enum FavTypes{
+	Sweet,
+	Salty,
+	Spicy,
+	Plain
+}
+var favouriteFood : FavTypes
+var favString : String 
 #The size of the hungerbar, zero is empty
 @export var hungerBar : int 
 #How much it decreases by
@@ -40,6 +48,8 @@ var lastTargetPosition : Vector3 = Vector3.ZERO
 
 func _ready() -> void:	
 	hungerGreed = randi_range(5, 15)
+	favouriteFood = FavTypes.values()[randi() % FavTypes.size()]
+	favString = FavTypes.keys()[favouriteFood]
 	ChangeState(States.Neutral)
 	get_random_position()
 
@@ -151,7 +161,6 @@ func ChangeState(newState : States) -> void:
 
 #This is when it makes the "decision" to do next
 func _on_wander_timer_timeout() -> void:
-	$AnimationPlayer.play("RESET")
 	if state == States.Neutral:
 		perform_wander_action()
 
@@ -217,25 +226,8 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 
 func find_food() -> void:
 	if food_manager and state != States.Pursuit:
-		var nearest_food = food_manager.get_nearest_food(global_position)
+		var nearest_food = food_manager.get_nearest_food(global_position, favouriteFood)
 		if nearest_food and nearest_food != target:
-			# this stops it?
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
 			print("Gecko is now pursuing food:", target)
-
-
-func get_nearest_food() -> Node3D:
-	var nearest_food = null
-	var nearest_distance = INF
-
-	for food in food_manager.food_items:
-		if food == null or not is_instance_valid(food):  # Skip null/invalid food
-			continue
-		
-		var distance = global_position.distance_to(food.global_position)
-		if distance < nearest_distance:
-			nearest_food = food
-			nearest_distance = distance
-
-	return nearest_food

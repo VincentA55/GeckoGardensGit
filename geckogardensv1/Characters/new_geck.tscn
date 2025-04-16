@@ -169,7 +169,7 @@ viewport_path = NodePath("SubViewport")
 
 [node name="NewGeck" type="CharacterBody3D"]
 script = ExtResource("1_istnc")
-hungerBar = 100
+hungerBar = 200
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 0.572955)

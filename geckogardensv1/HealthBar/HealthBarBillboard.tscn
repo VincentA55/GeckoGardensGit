@@ -26,6 +26,8 @@ func _ready() -> void:
 	
 	if character and \"state\" in character:
 		$SubViewport/StateLabel.text = str(character.stateString)
+	if character and \"favouriteFood\" in character:
+		$SubViewport/FavLabel.text = str(character.favString)
 
 func _update() -> void:
 	# Update health bar value
@@ -34,6 +36,7 @@ func _update() -> void:
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
+	$SubViewport/FavLabel.text = str(character.favString)
 "
 
 [sub_resource type="GDScript" id="GDScript_51572"]
@@ -126,4 +129,17 @@ text = "StateLabel
 "
 label_settings = SubResource("LabelSettings_iqh5g")
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FavLabel" type="Label" parent="SubViewport"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -297.85
+offset_right = 596.0
+offset_bottom = -160.85
+grow_vertical = 2
+text = "FavLabel
+"
+label_settings = SubResource("LabelSettings_iqh5g")
 vertical_alignment = 1

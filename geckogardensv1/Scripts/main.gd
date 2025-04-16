@@ -26,7 +26,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func food_spawner()->void:
 	var food = food_scene.instantiate()
 	get_parent().add_child(food)
-	food.global_position = $foodSpawner.global_position + Vector3(randf_range(-1.5, 1.5), 0, randf_range(-1.5, 1.5))
+	food.global_position = $foodSpawner.global_position + Vector3(randf_range(-1.5, 5), 0, randf_range(-1.5, 5))
 
 
 	food_manager.add_food(food)  # Register food in FoodManager

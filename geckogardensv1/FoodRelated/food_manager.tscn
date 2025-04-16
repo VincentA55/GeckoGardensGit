@@ -1,0 +1,69 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj1aofiab3pg4"]
+
+[sub_resource type="GDScript" id="GDScript_osbvm"]
+script/source = "extends Node
+
+var food_items: Array[Node3D] = []  # Stores all food objects
+@onready var hud = $\"../HUD\"  # Finds the HUD in the scene
+
+# Add food to the list
+func add_food(food: Node3D) -> void:
+	food_items.append(food)
+	print(\"Adding food: \", food)
+	print(\"Calling HUD: \", hud)
+
+	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
+	#	# Update HUD UI
+	if hud:
+		hud.add_food_ui(food.foodName,food.typeString, food.get_instance_id())
+
+
+func remove_food(food: Node3D) -> void:
+	if food in food_items:
+		hud.remove_food_ui(food.get_instance_id())
+		food_items.erase(food)
+		if is_instance_valid(food):
+			food.queue_free()
+	print(\"remove_food:\", food)
+
+
+# Get closest food to a position
+func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
+	var nearest_fav: Node3D = null
+	var fav_distance := INF
+	
+	var nearest_any: Node3D = null
+	var any_distance := INF
+
+	for food in food_items:
+		if food == null or not is_instance_valid(food):
+			continue
+		var dist = from_position.distance_to(food.global_position)
+
+		if food.type == fav_type and dist < fav_distance:
+			nearest_fav = food
+			fav_distance = dist
+
+		if dist < any_distance:
+			nearest_any = food
+			any_distance = dist
+
+	# Prefer favorite food if found, else fallback
+	return nearest_fav if nearest_fav else nearest_any
+
+
+
+# Handle the signal when the food is eaten
+func _on_food_eaten(food: Node3D) -> void:
+		print(\"_on_food_eaten: \", food)
+	# Remove the food from the list
+		if food in food_items:
+			food_items.erase(food)
+		# Remove from HUD UI
+		if hud:
+			hud.remove_food_ui(food.get_instance_id())
+		food.queue_free()  # Free the food object
+"
+
+[node name="FoodManager" type="Node3D" groups=["food_manager"]]
+script = SubResource("GDScript_osbvm")
