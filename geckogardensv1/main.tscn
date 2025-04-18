@@ -42,6 +42,9 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.0206
 [node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
 transform = Transform3D(-0.186576, 0, 0.982441, 0, 1, 0, -0.982441, 0, -0.186576, 4.76268, 7.08853, 6.71232)
 
+[node name="NewGeck3" parent="." instance=ExtResource("7_t74j3")]
+transform = Transform3D(-0.186576, 0, 0.982441, 0, 1, 0, -0.982441, 0, -0.186576, 1.27581, 7.08853, -11.6482)
+
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
 [node name="HUD" parent="." instance=ExtResource("9_34ofc")]
