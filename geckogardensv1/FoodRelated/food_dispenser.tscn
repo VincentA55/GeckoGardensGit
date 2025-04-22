@@ -1,0 +1,132 @@
+[gd_scene load_steps=9 format=3 uid="uid://bv4f3yslx4j1l"]
+
+[ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://FoodRelated/food.tscn" id="1_k1sbc"]
+
+[sub_resource type="GDScript" id="GDScript_wjcip"]
+script/source = "@tool
+extends Node3D
+
+@export var food_scene: PackedScene  
+
+enum Types{
+	Sweet,
+	Salty,
+	Spicy,
+	Plain
+}
+@export var type : Types:
+	set(value):
+		type = value
+		update_material()  # Update material when changed in editor
+
+@onready var food_manager = get_node(\"/root/Main/FoodManager\")
+@export var spawn_force: float = 1
+
+
+func _ready() -> void:
+	update_material()
+
+func update_material() -> void:
+	var mesh = $plastic
+	if mesh == null:
+		print(\"Mesh not found!\")
+		return
+
+	var mat := StandardMaterial3D.new()
+
+	match type:
+		Types.Sweet:
+			mat.albedo_color = Color(1.0, 0.4, 0.7)
+		Types.Salty:
+			mat.albedo_color = Color(0.4, 0.6, 1.0)
+		Types.Spicy:
+			mat.albedo_color = Color(1.0, 0.3, 0.0)
+		Types.Plain:
+			mat.albedo_color = Color(0.8, 0.8, 0.8)
+
+	mesh.set_surface_override_material(0, mat)
+
+func _on_timer_timeout() -> void:
+	var food = food_scene.instantiate().getSpecificType(type)
+	get_parent().add_child(food)
+	
+	food.global_position = $foodSpawnpoint.global_position
+	
+	var forward = $foodSpawnpoint.global_transform.basis.z.normalized()
+	
+	# Apply small horizontal (Y-axis) rotation for left/right scatter
+	var angle_variance = deg_to_rad(randf_range(-10.0, 10.0))  # ±10° of randomness
+	forward = forward.rotated(Vector3.UP, angle_variance).normalized()
+
+	# Speed variation
+	var speed_variation = randf_range(0.8, 1.2)
+	food.linear_velocity = forward * spawn_force * speed_variation
+
+	# Natural rolling (angular velocity perpendicular to movement)
+	var roll_axis = Vector3.UP.cross(forward).normalized()
+	var roll_speed = randf_range(3.0, 6.0)
+	food.angular_velocity = roll_axis * roll_speed
+	food_manager.add_food(food)  # Register food in FoodManager
+
+		#Connect the \"eaten\" signal to both FoodManager and HUD
+	food.connect(\"eaten\", Callable(food_manager, \"_on_food_eaten\").bind(food))
+
+	print(\"Food dispensed:\", food.typeString)
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1wo6i"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(0.602893, 0.720044, 0.825811, 1)
+albedo_texture_force_srgb = true
+roughness = 0.2
+emission_enabled = true
+clearcoat_enabled = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_c5phf"]
+material = SubResource("StandardMaterial3D_1wo6i")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_70vjb"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_51tsv"]
+material = SubResource("StandardMaterial3D_70vjb")
+bottom_radius = 0.55
+height = 0.496
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3k8k"]
+albedo_color = Color(0.544974, 0.544974, 0.544974, 1)
+metallic = 1.0
+clearcoat_enabled = true
+clearcoat_roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ggnqd"]
+material = SubResource("StandardMaterial3D_f3k8k")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 1.252
+
+[node name="FoodDispenser" type="Node3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+script = SubResource("GDScript_wjcip")
+food_scene = ExtResource("1_k1sbc")
+
+[node name="glassbottle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.862541, 0)
+mesh = SubResource("CapsuleMesh_c5phf")
+
+[node name="plastic" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0793363, 0)
+mesh = SubResource("CylinderMesh_51tsv")
+
+[node name="metalpipe" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.318546, 0.947908, 0, -0.947908, 0.318546, 0, -0.162522, 0.775157)
+mesh = SubResource("CylinderMesh_ggnqd")
+
+[node name="foodSpawnpoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.99088, 0.134747, 0, -0.134747, 0.99088, 0, -0.37928, 1.43764)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

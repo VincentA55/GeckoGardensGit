@@ -147,7 +147,7 @@ func ChangeState(newState : States) -> void:
 			States.Eating:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
-				if hungerBar <= 50:
+				if hungerBar <= 60:
 					ChangeState(States.Hungry)
 				else:
 					isHungry = false

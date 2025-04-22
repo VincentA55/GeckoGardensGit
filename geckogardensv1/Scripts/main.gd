@@ -11,7 +11,7 @@ extends Node
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("spawn_food"):
-		var food = food_scene.instantiate()
+		var food = food_scene.instantiate().getRandomType()
 		get_parent().add_child(food)
 		food.global_position = get_viewport().get_camera_3d().project_position(get_viewport().get_mouse_position(), 10)
 
@@ -22,21 +22,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		food.connect("eaten", Callable(hud, "remove_food_ui").bind(food.get_instance_id()))
 
 		print("Food spawned:", food.typeString)
-
-func food_spawner()->void:
-	var food = food_scene.instantiate()
-	get_parent().add_child(food)
-	food.global_position = $foodSpawner.global_position + Vector3(randf_range(-1.5, 5), 0, randf_range(-1.5, 5))
-
-
-	food_manager.add_food(food)  # Register food in FoodManager
-
-	# 🔥 Connect the "eaten" signal to both FoodManager and HUD
-	food.connect("eaten", Callable(food_manager, "_on_food_eaten").bind(food))
-	food.connect("eaten", Callable(hud, "remove_food_ui").bind(food.get_instance_id()))
-
-	print("Food spawned:", food.typeString)
-
-
-func _on_timer_timeout() -> void:
-	food_spawner()
