@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bv4f3yslx4j1l"]
+[gd_scene load_steps=10 format=3 uid="uid://bv4f3yslx4j1l"]
 
 [ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://FoodRelated/food.tscn" id="1_k1sbc"]
 
@@ -21,10 +21,12 @@ enum Types{
 
 @onready var food_manager = get_node(\"/root/Main/FoodManager\")
 @export var spawn_force: float = 1
+@export var timer: float = 5
 
 
 func _ready() -> void:
 	update_material()
+	$Timer.wait_time = timer
 
 func update_material() -> void:
 	var mesh = $plastic
@@ -93,6 +95,9 @@ material = SubResource("StandardMaterial3D_70vjb")
 bottom_radius = 0.55
 height = 0.496
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8pcxd"]
+albedo_color = Color(1, 0.4, 0.7, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3k8k"]
 albedo_color = Color(0.544974, 0.544974, 0.544974, 1)
 metallic = 1.0
@@ -109,6 +114,7 @@ height = 1.252
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 script = SubResource("GDScript_wjcip")
 food_scene = ExtResource("1_k1sbc")
+timer = null
 
 [node name="glassbottle" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.862541, 0)
@@ -117,6 +123,7 @@ mesh = SubResource("CapsuleMesh_c5phf")
 [node name="plastic" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0793363, 0)
 mesh = SubResource("CylinderMesh_51tsv")
+surface_material_override/0 = SubResource("StandardMaterial3D_8pcxd")
 
 [node name="metalpipe" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.318546, 0.947908, 0, -0.947908, 0.318546, 0, -0.162522, 0.775157)
@@ -126,7 +133,7 @@ mesh = SubResource("CylinderMesh_ggnqd")
 transform = Transform3D(1, 0, 0, 0, 0.99088, 0.134747, 0, -0.134747, 0.99088, 0, -0.37928, 1.43764)
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 5.0
 autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
