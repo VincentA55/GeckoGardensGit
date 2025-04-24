@@ -26,7 +26,7 @@ enum FavTypes{
 	Spicy,
 	Plain
 }
-var favouriteFood : FavTypes
+@export var favouriteFood : FavTypes
 var favString : String 
 #The size of the hungerbar, zero is empty
 @export var hungerBar : int 
@@ -48,7 +48,7 @@ var lastTargetPosition : Vector3 = Vector3.ZERO
 
 func _ready() -> void:	
 	hungerGreed = randi_range(5, 15)
-	favouriteFood = FavTypes.values()[randi() % FavTypes.size()]
+	#favouriteFood = FavTypes.values()[randi() % FavTypes.size()]
 	favString = FavTypes.keys()[favouriteFood]
 	ChangeState(States.Neutral)
 	get_random_position()
@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		stateString = States.keys()[state]#for debugging and billboard
 		$Billboard._update()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not isdead:
 		if hungerBar <= 50 and not isHungry:
 			ChangeState(States.Hungry)
@@ -181,8 +181,8 @@ func perform_wander_action():
 		get_random_position()
 	else:
 		$AnimationPlayer.play("idle")  
-		pass
 		
+	
 #using math and numbers to choose return an actions string
 func choose_wander_action() -> String:
 	var total = Spin + Sit + Wander  # Get total weight 

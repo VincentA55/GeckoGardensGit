@@ -38,13 +38,7 @@ transform = Transform3D(1, 0, 0, 0, 0.91192, 0.410369, 0, -0.410369, 0.91192, 0,
 size = 18.5462
 
 [node name="NewGeck" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.02067, 7.08853, -1.4688)
-
-[node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(-0.186576, 0, 0.982441, 0, 1, 0, -0.982441, 0, -0.186576, 4.76268, 7.08853, 6.71232)
-
-[node name="NewGeck3" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(-0.186576, 0, 0.982441, 0, 1, 0, -0.982441, 0, -0.186576, 1.27581, 7.08853, -11.6482)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.02067, 6.35511, -1.4688)
 
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
@@ -59,7 +53,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11.6767, 0)
 [node name="FoodDispenser" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(1.90266, 0, 0.616341, 0, 2, 0, -0.616341, 0, 1.90266, -6.65623, 9.37261, -14.7502)
 type = 1
-timer = 5.0
 
 [node name="FoodDispenser2" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(-0.540596, 0, 1.92555, 0, 2, 0, -1.92555, 0, -0.540596, -15.1198, 9.49998, 4.72172)
