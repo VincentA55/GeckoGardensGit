@@ -37,9 +37,6 @@ mouse_control = false
 transform = Transform3D(1, 0, 0, 0, 0.91192, 0.410369, 0, -0.410369, 0.91192, 0, 3.0179, 11.9311)
 size = 18.5462
 
-[node name="NewGeck" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.02067, 6.35511, -1.4688)
-
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
 [node name="HUD" parent="." instance=ExtResource("9_34ofc")]
@@ -67,3 +64,7 @@ timer = 7.0
 transform = Transform3D(0.569972, 0, -1.91706, 0, 2, 0, 1.91706, 0, 0.569972, 15.0048, 9.49998, -3.64226)
 type = 3
 timer = 5.4
+
+[node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 0)
+favouriteFood = 2

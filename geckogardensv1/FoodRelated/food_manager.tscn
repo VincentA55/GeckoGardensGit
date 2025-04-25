@@ -37,6 +37,8 @@ func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
 		if food == null or not is_instance_valid(food):
 			continue
 
+		print(\"Checking food:\", food, \"type:\", food.type, \"vs fav_type:\", fav_type)
+
 		var dist = from_position.distance_to(food.global_position)
 
 		if food.type == fav_type and dist < fav_distance:
@@ -47,7 +49,12 @@ func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
 			nearest_any = food
 			any_distance = dist
 
-	return nearest_fav if nearest_fav != null else nearest_any
+	if nearest_fav:
+		print(\"Returning FAV food:\", nearest_fav)
+		return nearest_fav
+	else:
+		print(\"Returning ANY food:\", nearest_any)
+		return nearest_any
 
 
 
