@@ -68,3 +68,11 @@ timer = 5.4
 [node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 0)
 favouriteFood = 2
+
+[node name="NewGeck3" parent="." instance=ExtResource("7_t74j3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 6.28799)
+favouriteFood = 2
+
+[node name="NewGeck4" parent="." instance=ExtResource("7_t74j3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, -5.0291)
+favouriteFood = 2

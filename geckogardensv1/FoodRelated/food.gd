@@ -86,3 +86,5 @@ func on_eaten()-> void:
 	eaten.emit(fill_amount)
 	food_manager._on_food_eaten(self)
 	
+func getType() -> Types:
+	return type

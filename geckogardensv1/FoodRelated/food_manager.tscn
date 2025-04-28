@@ -27,34 +27,36 @@ func remove_food(food: Node3D) -> void:
 	print(\"remove_food:\", food)
 
 func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
+	# First search for favourite type
 	var nearest_fav: Node3D = null
 	var fav_distance := INF
 
+	for food in food_items:
+		if food == null or not is_instance_valid(food):
+			continue
+		if food.getType() == fav_type:
+			var dist = from_position.distance_to(food.global_position)
+			if dist < fav_distance:
+				nearest_fav = food
+				fav_distance = dist
+
+	# If favourite found, return it
+	if nearest_fav != null:
+		return nearest_fav
+
+	# Otherwise, search for any type
 	var nearest_any: Node3D = null
 	var any_distance := INF
 
 	for food in food_items:
 		if food == null or not is_instance_valid(food):
 			continue
-
-		print(\"Checking food:\", food, \"type:\", food.type, \"vs fav_type:\", fav_type)
-
 		var dist = from_position.distance_to(food.global_position)
-
-		if food.type == fav_type and dist < fav_distance:
-			nearest_fav = food
-			fav_distance = dist
-
 		if dist < any_distance:
 			nearest_any = food
 			any_distance = dist
 
-	if nearest_fav:
-		print(\"Returning FAV food:\", nearest_fav)
-		return nearest_fav
-	else:
-		print(\"Returning ANY food:\", nearest_any)
-		return nearest_any
+	return nearest_any
 
 
 
