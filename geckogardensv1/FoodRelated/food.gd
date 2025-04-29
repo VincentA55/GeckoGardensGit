@@ -48,7 +48,7 @@ func getRandomType():
 	return self
 
 func getSpecificType(type: int):
-	type = type
+	type = Types.values()[type]
 	typeString = Types.keys()[type]
 
 	var mesh = $character  # Change to your actual mesh path
@@ -87,4 +87,4 @@ func on_eaten()-> void:
 	food_manager._on_food_eaten(self)
 	
 func getType() -> Types:
-	return type
+	return self.type

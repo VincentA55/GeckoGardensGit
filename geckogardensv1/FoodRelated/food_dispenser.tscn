@@ -49,9 +49,8 @@ func update_material() -> void:
 	mesh.set_surface_override_material(0, mat)
 
 func _on_timer_timeout() -> void:
-	var food = food_scene.instantiate().getSpecificType(type)
-	get_parent().add_child(food)
-	
+	var food = food_manager.add_food(type)  # Register food in FoodManager
+	food.type = type
 	food.global_position = $foodSpawnpoint.global_position
 	
 	var forward = $foodSpawnpoint.global_transform.basis.z.normalized()
@@ -68,12 +67,11 @@ func _on_timer_timeout() -> void:
 	var roll_axis = Vector3.UP.cross(forward).normalized()
 	var roll_speed = randf_range(3.0, 6.0)
 	food.angular_velocity = roll_axis * roll_speed
-	food_manager.add_food(food)  # Register food in FoodManager
 
 		#Connect the \"eaten\" signal to both FoodManager and HUD
 	food.connect(\"eaten\", Callable(food_manager, \"_on_food_eaten\").bind(food))
 
-	print(\"Food dispensed:\", food.typeString)
+	print(\"Food dispensed:\", food.getType())
 "
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1wo6i"]
@@ -95,7 +93,7 @@ material = SubResource("StandardMaterial3D_70vjb")
 bottom_radius = 0.55
 height = 0.496
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujlij"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u1asy"]
 albedo_color = Color(1, 0.4, 0.7, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3k8k"]
@@ -122,7 +120,7 @@ mesh = SubResource("CapsuleMesh_c5phf")
 [node name="plastic" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0793363, 0)
 mesh = SubResource("CylinderMesh_51tsv")
-surface_material_override/0 = SubResource("StandardMaterial3D_ujlij")
+surface_material_override/0 = SubResource("StandardMaterial3D_u1asy")
 
 [node name="metalpipe" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.318546, 0.947908, 0, -0.947908, 0.318546, 0, -0.162522, 0.775157)

@@ -1,13 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dj1aofiab3pg4"]
+[gd_scene load_steps=3 format=3 uid="uid://dj1aofiab3pg4"]
+
+[ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://FoodRelated/food.tscn" id="1_ahxyk"]
 
 [sub_resource type="GDScript" id="GDScript_osbvm"]
 script/source = "extends Node
 
+@export var food_scene: PackedScene  
 var food_items: Array[Node3D] = []  # Stores all food objects
 @onready var hud = $\"../HUD\"  # Finds the HUD in the scene
 
 # Add food to the list
-func add_food(food: Node3D) -> void:
+func add_food(type: int) -> Node3D:
+	var food = food_scene.instantiate().getSpecificType(type)
+	get_parent().add_child(food)
 	food_items.append(food)
 	print(\"Adding food: \", food)
 	print(\"Calling HUD: \", hud)
@@ -16,6 +21,7 @@ func add_food(food: Node3D) -> void:
 	#	# Update HUD UI
 	if hud:
 		hud.add_food_ui(food.foodName,food.typeString, food.get_instance_id())
+	return food
 
 
 func remove_food(food: Node3D) -> void:
@@ -26,37 +32,39 @@ func remove_food(food: Node3D) -> void:
 			food.queue_free()
 	print(\"remove_food:\", food)
 
-func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
-	# First search for favourite type
-	var nearest_fav: Node3D = null
-	var fav_distance := INF
 
+func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
+	var nearest_fav: Node3D = null
+	var shortest_fav_distance := INF
+
+	# First: Search ONLY for favourite type
 	for food in food_items:
 		if food == null or not is_instance_valid(food):
 			continue
 		if food.getType() == fav_type:
 			var dist = from_position.distance_to(food.global_position)
-			if dist < fav_distance:
+			if dist < shortest_fav_distance:
 				nearest_fav = food
-				fav_distance = dist
+				shortest_fav_distance = dist
 
-	# If favourite found, return it
+	# If a favourite is found, return it
 	if nearest_fav != null:
 		return nearest_fav
 
-	# Otherwise, search for any type
+	# Otherwise, search for any available food
 	var nearest_any: Node3D = null
-	var any_distance := INF
+	var shortest_any_distance := INF
 
 	for food in food_items:
 		if food == null or not is_instance_valid(food):
 			continue
 		var dist = from_position.distance_to(food.global_position)
-		if dist < any_distance:
+		if dist < shortest_any_distance:
 			nearest_any = food
-			any_distance = dist
+			shortest_any_distance = dist
 
 	return nearest_any
+
 
 
 
@@ -74,3 +82,4 @@ func _on_food_eaten(food: Node3D) -> void:
 
 [node name="FoodManager" type="Node3D" groups=["food_manager"]]
 script = SubResource("GDScript_osbvm")
+food_scene = ExtResource("1_ahxyk")

@@ -47,22 +47,18 @@ navigation_mesh = SubResource("NavigationMesh_v42ya")
 [node name="BasicGarden" parent="NavigationRegion3D2" instance=ExtResource("9_yguqp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11.6767, 0)
 
-[node name="FoodDispenser" parent="." instance=ExtResource("9_bshj1")]
-transform = Transform3D(1.90266, 0, 0.616341, 0, 2, 0, -0.616341, 0, 1.90266, -6.65623, 9.37261, -14.7502)
-type = 1
-
 [node name="FoodDispenser2" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(-0.540596, 0, 1.92555, 0, 2, 0, -1.92555, 0, -0.540596, -15.1198, 9.49998, 4.72172)
 type = 2
 timer = 6.0
 
-[node name="FoodDispenser3" parent="." instance=ExtResource("9_bshj1")]
-transform = Transform3D(-1.74438, 0, -0.978339, 0, 2, 0, 0.978339, 0, -1.74438, 6.6836, 9.49998, 13.2575)
-timer = 7.0
-
 [node name="FoodDispenser4" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(0.569972, 0, -1.91706, 0, 2, 0, 1.91706, 0, 0.569972, 15.0048, 9.49998, -3.64226)
-type = 3
+type = 1
+timer = 5.4
+
+[node name="FoodDispenser5" parent="." instance=ExtResource("9_bshj1")]
+transform = Transform3D(1.99696, 0, 0.110146, 0, 2, 0, -0.110146, 0, 1.99696, -1.09036, 9.49998, -17.0104)
 timer = 5.4
 
 [node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
@@ -70,9 +66,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 0)
 favouriteFood = 2
 
 [node name="NewGeck3" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 6.28799)
-favouriteFood = 2
-
-[node name="NewGeck4" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, -5.0291)
-favouriteFood = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, -8.20952)

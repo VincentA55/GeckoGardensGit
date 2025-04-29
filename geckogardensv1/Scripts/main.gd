@@ -11,11 +11,8 @@ extends Node
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("spawn_food"):
-		var food = food_scene.instantiate().getRandomType()
-		get_parent().add_child(food)
+		var food = food_manager.add_food(2)  # Register food in FoodManager
 		food.global_position = get_viewport().get_camera_3d().project_position(get_viewport().get_mouse_position(), 10)
-
-		food_manager.add_food(food)  # Register food in FoodManager
 
 		#Connect the "eaten" signal to both FoodManager and HUD
 		food.connect("eaten", Callable(food_manager, "_on_food_eaten").bind(food))
