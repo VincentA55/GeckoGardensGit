@@ -11,8 +11,7 @@ enum States {
 	Pursuit,
 	Hungry,
 	Eating,
-	Dead
-}
+	Dead}
 var state : States = States.Neutral
 var stateString : String  #for the billboard
 # Gecko's action weights
@@ -20,18 +19,26 @@ var Spin: int = 4
 var Sit: int = 5
 var Wander: int = 8
 
+enum Natures {
+	Neutral,
+	Greedy,
+	Picky
+}
+@export var nature : Natures
+
+@export var walkSpeed : float = 9.0
+@export var runSpeed : float = 12.0
+
 enum FavTypes{
 	Sweet,
 	Salty,
 	Spicy,
-	Plain
-}
+	Plain}
 @export var favouriteFood : FavTypes
 var favString : String 
-#The size of the hungerbar, zero is empty
-@export var hungerBar : int 
-#How much it decreases by
-@export var hungerGreed : int = 10
+
+@export var hungerBar : int #The size of the hungerbar, zero is empty
+@export var hungerGreed : int = 10#How much it decreases by
 
 var isHungry : bool = false
 var isdead : bool = false
@@ -42,9 +49,6 @@ var invalid_targets: Array = []  # List of targets that should be ignored to pre
 var target : Node3D = null
 var targetPosition : Vector3 = Vector3.ZERO
 var lastTargetPosition : Vector3 = Vector3.ZERO
-
-@export var walkSpeed : float = 9.0
-@export var runSpeed : float = 12.0
 
 func _ready() -> void:	
 	hungerGreed = randi_range(5, 15)
@@ -147,11 +151,19 @@ func ChangeState(newState : States) -> void:
 			States.Eating:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
-				if hungerBar <= 60:
-					ChangeState(States.Hungry)
+
+				if nature == Natures.Greedy:
+					if hungerBar < 200:
+						ChangeState(States.Hungry)
+					else:
+						isHungry = false
+						ChangeState(States.Neutral)
 				else:
-					isHungry = false
-					ChangeState(States.Neutral)
+					if hungerBar <= 60:
+						ChangeState(States.Hungry)
+					else:
+						isHungry = false
+						ChangeState(States.Neutral)
 			States.Dead:
 				isdead = true
 				print("dead")
@@ -225,8 +237,13 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 
 
 func find_food() -> void:
+	var nearest_food = null
 	if food_manager and state != States.Pursuit:
-		var nearest_food = food_manager.get_nearest_food(global_position, favouriteFood)
+		if nature == Natures.Picky:
+			nearest_food = food_manager.get_fav_only(global_position, favouriteFood)
+		else:
+			nearest_food = food_manager.get_nearest_food(global_position, favouriteFood)
+				
 		if nearest_food and nearest_food != target:
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food

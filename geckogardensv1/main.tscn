@@ -50,7 +50,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11.6767, 0)
 [node name="FoodDispenser2" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(-0.540596, 0, 1.92555, 0, 2, 0, -1.92555, 0, -0.540596, -15.1198, 9.49998, 4.72172)
 type = 2
-timer = 6.0
+timer = 8.0
 
 [node name="FoodDispenser4" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(0.569972, 0, -1.91706, 0, 2, 0, 1.91706, 0, 0.569972, 15.0048, 9.49998, -3.64226)
@@ -63,28 +63,6 @@ timer = 5.4
 
 [node name="NewGeck2" parent="." instance=ExtResource("7_t74j3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 0)
+nature = 1
 favouriteFood = 2
-
-[node name="NewGeck3" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, -8.20952)
-
-[node name="NewGeck4" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.21517, 6.19921, 0)
-favouriteFood = 2
-
-[node name="NewGeck5" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.21517, 6.19921, -8.20952)
-
-[node name="NewGeck6" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.92645, 6.19921, 0)
-favouriteFood = 2
-
-[node name="NewGeck7" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.92645, 6.19921, -8.20952)
-
-[node name="NewGeck8" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.70497, 6.19921, 0)
-favouriteFood = 2
-
-[node name="NewGeck9" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.70497, 6.19921, -8.20952)
+hungerGreed = 30

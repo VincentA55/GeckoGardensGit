@@ -65,7 +65,21 @@ func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
 
 	return nearest_any
 
+#Find func for greedy
+func get_fav_only(from_position: Vector3, fav_type: int) -> Node3D:
+	var nearest_fav: Node3D = null
+	var shortest_fav_distance := INF
 
+	# First: Search ONLY for favourite type
+	for food in food_items:
+		if food == null or not is_instance_valid(food):
+			continue
+		if food.getType() == fav_type:
+			var dist = from_position.distance_to(food.global_position)
+			if dist < shortest_fav_distance:
+				nearest_fav = food
+				shortest_fav_distance = dist
+	return nearest_fav
 
 
 # Handle the signal when the food is eaten
