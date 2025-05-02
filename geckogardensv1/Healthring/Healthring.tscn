@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvacp6if2o5v3"]
+
+[ext_resource type="Texture2D" uid="uid://bj2ut8klimjri" path="res://Healthring/ringempty.png" id="1_s7dsd"]
+[ext_resource type="Texture2D" uid="uid://cts6vjb7arhj7" path="res://Healthring/ringbase.png" id="2_8mo57"]
+[ext_resource type="Texture2D" uid="uid://c88ir3qsg34mw" path="res://Healthring/ringfill.png" id="3_0sit1"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = -540.0
+offset_top = -540.0
+offset_right = 540.0
+offset_bottom = 540.0
+value = 30.0
+fill_mode = 5
+texture_under = ExtResource("1_s7dsd")
+texture_over = ExtResource("2_8mo57")
+texture_progress = ExtResource("3_0sit1")
+tint_under = Color(0, 0, 0, 0.227451)
