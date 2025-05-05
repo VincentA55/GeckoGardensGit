@@ -1,7 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://yf31asvmvsgl"]
+[gd_scene load_steps=11 format=3 uid="uid://yf31asvmvsgl"]
 
 [ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
+[ext_resource type="Texture2D" uid="uid://bj2ut8klimjri" path="res://Healthring/ringempty.png" id="3_2vgnc"]
+[ext_resource type="Texture2D" uid="uid://cts6vjb7arhj7" path="res://Healthring/ringbase.png" id="4_u1glj"]
+[ext_resource type="Texture2D" uid="uid://c88ir3qsg34mw" path="res://Healthring/ringfill.png" id="5_rxjub"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4gejq"]
 viewport_path = NodePath("SubViewport")
@@ -18,6 +21,7 @@ func _ready() -> void:
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
 	if character and \"hungerBar\" in character:
 		$SubViewport/Hungerbar.value = character.hungerBar
+		$SubViewport/TextureProgressBar.value = character.hungerBar
 	if character and \"health\" in character:
 		$SubViewport/Hungerbar.value = character.health
 	
@@ -28,12 +32,14 @@ func _ready() -> void:
 		$SubViewport/StateLabel.text = str(character.stateString)
 	if character and \"favouriteFood\" in character:
 		$SubViewport/FavLabel.text = str(character.favString)
+		
 
 func _update() -> void:
 	# Update health bar value
 	if character and \"hungerBar\" in character:
 		$SubViewport/Hungerbar.value = character.hungerBar
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
+		$SubViewport/TextureProgressBar.value = character.hungerBar
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
 	$SubViewport/FavLabel.text = str(character.favString)
@@ -143,3 +149,16 @@ text = "FavLabel
 "
 label_settings = SubResource("LabelSettings_iqh5g")
 vertical_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="SubViewport"]
+offset_left = 460.0
+offset_top = 25.0
+offset_right = 1540.0
+offset_bottom = 1105.0
+max_value = 200.0
+value = 33.0
+fill_mode = 5
+texture_under = ExtResource("3_2vgnc")
+texture_over = ExtResource("4_u1glj")
+texture_progress = ExtResource("5_rxjub")
+tint_under = Color(0, 0, 0, 0.227451)
