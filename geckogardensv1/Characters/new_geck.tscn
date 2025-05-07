@@ -218,6 +218,16 @@ character = NodePath("..")
 [node name="HungerTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(-0.813949, 0.192114, -0.548251, 0.0413247, 0.960494, 0.275217, 0.579465, 0.201356, -0.789732, -1.0331, 1.69885, -2.38632)
+cull_mask = 1
+projection = 1
+fov = 74.0702
+size = 1.15256
+far = 1.9
+
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
 [connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]
 [connection signal="timeout" from="WanderTimer" to="." method="_on_wander_timer_timeout"]

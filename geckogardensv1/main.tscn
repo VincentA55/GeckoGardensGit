@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cmjpmn0etwsyn"]
+[gd_scene load_steps=13 format=3 uid="uid://cmjpmn0etwsyn"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_ijgey"]
 [ext_resource type="PackedScene" uid="uid://fm5x3cea40hc" path="res://Characters/gecko.tscn" id="2_odeh8"]
+[ext_resource type="PackedScene" uid="uid://mi8u7fypmx1w" path="res://UserInterface/interface.tscn" id="4_laqir"]
 [ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://FoodRelated/food.tscn" id="5_yyr70"]
 [ext_resource type="Script" path="res://camera_gimbal.gd" id="6_efmgw"]
 [ext_resource type="PackedScene" uid="uid://tdt5gdk3lgnu" path="res://Characters/new_geck.tscn" id="7_t74j3"]
@@ -40,6 +41,9 @@ size = 18.5462
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
 [node name="HUD" parent="." instance=ExtResource("9_34ofc")]
+
+[node name="Interface" parent="." instance=ExtResource("4_laqir")]
+visible = false
 
 [node name="NavigationRegion3D2" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_v42ya")
