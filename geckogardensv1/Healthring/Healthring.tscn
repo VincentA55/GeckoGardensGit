@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvacp6if2o5v3"]
+[gd_scene load_steps=6 format=3 uid="uid://bvacp6if2o5v3"]
 
 [ext_resource type="Texture2D" uid="uid://bj2ut8klimjri" path="res://Healthring/ringempty.png" id="1_s7dsd"]
 [ext_resource type="Texture2D" uid="uid://cts6vjb7arhj7" path="res://Healthring/ringbase.png" id="2_8mo57"]
 [ext_resource type="Texture2D" uid="uid://c88ir3qsg34mw" path="res://Healthring/ringfill.png" id="3_0sit1"]
 
 [sub_resource type="GDScript" id="GDScript_mus4l"]
-script/source = "extends Control
+script/source = "@tool
+extends Control
 # The 3D character whose health this bar represents
 @export var character: Node3D
 # Camera to calculate screen-space position
@@ -15,8 +16,18 @@ func _ready():
 	# Get the active camera
 	camera = get_viewport().get_camera_3d()
 	
-	$TextureRect.texture = character.get_SubViewport()
+	
+
+func setRingChar(char: Node3D) -> void:
+	character = char
+	var viewport := character.get_node(\"SubViewport\") as SubViewport
+	if viewport and viewport.get_texture():
+		$TextureRect.texture = viewport.get_texture()
+	else:
+		print(\"Viewport or its texture not found for\", character.name)
 "
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_jn4m7"]
 
 [node name="Healthring" type="Control"]
 layout_mode = 3
@@ -25,6 +36,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
 script = SubResource("GDScript_mus4l")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -33,6 +46,9 @@ offset_left = -387.0
 offset_top = -376.0
 offset_right = 381.0
 offset_bottom = 409.0
+texture = SubResource("ViewportTexture_jn4m7")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 layout_mode = 0

@@ -1,4 +1,26 @@
-[gd_scene format=3 uid="uid://mi8u7fypmx1w"]
+[gd_scene load_steps=2 format=3 uid="uid://mi8u7fypmx1w"]
+
+[sub_resource type="GDScript" id="GDScript_kufrp"]
+resource_name = "InterfaceScript"
+script/source = "@tool
+extends Control
+
+@onready var ring_container = $VBoxContainer
+
+var GeckoFeedScene = preload(\"res://Healthring/Healthring.tscn\")
+
+func add_gecko_feed(gecko: Node3D):
+	var feed_ui = GeckoFeedScene.instantiate()
+	ring_container.add_child(feed_ui)
+
+	await get_tree().process_frame  # Wait 1 frame to ensure node is ready
+
+	var viewport := gecko.get_node(\"SubViewport\")
+	var texture_rect := feed_ui.get_node(\"TextureRect\")
+	texture_rect.texture = viewport.get_texture()
+
+	feed_ui.setRingChar(gecko)
+"
 
 [node name="Interface" type="Control"]
 layout_mode = 3
@@ -7,18 +29,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = SubResource("GDScript_kufrp")
 
-[node name="Container" type="Container" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -360.0
-offset_top = -645.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="ItemList" type="ItemList" parent="Container"]
-layout_mode = 2
+grow_horizontal = 2
+grow_vertical = 2

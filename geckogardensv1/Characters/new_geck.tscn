@@ -219,10 +219,14 @@ character = NodePath("..")
 autostart = true
 
 [node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+canvas_cull_mask = 4293918721
+size = Vector2i(128, 128)
+render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="SubViewport"]
 transform = Transform3D(-0.813949, 0.192114, -0.548251, 0.0413247, 0.960494, 0.275217, 0.579465, 0.201356, -0.789732, -1.0331, 1.69885, -2.38632)
-cull_mask = 1
+cull_mask = 2
 projection = 1
 fov = 74.0702
 size = 1.15256

@@ -44,6 +44,7 @@ size = 18.5462
 
 [node name="Interface" parent="." instance=ExtResource("4_laqir")]
 visible = false
+offset_left = -2.0
 
 [node name="NavigationRegion3D2" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_v42ya")
@@ -69,20 +70,4 @@ timer = 5.4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, 0)
 nature = 1
 favouriteFood = 2
-hungerGreed = 30
-
-[node name="NewGeck3" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.525404, 6.19921, 0)
-nature = 2
-hungerGreed = 30
-
-[node name="NewGeck4" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.41625, 6.19921, -6.98615)
-nature = 1
-favouriteFood = 2
-hungerGreed = 30
-
-[node name="NewGeck5" parent="." instance=ExtResource("7_t74j3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.525404, 6.19921, -6.98615)
-nature = 2
 hungerGreed = 30

@@ -10,7 +10,7 @@ extends Node
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("spawn_food"):
+	if event.is_action_pressed("click"):
 		var food = food_manager.add_food(2)  # Register food in FoodManager
 		food.global_position = get_viewport().get_camera_3d().project_position(get_viewport().get_mouse_position(), 10)
 
@@ -19,3 +19,4 @@ func _unhandled_input(event: InputEvent) -> void:
 		food.connect("eaten", Callable(hud, "remove_food_ui").bind(food.get_instance_id()))
 
 		print("Food spawned:", food.typeString)
+		$Interface.add_gecko_feed($NewGeck2)

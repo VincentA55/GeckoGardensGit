@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://yf31asvmvsgl"]
+[gd_scene load_steps=9 format=3 uid="uid://yf31asvmvsgl"]
 
 [ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
+[ext_resource type="PackedScene" uid="uid://bvacp6if2o5v3" path="res://Healthring/Healthring.tscn" id="3_avwoh"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4gejq"]
 viewport_path = NodePath("SubViewport")
@@ -14,7 +15,7 @@ extends Sprite3D
 
 func _ready() -> void:
 	$SubViewport/Hungerbar.character = character
-	
+	$SubViewport/Healthring.setRingChar(character)
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
 	if character and \"hungerBar\" in character:
 		$SubViewport/Hungerbar.value = character.hungerBar
@@ -146,3 +147,11 @@ text = "FavLabel
 "
 label_settings = SubResource("LabelSettings_iqh5g")
 vertical_alignment = 1
+
+[node name="Healthring" parent="SubViewport" instance=ExtResource("3_avwoh")]
+anchors_preset = -1
+anchor_left = 0.825
+anchor_top = 0.215
+anchor_bottom = 0.57
+grow_horizontal = 0
+scale = Vector2(0.4, 0.4)
