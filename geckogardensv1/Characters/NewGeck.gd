@@ -4,6 +4,8 @@ extends CharacterBody3D
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var food_manager = get_node("/root/Main/FoodManager")
 
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
 
 enum States {
 	Neutral,
@@ -69,6 +71,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
+	#velocity.y -= gravity * delta thses 2 are to try and make it fall when spawned
+	#move_and_slide()
 	if not isdead:
 		if state == States.Walking or state == States.Pursuit:
 			print("Moving towards:", navigation_agent.get_target_position())

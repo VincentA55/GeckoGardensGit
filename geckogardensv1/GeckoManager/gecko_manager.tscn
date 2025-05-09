@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf5hbcy3urvgx"]
+
+[ext_resource type="PackedScene" uid="uid://tdt5gdk3lgnu" path="res://Characters/new_geck.tscn" id="1_ve811"]
+
+[sub_resource type="GDScript" id="GDScript_37172"]
+resource_name = "GeckoManager"
+script/source = "extends Node3D
+
+@export var gecko_scene: PackedScene  # Assign your Gecko scene in the inspector
+var current_geckos: Array[Node3D] = []
+
+# Optional spawn area or positions
+@export var spawn_positions: Array[Node3D] = []  # Assign Position3D nodes in editor
+
+
+
+func spawn_gecko() -> void:
+	if gecko_scene == null:
+		print(\"Gecko scene not assigned!\")
+		return
+
+	var gecko = gecko_scene.instantiate()
+	add_child(gecko)
+
+	# Set random spawn position
+	if spawn_positions.size() > 0:
+		var spawn_point = spawn_positions[randi() % spawn_positions.size()]
+		gecko.global_transform.origin = spawn_point.global_transform.origin
+	else:
+		gecko.global_position = Vector3(randf() * 10, 0, randf() * 10)  # fallback
+
+	current_geckos.append(gecko)
+
+	# Optional: connect gecko signals
+	# gecko.connect(\"some_signal\", Callable(self, \"_on_gecko_event\"))
+
+func remove_gecko(gecko: Node3D) -> void:
+	if gecko in current_geckos:
+		current_geckos.erase(gecko)
+		gecko.queue_free()
+"
+
+[node name="GeckoManager" type="Node3D"]
+script = SubResource("GDScript_37172")
+gecko_scene = ExtResource("1_ve811")

@@ -37,7 +37,7 @@ func _update() -> void:
 	if character and \"hungerBar\" in character:
 		$SubViewport/Hungerbar.value = character.hungerBar
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
-		
+		$SubViewport/Healthring._update()
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
 	$SubViewport/FavLabel.text = str(character.favString)

@@ -20,3 +20,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		print("Food spawned:", food.typeString)
 		$Interface.add_gecko_feed($NewGeck2)
+		$GeckoManager.spawn_gecko()

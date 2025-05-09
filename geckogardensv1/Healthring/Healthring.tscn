@@ -11,11 +11,14 @@ extends Control
 @export var character: Node3D
 # Camera to calculate screen-space position
 var camera: Camera3D
+var value: int = 0
 
 func _ready():
 	# Get the active camera
 	camera = get_viewport().get_camera_3d()
 	
+	if character:
+		$TextureProgressBar.value = character.hungerBar
 	
 
 func setRingChar(char: Node3D) -> void:
@@ -25,6 +28,11 @@ func setRingChar(char: Node3D) -> void:
 		$TextureRect.texture = viewport.get_texture()
 	else:
 		print(\"Viewport or its texture not found for\", character.name)
+
+
+func _update() -> void:
+	# Update health bar value
+	$TextureProgressBar.value =  character.hungerBar	
 "
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_jn4m7"]
