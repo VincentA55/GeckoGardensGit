@@ -53,7 +53,7 @@ var targetPosition : Vector3 = Vector3.ZERO
 var lastTargetPosition : Vector3 = Vector3.ZERO
 
 func _ready() -> void:	
-	hungerGreed = randi_range(5, 15)
+	#hungerGreed = randi_range(5, 15)
 	#favouriteFood = FavTypes.values()[randi() % FavTypes.size()]
 	favString = FavTypes.keys()[favouriteFood]
 	ChangeState(States.Neutral)

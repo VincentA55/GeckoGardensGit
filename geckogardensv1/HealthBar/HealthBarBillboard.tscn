@@ -118,16 +118,17 @@ texture_progress = ExtResource("1_twr61")
 script = SubResource("GDScript_0imfr")
 
 [node name="IsHungryBool" type="Label" parent="SubViewport"]
-offset_top = 125.01
+offset_top = 124.335
 offset_right = 596.0
-offset_bottom = 262.01
+offset_bottom = 261.335
 text = "HungryBool"
 label_settings = SubResource("LabelSettings_iqh5g")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StateLabel" type="Label" parent="SubViewport"]
-offset_right = 596.0
+offset_left = 2.81
+offset_right = 598.81
 offset_bottom = 137.0
 text = "StateLabel
 "
@@ -136,13 +137,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FavLabel" type="Label" parent="SubViewport"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -297.85
+offset_top = 249.495
 offset_right = 596.0
-offset_bottom = -160.85
-grow_vertical = 2
+offset_bottom = 386.495
 text = "FavLabel
 "
 label_settings = SubResource("LabelSettings_iqh5g")

@@ -67,8 +67,7 @@ timer = 5.4
 transform = Transform3D(1.99696, 0, 0.110146, 0, 2, 0, -0.110146, 0, 1.99696, -1.09036, 9.49998, -17.0104)
 timer = 5.4
 
-[node name="GeckoManager" parent="." node_paths=PackedStringArray("spawn_positions") instance=ExtResource("11_yh7xk")]
-spawn_positions = [NodePath("Marker3D")]
+[node name="GeckoManager" parent="." instance=ExtResource("11_yh7xk")]
 
 [node name="Marker3D" type="Marker3D" parent="GeckoManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.8737, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.29112, 0)
