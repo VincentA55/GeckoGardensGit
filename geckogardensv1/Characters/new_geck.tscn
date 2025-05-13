@@ -1,8 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://tdt5gdk3lgnu"]
+[gd_scene load_steps=15 format=3 uid="uid://tdt5gdk3lgnu"]
 
 [ext_resource type="PackedScene" uid="uid://dldo4rj3q25nk" path="res://models/gecko_11.tscn" id="1_0upnf"]
 [ext_resource type="Script" path="res://Characters/NewGeck.gd" id="1_istnc"]
 [ext_resource type="PackedScene" uid="uid://yf31asvmvsgl" path="res://HealthBar/HealthBarBillboard.tscn" id="3_beqfe"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_fd1so"]
+viewport_path = NodePath("SubViewport")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2cuwr"]
 size = Vector3(1.42759, 1.02844, 4.21759)
@@ -171,6 +174,10 @@ viewport_path = NodePath("SubViewport")
 script = ExtResource("1_istnc")
 hungerBar = 200
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+texture = SubResource("ViewportTexture_fd1so")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 0.572955)
 shape = SubResource("BoxShape3D_2cuwr")
@@ -228,6 +235,7 @@ render_target_update_mode = 4
 transform = Transform3D(-0.813949, 0.192114, -0.548251, 0.0413247, 0.960494, 0.275217, 0.579465, 0.201356, -0.789732, -1.0331, 1.69885, -2.38632)
 cull_mask = 2
 projection = 1
+current = true
 fov = 74.0702
 size = 1.15256
 far = 1.9

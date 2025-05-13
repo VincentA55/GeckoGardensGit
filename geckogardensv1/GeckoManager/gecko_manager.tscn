@@ -14,12 +14,16 @@ var current_geckos: Array[Node3D] = []
 
 
 
-func spawn_simple_gecko() -> void:
+func spawn_rand_gecko() -> void:
 	if gecko_scene == null:
 		print(\"Gecko scene not assigned!\")
 		return
 
 	var gecko = gecko_scene.instantiate()
+	
+	#sets the geckos favfood and nature randomly
+	gecko.favouriteFood = gecko.FavTypes.values()[randi() % gecko.FavTypes.size()]
+	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	
 	add_child(gecko)
 
@@ -32,16 +36,15 @@ func spawn_simple_gecko() -> void:
 
 	current_geckos.append(gecko)
 
-	# Optional: connect gecko signals
-	# gecko.connect(\"some_signal\", Callable(self, \"_on_gecko_event\"))
+
 
 func remove_gecko(gecko: Node3D) -> void:
 	if gecko in current_geckos:
 		current_geckos.erase(gecko)
 		gecko.queue_free()
 
-#func spawn_specific_gecko(int fav, int nature)-> void: 
-	#pass
+func spawn_specific_gecko(fav: int, nature :int)-> void: 
+	pass
 "
 
 [node name="GeckoManager" type="Node3D"]

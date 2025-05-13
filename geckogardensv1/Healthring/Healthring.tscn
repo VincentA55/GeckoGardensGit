@@ -15,7 +15,7 @@ var value: int = 0
 
 func _ready():
 	# Get the active camera
-	camera = get_viewport().get_camera_3d()
+	#camera = get_viewport().get_camera_3d()
 	
 	if character:
 		$TextureProgressBar.value = character.hungerBar
@@ -23,11 +23,13 @@ func _ready():
 
 func setRingChar(char: Node3D) -> void:
 	character = char
-	var viewport := character.get_node(\"SubViewport\") as SubViewport
-	if viewport and viewport.get_texture():
-		$TextureRect.texture = viewport.get_texture()
-	else:
-		print(\"Viewport or its texture not found for\", character.name)
+	await get_tree().create_timer(0.5).timeout
+	$TextureRect.texture = char.get_SubViewport()
+	#var viewport := character.get_node(\"SubViewport\") as SubViewport
+	#if viewport and viewport.get_texture():
+		#$TextureRect.texture = viewport.get_texture()
+	#else:
+	#	print(\"Viewport or its texture not found for\", character.name)
 
 
 func _update() -> void:

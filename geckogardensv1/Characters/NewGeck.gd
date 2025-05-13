@@ -60,7 +60,7 @@ func _ready() -> void:
 	get_random_position()
 	
 func get_SubViewport()->SubViewport:
-	return $SubViewport
+	return $Sprite2D
 
 #Gives random target position everytime jump is pressed
 func _unhandled_input(event: InputEvent) -> void:
