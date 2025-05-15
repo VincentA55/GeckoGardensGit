@@ -175,6 +175,7 @@ script = ExtResource("1_istnc")
 hungerBar = 200
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visibility_layer = 7
 position = Vector2(0, -3)
 texture = SubResource("ViewportTexture_fd1so")
 
@@ -216,10 +217,11 @@ libraries = {
 "": SubResource("AnimationLibrary_my5t1")
 }
 
-[node name="Billboard" parent="." node_paths=PackedStringArray("character") instance=ExtResource("3_beqfe")]
+[node name="Billboard" parent="." node_paths=PackedStringArray("character", "geckoHead") instance=ExtResource("3_beqfe")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.79636, 0)
 texture = SubResource("ViewportTexture_ot8bk")
 character = NodePath("..")
+geckoHead = NodePath("../Sprite2D")
 
 [node name="HungerTimer" type="Timer" parent="."]
 autostart = true

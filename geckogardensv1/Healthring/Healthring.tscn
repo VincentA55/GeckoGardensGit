@@ -21,10 +21,10 @@ func _ready():
 		$TextureProgressBar.value = character.hungerBar
 		$TextureRect.texture = character.get_SubViewport()
 
-func setRingChar(char: Node3D) -> void:
+func setRingChar(char: Node3D, geckoHead: Sprite2D) -> void:
 	character = char
 	await get_tree().create_timer(0.5).timeout
-	$TextureRect.texture = char.get_SubViewport()
+	$TextureRect.texture = geckoHead
 	#var viewport := character.get_node(\"SubViewport\") as SubViewport
 	#if viewport and viewport.get_texture():
 		#$TextureRect.texture = viewport.get_texture()

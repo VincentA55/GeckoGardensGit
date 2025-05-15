@@ -12,10 +12,12 @@ script/source = "@tool
 extends Sprite3D
 # The 3D character whose health this bar represents
 @export var character: Node3D
+@export var geckoHead : Sprite2D
 
 func _ready() -> void:
 	$SubViewport/Hungerbar.character = character
-	$SubViewport/Healthring.setRingChar(character)
+	
+	$SubViewport/Healthring.setRingChar(character,geckoHead)
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
 	if character and \"hungerBar\" in character:
 		$SubViewport/Hungerbar.value = character.hungerBar

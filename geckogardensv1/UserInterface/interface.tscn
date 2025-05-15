@@ -19,7 +19,7 @@ func add_gecko_feed(gecko: Node3D):
 	var texture_rect := feed_ui.get_node(\"TextureRect\")
 	texture_rect.texture = viewport.get_texture()
 
-	feed_ui.setRingChar(gecko)
+	#feed_ui.setRingChar(gecko)
 "
 
 [node name="Interface" type="Control"]
