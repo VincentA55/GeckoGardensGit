@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvacp6if2o5v3"]
+[gd_scene load_steps=5 format=3 uid="uid://bvacp6if2o5v3"]
 
 [ext_resource type="Texture2D" uid="uid://bj2ut8klimjri" path="res://Healthring/ringempty.png" id="1_s7dsd"]
 [ext_resource type="Texture2D" uid="uid://cts6vjb7arhj7" path="res://Healthring/ringbase.png" id="2_8mo57"]
@@ -10,7 +10,7 @@ extends Control
 # The 3D character whose health this bar represents
 @export var character: Node3D
 # Camera to calculate screen-space position
-var camera: Camera3D
+#var camera: Camera3D
 var value: int = 0
 
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
 	
 	if character:
 		$TextureProgressBar.value = character.hungerBar
-		$TextureRect.texture = character.get_SubViewport()
+		#$TextureRect.texture = character.
 
 func setRingChar(char: Node3D, geckoHead: Sprite2D) -> void:
 	character = char
@@ -36,8 +36,6 @@ func _update() -> void:
 	# Update health bar value
 	$TextureProgressBar.value =  character.hungerBar	
 "
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_jn4m7"]
 
 [node name="Healthring" type="Control"]
 layout_mode = 3
@@ -56,7 +54,6 @@ offset_left = -387.0
 offset_top = -376.0
 offset_right = 381.0
 offset_bottom = 409.0
-texture = SubResource("ViewportTexture_jn4m7")
 expand_mode = 3
 stretch_mode = 5
 
