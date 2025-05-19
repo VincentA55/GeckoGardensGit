@@ -23,7 +23,6 @@ data = PackedVector3Array(0.281, -1.4632, 1.5516, 0.3112, -1.542, 1.5218, 0.3112
 transform = Transform3D(1, 0, 0, 0, 0.0871558, 0.996195, 0, -0.996195, 0.0871558, 0, -0.113119, -0.804115)
 
 [node name="Sphere" parent="Armature/Skeleton3D" index="0"]
-layers = 3
 surface_material_override/0 = SubResource("StandardMaterial3D_8ejl2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D" index="1"]

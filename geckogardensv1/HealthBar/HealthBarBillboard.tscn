@@ -20,20 +20,18 @@ func _ready() -> void:
 	$SubViewport/Healthring.setRingChar(character,geckoHead)
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
 	if character and \"hungerBar\" in character:
-		$SubViewport/Hungerbar.value = character.hungerBar
-		
+		$SubViewport/Hungerbar.value = character.hungerBar	
 	if character and \"health\" in character:
 		$SubViewport/Hungerbar.value = character.health
-	
 	if character and \"isHungry\" in character:
 		$SubViewport/IsHungryBool.text = str(character.isHungry)
-	
 	if character and \"state\" in character:
 		$SubViewport/StateLabel.text = str(character.stateString)
 	if character and \"favouriteFood\" in character:
 		$SubViewport/FavLabel.text = str(character.favString)
-		
-
+	
+	
+	
 func _update() -> void:
 	# Update health bar value
 	if character and \"hungerBar\" in character:

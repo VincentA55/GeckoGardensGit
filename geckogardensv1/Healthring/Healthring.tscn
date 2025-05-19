@@ -24,17 +24,15 @@ func _ready():
 func setRingChar(char: Node3D, geckoHead: Sprite2D) -> void:
 	character = char
 	await get_tree().create_timer(0.5).timeout
-	$TextureRect.texture = geckoHead
-	#var viewport := character.get_node(\"SubViewport\") as SubViewport
-	#if viewport and viewport.get_texture():
-		#$TextureRect.texture = viewport.get_texture()
-	#else:
-	#	print(\"Viewport or its texture not found for\", character.name)
+
+
+	
+
 
 
 func _update() -> void:
 	# Update health bar value
-	$TextureProgressBar.value =  character.hungerBar	
+	$TextureProgressBar.value = character.hungerBar	
 "
 
 [node name="Healthring" type="Control"]
@@ -49,10 +47,9 @@ size_flags_vertical = 4
 script = SubResource("GDScript_mus4l")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
 offset_left = -387.0
 offset_top = -376.0
-offset_right = 381.0
+offset_right = 398.0
 offset_bottom = 409.0
 expand_mode = 3
 stretch_mode = 5

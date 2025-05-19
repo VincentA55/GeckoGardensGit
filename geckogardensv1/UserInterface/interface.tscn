@@ -17,7 +17,7 @@ func add_gecko_feed(gecko: Node3D):
 
 	var viewport := gecko.get_node(\"SubViewport\")
 	var texture_rect := feed_ui.get_node(\"TextureRect\")
-	texture_rect.texture = viewport.get_texture()
+
 
 	#feed_ui.setRingChar(gecko)
 "

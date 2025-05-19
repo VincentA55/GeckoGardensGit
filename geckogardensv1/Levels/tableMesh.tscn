@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://btd4w7r5pvxrn"]
+
+[ext_resource type="PackedScene" uid="uid://bo7qvmolccecs" path="res://Things/Table.glb" id="1_pbodd"]
+
+[node name="Table" instance=ExtResource("1_pbodd")]
+
+[node name="table" parent="." index="0"]
+layers = 2
+
+[node name="Icosphere" parent="." index="2"]
+layers = 2
+
+[node name="Cylinder" parent="." index="3"]
+layers = 2
+
+[node name="Cylinder_001" parent="." index="4"]
+layers = 2
+
+[node name="Cylinder_002" parent="." index="5"]
+layers = 2
+
+[node name="Cylinder_003" parent="." index="6"]
+layers = 2
+
+[node name="Cylinder_004" parent="." index="7"]
+layers = 2
+
+[node name="Cylinder_005" parent="." index="8"]
+layers = 2
+
+[node name="Plane" parent="." index="9"]
+layers = 2

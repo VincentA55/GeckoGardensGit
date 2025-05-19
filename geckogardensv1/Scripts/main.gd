@@ -22,5 +22,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		print("Food spawned:", food.typeString)
 		gecko_manager.spawn_rand_gecko()
 		if gecko_manager.current_geckos.size() > 0:
-			$Interface.add_gecko_feed(gecko_manager.current_geckos[-1])
+			#$Interface.add_gecko_feed(gecko_manager.current_geckos[-1])
 			gecko_manager.current_geckos[-1].global_position = get_viewport().get_camera_3d().project_position(get_viewport().get_mouse_position(), 10)
