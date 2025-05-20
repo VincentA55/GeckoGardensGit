@@ -59,6 +59,8 @@ func _ready() -> void:
 	ChangeState(States.Neutral)
 	get_random_position()
 	
+	
+	
 func get_SubViewport()->SubViewport:
 	return $SubViewport
 func get_Sprite2D()->Sprite2D:

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://FoodRelated/food.tscn" id="5_yyr70"]
 [ext_resource type="Script" path="res://camera_gimbal.gd" id="6_efmgw"]
 [ext_resource type="PackedScene" uid="uid://dj1aofiab3pg4" path="res://FoodRelated/food_manager.tscn" id="8_00cgl"]
-[ext_resource type="PackedScene" uid="uid://cdai15w516wen" path="res://Scripts/hud.tscn" id="9_34ofc"]
+[ext_resource type="PackedScene" uid="uid://cdai15w516wen" path="res://UserInterface/hud.tscn" id="9_34ofc"]
 [ext_resource type="PackedScene" uid="uid://bv4f3yslx4j1l" path="res://FoodRelated/food_dispenser.tscn" id="9_bshj1"]
 [ext_resource type="PackedScene" uid="uid://c5y11dpeantfq" path="res://Levels/basic_garden.tscn" id="9_yguqp"]
 [ext_resource type="PackedScene" uid="uid://cf5hbcy3urvgx" path="res://GeckoManager/gecko_manager.tscn" id="11_yh7xk"]

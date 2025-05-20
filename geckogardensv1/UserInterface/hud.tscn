@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cdai15w516wen"]
+[gd_scene load_steps=4 format=3 uid="uid://cdai15w516wen"]
+
+[ext_resource type="PackedScene" uid="uid://bvacp6if2o5v3" path="res://Healthring/Healthring.tscn" id="1_clfgx"]
+[ext_resource type="PackedScene" uid="uid://ufjjxom7751r" path="res://Healthring/healthring_widget.tscn" id="2_x1yjs"]
 
 [sub_resource type="GDScript" id="GDScript_8ish4"]
-script/source = "extends Control
+script/source = "
+extends Control
 
 @onready var food_list_container: VBoxContainer = $FoodListLabel/ScrollContainer/VBoxContainer # The container for labels
+@export var healthRing: PackedScene
+@export var healthRingWidget: PackedScene
 
 # Function to add a food item to the UI
 func add_food_ui(food_name: String,type:String, food_id: int) -> void:
@@ -17,6 +23,14 @@ func remove_food_ui(food_id: int) -> void:
 	var food_label = food_list_container.get_node_or_null(str(food_id))
 	if food_label:
 		food_label.queue_free()  # Remove the label
+
+
+func add_geckHud(gecko: Node3D)-> void:
+	#var gecko_label = Label.new()
+	var ring_widget = healthRingWidget.instantiate()
+	ring_widget.healthRing.setRingChar(gecko)
+	#gecko_label.add_child(ring_label)
+	$GeckoInfoContainer/GeckoRingContainer.add_child(ring_widget)
 "
 
 [node name="HUD" type="Control"]
@@ -25,6 +39,8 @@ anchors_preset = 0
 offset_right = 155.0
 offset_bottom = 646.0
 script = SubResource("GDScript_8ish4")
+healthRing = ExtResource("1_clfgx")
+healthRingWidget = ExtResource("2_x1yjs")
 
 [node name="FoodListLabel" type="Label" parent="."]
 layout_mode = 2
@@ -43,3 +59,19 @@ horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="FoodListLabel/ScrollContainer"]
 layout_mode = 2
+
+[node name="GeckoInfoContainer" type="ScrollContainer" parent="."]
+clip_contents = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 5.25161
+anchor_right = 7.19355
+anchor_bottom = 0.939628
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="GeckoRingContainer" type="VBoxContainer" parent="GeckoInfoContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

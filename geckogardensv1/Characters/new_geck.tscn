@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://tdt5gdk3lgnu"]
+[gd_scene load_steps=23 format=4 uid="uid://tdt5gdk3lgnu"]
 
 [ext_resource type="Script" path="res://Characters/NewGeck.gd" id="1_istnc"]
 [ext_resource type="Texture2D" uid="uid://c64iw0kevbfsw" path="res://models/Gecko1_GeckoColour.png" id="2_m3mym"]
@@ -369,6 +369,13 @@ _data = {
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ot8bk"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="SphereMesh" id="SphereMesh_vxtio"]
+radius = 0.19
+height = 0.24
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w2l8j"]
+albedo_color = Color(0.968922, 1.2514e-06, 0.566859, 1)
 
 [node name="NewGeck" type="CharacterBody3D"]
 script = ExtResource("1_istnc")
@@ -755,14 +762,12 @@ bones/51/rotation = Quaternion(-0.316293, -0.284419, 0.640998, 0.638894)
 bones/51/scale = Vector3(1, 1, 1)
 
 [node name="Sphere" type="MeshInstance3D" parent="Pivot/Gecko11/Armature/Skeleton3D"]
-layers = 1022
 mesh = SubResource("ArrayMesh_c3dx7")
 skin = SubResource("Skin_obo6s")
 surface_material_override/0 = SubResource("StandardMaterial3D_8ejl2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/Gecko11/Armature/Skeleton3D"]
 transform = Transform3D(1, 0, 0, 0, 1, -7.45058e-09, 0, 7.45058e-09, 1, -0.014, -0.023, -0.987)
-visible = false
 shape = SubResource("ConcavePolygonShape3D_lkb3b")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -799,6 +804,25 @@ character = NodePath("..")
 
 [node name="HungerTimer" type="Timer" parent="."]
 autostart = true
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.95398, 0)
+
+[node name="HeadViewport" type="SubViewport" parent="."]
+size = Vector2i(200, 200)
+
+[node name="CamBall" type="MeshInstance3D" parent="HeadViewport"]
+transform = Transform3D(-0.870371, 0.0704046, -0.487337, 0.0109803, 0.992254, 0.123739, 0.492273, 0.102348, -0.864403, -0.837839, 1.48506, -2.56872)
+layers = 7
+mesh = SubResource("SphereMesh_vxtio")
+skeleton = NodePath("Camera3D")
+surface_material_override/0 = SubResource("StandardMaterial3D_w2l8j")
+
+[node name="Camera3D" type="Camera3D" parent="HeadViewport/CamBall"]
+transform = Transform3D(1, 0, 2.98023e-08, -3.72529e-09, 1, -7.45058e-09, 0, 0, 1, 0, 0, 0)
+cull_mask = 946179
+fov = 35.9
+far = 2.0
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
 [connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://ufjjxom7751r"]
+
+[ext_resource type="PackedScene" uid="uid://bvacp6if2o5v3" path="res://Healthring/Healthring.tscn" id="1_fl0uj"]
+
+[sub_resource type="GDScript" id="GDScript_amy7h"]
+script/source = "extends Control
+@export var healthRing : Control
+"
+
+[node name="HealthringWidget" type="Control" node_paths=PackedStringArray("healthRing")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_amy7h")
+healthRing = NodePath("Healthring")
+
+[node name="Healthring" parent="." instance=ExtResource("1_fl0uj")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+scale = Vector2(0.6, 0.6)
