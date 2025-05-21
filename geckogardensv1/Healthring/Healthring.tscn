@@ -31,34 +31,24 @@ func _update() -> void:
 	$TextureProgressBar.value = character.hungerBar	
 "
 
-[node name="Healthring" type="Control"]
-layout_mode = 3
+[node name="Healthring" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 936.0
+offset_right = 864.0
+offset_bottom = 432.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
+scale = Vector2(0.2, 0.2)
+alignment = 2
 script = SubResource("GDScript_mus4l")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = -387.0
-offset_top = -376.0
-offset_right = 398.0
-offset_bottom = 409.0
-expand_mode = 3
-stretch_mode = 5
-
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
-layout_mode = 0
-offset_left = -540.0
-offset_top = -540.0
-offset_right = 540.0
-offset_bottom = 540.0
+layout_mode = 2
 max_value = 200.0
 value = 33.0
+allow_lesser = true
 fill_mode = 5
 texture_under = ExtResource("1_s7dsd")
 texture_over = ExtResource("2_8mo57")

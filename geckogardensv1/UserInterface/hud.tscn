@@ -30,14 +30,18 @@ func add_geckHud(gecko: Node3D)-> void:
 	var ring_widget = healthRingWidget.instantiate()
 	ring_widget.healthRing.setRingChar(gecko)
 	#gecko_label.add_child(ring_label)
-	$GeckoInfoContainer/GeckoRingContainer.add_child(ring_widget)
+	$Rings.add_child(ring_widget)
+	$Rings/HBoxContainer/Healthring.setRingChar(gecko)
 "
 
 [node name="HUD" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 155.0
-offset_bottom = 646.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = SubResource("GDScript_8ish4")
 healthRing = ExtResource("1_clfgx")
 healthRingWidget = ExtResource("2_x1yjs")
@@ -60,18 +64,25 @@ horizontal_scroll_mode = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="FoodListLabel/ScrollContainer"]
 layout_mode = 2
 
-[node name="GeckoInfoContainer" type="ScrollContainer" parent="."]
-clip_contents = false
+[node name="Rings" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 5.25161
-anchor_right = 7.19355
-anchor_bottom = 0.939628
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+anchor_left = 0.812
+anchor_top = 0.009
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.57593
+offset_top = 1.168
+offset_right = 865.0
+offset_bottom = 2574.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+alignment = 2
 
-[node name="GeckoRingContainer" type="VBoxContainer" parent="GeckoInfoContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Rings"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+
+[node name="Healthring" parent="Rings/HBoxContainer" instance=ExtResource("1_clfgx")]
+layout_mode = 2
+alignment = 0
