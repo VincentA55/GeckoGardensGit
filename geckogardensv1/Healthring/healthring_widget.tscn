@@ -1,13 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://ufjjxom7751r"]
+[gd_scene load_steps=4 format=3 uid="uid://ufjjxom7751r"]
 
 [ext_resource type="PackedScene" uid="uid://bvacp6if2o5v3" path="res://Healthring/Healthring.tscn" id="1_fl0uj"]
 
 [sub_resource type="GDScript" id="GDScript_amy7h"]
 script/source = "extends Control
 @export var healthRing : Control
+
+
+func setRingChar(char: Node3D) -> void:
+	$Healthring.setRingChar(char)
+	$NameLabel.text = char.name
 "
 
-[node name="HealthringWidget" type="Control" node_paths=PackedStringArray("healthRing")]
+[sub_resource type="LabelSettings" id="LabelSettings_edpx1"]
+font_size = 100
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_color = Color(0.0846899, 0.0846899, 0.0846899, 0)
+
+[node name="HealthringWidget" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,17 +27,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_amy7h")
-healthRing = NodePath("Healthring")
 
 [node name="Healthring" parent="." instance=ExtResource("1_fl0uj")]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
+offset_left = 2.0
+offset_top = -44.0
+offset_right = 2.0
+offset_bottom = -44.0
+grow_horizontal = 0
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = -321.0
-offset_right = 1035.0
-offset_bottom = 759.0
-scale = Vector2(0.6, 0.6)
+anchor_bottom = 1.0
+offset_left = -298.0
+offset_top = -122.0
+offset_right = 352.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "GECKO Name"
+label_settings = SubResource("LabelSettings_edpx1")

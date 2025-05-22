@@ -11,6 +11,13 @@ extends Control
 @export var healthRing: PackedScene
 @export var healthRingWidget: PackedScene
 
+
+func _update() -> void:
+	# Update health bar value
+	pass
+
+
+
 # Function to add a food item to the UI
 func add_food_ui(food_name: String,type:String, food_id: int) -> void:
 	var food_label = Label.new()
@@ -28,10 +35,8 @@ func remove_food_ui(food_id: int) -> void:
 func add_geckHud(gecko: Node3D)-> void:
 	#var gecko_label = Label.new()
 	var ring_widget = healthRingWidget.instantiate()
-	ring_widget.healthRing.setRingChar(gecko)
-	#gecko_label.add_child(ring_label)
+	ring_widget.setRingChar(gecko)
 	$Rings.add_child(ring_widget)
-	$Rings/HBoxContainer/Healthring.setRingChar(gecko)
 "
 
 [node name="HUD" type="Control"]
@@ -74,15 +79,8 @@ anchor_bottom = 1.0
 offset_left = 1.57593
 offset_top = 1.168
 offset_right = 865.0
-offset_bottom = 2574.0
+offset_bottom = 889.0
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.2, 0.2)
 alignment = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Rings"]
-layout_mode = 2
-
-[node name="Healthring" parent="Rings/HBoxContainer" instance=ExtResource("1_clfgx")]
-layout_mode = 2
-alignment = 0
