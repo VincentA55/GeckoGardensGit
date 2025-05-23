@@ -4,8 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ufjjxom7751r" path="res://Healthring/healthring_widget.tscn" id="2_x1yjs"]
 
 [sub_resource type="GDScript" id="GDScript_8ish4"]
-script/source = "
-extends Control
+script/source = "extends Control
 
 @onready var food_list_container: VBoxContainer = $FoodListLabel/ScrollContainer/VBoxContainer # The container for labels
 @export var healthRing: PackedScene
@@ -31,12 +30,20 @@ func remove_food_ui(food_id: int) -> void:
 	if food_label:
 		food_label.queue_free()  # Remove the label
 
+func connect_gecko(gecko:Node3D)-> void:
+	$Rings/HealthringWidget.setRingChar(gecko)
 
+
+
+
+
+#doesnt work old func 
 func add_geckHud(gecko: Node3D)-> void:
 	#var gecko_label = Label.new()
-	var ring_widget = healthRingWidget.instantiate()
-	ring_widget.setRingChar(gecko)
-	$Rings.add_child(ring_widget)
+	#var ring_widget = healthRingWidget.instantiate()
+	#ring_widget.setRingChar(gecko)
+	#$Rings.add_child(ring_widget)
+	pass
 "
 
 [node name="HUD" type="Control"]
@@ -84,3 +91,6 @@ grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.2, 0.2)
 alignment = 2
+
+[node name="HealthringWidget" parent="Rings" instance=ExtResource("2_x1yjs")]
+layout_mode = 2

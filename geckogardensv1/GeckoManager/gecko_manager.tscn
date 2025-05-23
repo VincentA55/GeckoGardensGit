@@ -26,7 +26,7 @@ func spawn_rand_gecko() -> void:
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	
 	add_child(gecko)
-	Hud.add_geckHud(gecko)
+	Hud.connect_gecko(gecko)
 
 	# Set random spawn position by adding markers to the geckomanager in main
 	if spawn_positions.size() > 0:

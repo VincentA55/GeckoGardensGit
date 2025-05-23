@@ -4,11 +4,11 @@
 
 [sub_resource type="GDScript" id="GDScript_amy7h"]
 script/source = "extends Control
-@export var healthRing : Control
+
 
 
 func setRingChar(char: Node3D) -> void:
-	$Healthring.setRingChar(char)
+	$Healthring.character = char
 	$NameLabel.text = char.name
 "
 
@@ -50,5 +50,4 @@ offset_right = 352.0
 offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "GECKO Name"
 label_settings = SubResource("LabelSettings_edpx1")
