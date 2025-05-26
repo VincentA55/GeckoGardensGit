@@ -5,7 +5,7 @@
 [sub_resource type="GDScript" id="GDScript_37172"]
 resource_name = "GeckoManager"
 script/source = "extends Node3D
-
+@export var HUd : Control
 @export var gecko_scene: PackedScene  # Assign your Gecko scene in the inspector
 var current_geckos: Array[Node3D] = []
 
@@ -26,7 +26,7 @@ func spawn_rand_gecko() -> void:
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	
 	add_child(gecko)
-	Hud.connect_gecko(gecko)
+	HUd.connect_gecko(gecko)#////////////////////////////////////////////////////here
 
 	# Set random spawn position by adding markers to the geckomanager in main
 	if spawn_positions.size() > 0:

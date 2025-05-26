@@ -9,6 +9,7 @@ script/source = "extends Control
 
 func setRingChar(char: Node3D) -> void:
 	$Healthring.character = char
+	
 	$NameLabel.text = char.name
 "
 

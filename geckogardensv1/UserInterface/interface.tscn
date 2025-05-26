@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://mi8u7fypmx1w"]
+[gd_scene load_steps=2 format=3 uid="uid://23phalroa1m"]
 
 [sub_resource type="GDScript" id="GDScript_kufrp"]
 resource_name = "InterfaceScript"

@@ -39,7 +39,8 @@ size = 18.5462
 
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
-[node name="HUD" parent="." instance=ExtResource("9_34ofc")]
+[node name="HUD" parent="." node_paths=PackedStringArray("GeckoManage") instance=ExtResource("9_34ofc")]
+GeckoManage = NodePath("../GeckoManager")
 
 [node name="NavigationRegion3D2" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_v42ya")
@@ -66,7 +67,10 @@ transform = Transform3D(1.77829, 0, -0.915247, 0, 2, 0, 0.915247, 0, 1.77829, 5.
 type = 3
 timer = 5.4
 
-[node name="GeckoManager" parent="." instance=ExtResource("11_yh7xk")]
+[node name="GeckoManager" parent="." node_paths=PackedStringArray("HUd") instance=ExtResource("11_yh7xk")]
+HUd = NodePath("../HUD")
 
 [node name="Marker3D" type="Marker3D" parent="GeckoManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.29112, 0)
+
+[editable path="HUD"]
