@@ -49,9 +49,10 @@ navigation_mesh = SubResource("NavigationMesh_v42ya")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11.6767, 0)
 
 [node name="FoodDispenser2" parent="." instance=ExtResource("9_bshj1")]
-transform = Transform3D(-0.540596, 0, 1.92555, 0, 2, 0, -1.92555, 0, -0.540596, -15.1198, 9.49998, 4.72172)
+transform = Transform3D(-0.540596, -1.31823, 1.40357, 0, 1.45784, 1.36919, -1.92555, 0.370092, -0.394052, -15.1198, 9.49998, 4.72172)
 type = 2
-timer = 8.0
+spawn_force = 10.0
+timer = 1.0
 
 [node name="FoodDispenser4" parent="." instance=ExtResource("9_bshj1")]
 transform = Transform3D(0.569972, 0, -1.91706, 0, 2, 0, 1.91706, 0, 0.569972, 15.0048, 9.49998, -3.64226)
@@ -74,3 +75,4 @@ HUd = NodePath("../HUD")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.29112, 0)
 
 [editable path="HUD"]
+[editable path="HUD/Rings/HealthringWidget"]
