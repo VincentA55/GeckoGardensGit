@@ -13,6 +13,7 @@ script/source = "extends Control
 
 func _update() -> void:
 	# Update health bar value
+	$Rings/HealthringWidget/Healthring._update()
 	pass
 
 
@@ -31,7 +32,6 @@ func remove_food_ui(food_id: int) -> void:
 		food_label.queue_free()  # Remove the label
 
 func connect_gecko(gecko:Node3D)-> void:
-
 	$Rings/HealthringWidget.setRingChar(gecko)
 "
 
