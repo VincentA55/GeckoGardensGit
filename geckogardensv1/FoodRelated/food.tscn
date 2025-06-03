@@ -79,7 +79,8 @@ radius = 0.512222
 radius = 0.251576
 
 [node name="food" type="RigidBody3D" groups=["food"]]
-mass = 0.1
+mass = 0.05
+gravity_scale = 0.8
 script = ExtResource("1_bxr4o")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
