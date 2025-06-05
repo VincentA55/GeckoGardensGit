@@ -32,7 +32,12 @@ func remove_food_ui(food_id: int) -> void:
 		food_label.queue_free()  # Remove the label
 
 func connect_gecko(gecko:Node3D)-> void:
-	$Rings/HealthringWidget.setRingChar(gecko)
+	#WORKING HERE -------------------------------------------------------------
+	var newRing = healthRingWidget.instantiate()
+	newRing.setRingChar(gecko)
+	
+	#$Rings/HealthringWidget.setRingChar(gecko)
+	$Rings.add_child(newRing)
 "
 
 [node name="HUD" type="Control"]
@@ -83,5 +88,6 @@ alignment = 2
 
 [node name="HealthringWidget" parent="Rings" instance=ExtResource("2_x1yjs")]
 layout_mode = 2
+size_flags_vertical = 3
 
 [editable path="Rings/HealthringWidget"]
