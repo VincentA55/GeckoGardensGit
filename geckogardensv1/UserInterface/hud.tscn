@@ -33,6 +33,7 @@ func remove_food_ui(food_id: int) -> void:
 
 func connect_gecko(gecko:Node3D)-> void:
 	#WORKING HERE -------------------------------------------------------------
+	
 	var newRing = healthRingWidget.instantiate()
 	newRing.setRingChar(gecko)
 	
