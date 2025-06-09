@@ -19,10 +19,10 @@ func _ready() -> void:
 	
 	$SubViewport/Healthring.setRingChar(character)
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
-	if character and \"hungerBar\" in character:
-		$SubViewport/Hungerbar.value = character.hungerBar	
-	if character and \"health\" in character:
-		$SubViewport/Hungerbar.value = character.health
+	if character and \"current_hunger\" in character:
+		$SubViewport/Hungerbar.value = character.current_hunger	
+	if character and \"current_hunger\" in character:
+		$SubViewport/Hungerbar.value = character.current_hunger
 	if character and \"isHungry\" in character:
 		$SubViewport/IsHungryBool.text = str(character.isHungry)
 	if character and \"state\" in character:
@@ -34,8 +34,8 @@ func _ready() -> void:
 	
 func _update() -> void:
 	# Update health bar value
-	if character and \"hungerBar\" in character:
-		$SubViewport/Hungerbar.value = character.hungerBar
+	if character and \"current_hunger\" in character:
+		$SubViewport/Hungerbar.value = character.current_hunger
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
 		$SubViewport/Healthring._update()
 	
@@ -66,18 +66,18 @@ func _ready():
 	camera = get_viewport().get_camera_3d()
 	
 	# Set the initial value to a placeholder (e.g., full health) or could hard code 100
-	if character and \"hunger\" in character:
-		value = character.hunger
-	if character and \"health\" in character:
-		value = character.health
+	if character and \"current_hunger\" in character:
+		value = character.current_hunger
+	if character and \"current_hunger\" in character:
+		value = character.current_hunger
 
 func _process(delta):
 	if not character or not camera:
 		return
 	
 	# Update health bar value
-	if character and \"hunger\" in character:
-		value = character.hunger
+	if character and \"current_hunger\" in character:
+		value = character.current_hunger
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_iqh5g"]

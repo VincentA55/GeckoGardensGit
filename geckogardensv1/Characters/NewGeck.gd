@@ -39,9 +39,10 @@ enum FavTypes{
 @export var favouriteFood : FavTypes
 var favString : String 
 
-@export var hungerBar : int #The size of the hungerbar, zero is empty
+@export var current_hunger : int #The size of the hungerbar, zero is empty
+@export var hungerMax : int
 @export var hungerGreed : int = 10#How much it decreases by
-signal currentHunger(current_hunger:int)
+signal hunger_changed(current_hunger)
 
 var isHungry : bool = false
 var isdead : bool = false
@@ -57,6 +58,7 @@ func _ready() -> void:
 	#hungerGreed = randi_range(5, 15)
 	#favouriteFood = FavTypes.values()[randi() % FavTypes.size()]
 	favString = FavTypes.keys()[favouriteFood]
+	current_hunger = hungerMax
 	ChangeState(States.Neutral)
 	get_random_position()
 
@@ -100,7 +102,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	if not isdead:
-		if hungerBar <= 50 and not isHungry:
+		if current_hunger <= 50 and not isHungry:
 			ChangeState(States.Hungry)
 
 func _on_navigation_finished() -> void:
@@ -170,13 +172,13 @@ func ChangeState(newState : States) -> void:
 				await $AnimationPlayer.animation_finished
 
 				if nature == Natures.Greedy:
-					if hungerBar < 200:
+					if current_hunger < 200:
 						ChangeState(States.Hungry)
 					else:
 						isHungry = false
 						ChangeState(States.Neutral)
 				else:
-					if hungerBar <= 60:
+					if current_hunger <= 60:
 						ChangeState(States.Hungry)
 					else:
 						isHungry = false
@@ -229,11 +231,12 @@ func choose_wander_action() -> String:
 
 #The rate at which the hunger goes down
 func _on_hunger_timer_timeout() -> void:
+	hunger_changed.emit(current_hunger)
 	if not isdead and state != States.Eating:
-		if hungerBar <= -40:
+		if current_hunger <= -40:
 			die()
-		if hungerBar >= -40:
-			hungerBar -= hungerGreed
+		if current_hunger >= -40:
+			current_hunger -= hungerGreed
 		if isHungry and target == null:
 			find_food()
 
@@ -248,7 +251,8 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 			if body.has_method("get_fill_amount"):
 				target = null 
 				ChangeState(States.Eating)
-				hungerBar += body.get_fill_amount()
+				current_hunger += body.get_fill_amount()
+				hunger_changed.emit(current_hunger)
 				body.on_eaten() 
 		invalid_targets.erase(body)
 

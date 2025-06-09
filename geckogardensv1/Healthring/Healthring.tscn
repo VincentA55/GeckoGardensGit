@@ -18,7 +18,7 @@ func _ready():
 	#camera = get_viewport().get_camera_3d()
 	
 	if character:
-		$TextureProgressBar.value = character.hungerBar
+		$TextureProgressBar.value = character.current_hunger
 		#$TextureRect.texture = character.
 
 func setRingChar(char: Node3D) -> void:
@@ -28,7 +28,7 @@ func setRingChar(char: Node3D) -> void:
 
 func _update() -> void:
 	# Update health bar value
-	$TextureProgressBar.value = character.hungerBar	
+	$TextureProgressBar.value = character.current_hunger
 "
 
 [node name="Healthring" type="Control"]

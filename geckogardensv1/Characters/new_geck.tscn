@@ -365,7 +365,7 @@ albedo_color = Color(0.968922, 1.2514e-06, 0.566859, 1)
 
 [node name="NewGeck" type="CharacterBody3D"]
 script = ExtResource("1_istnc")
-hungerBar = 200
+hungerMax = 100
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 0.572955)
