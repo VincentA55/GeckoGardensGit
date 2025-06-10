@@ -170,7 +170,7 @@ func ChangeState(newState : States) -> void:
 			States.Eating:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
-
+				hunger_changed.emit(current_hunger)
 				if nature == Natures.Greedy:
 					if current_hunger < 200:
 						ChangeState(States.Hungry)
@@ -231,8 +231,8 @@ func choose_wander_action() -> String:
 
 #The rate at which the hunger goes down
 func _on_hunger_timer_timeout() -> void:
-	hunger_changed.emit(current_hunger)
 	if not isdead and state != States.Eating:
+		hunger_changed.emit(current_hunger)
 		if current_hunger <= -40:
 			die()
 		if current_hunger >= -40:
@@ -252,7 +252,7 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 				target = null 
 				ChangeState(States.Eating)
 				current_hunger += body.get_fill_amount()
-				hunger_changed.emit(current_hunger)
+				
 				body.on_eaten() 
 		invalid_targets.erase(body)
 

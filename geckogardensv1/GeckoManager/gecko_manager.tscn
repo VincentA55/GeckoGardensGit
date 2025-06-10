@@ -11,7 +11,7 @@ var current_geckos: Array[Node3D] = []
 
 # Optional spawn area or positions
 @export var spawn_positions: Array[Node3D] = []  # Assign Position3D nodes in editor
-
+signal geckoAdded(gecko)
 
 
 func spawn_rand_gecko() -> void:
@@ -25,9 +25,10 @@ func spawn_rand_gecko() -> void:
 	gecko.favouriteFood = gecko.FavTypes.values()[randi() % gecko.FavTypes.size()]
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	
+	#HUd.connect_gecko(gecko)#////////////////////////////////////////////////////here
 	add_child(gecko)
-	HUd.connect_gecko(gecko)#////////////////////////////////////////////////////here
-
+	geckoAdded.emit(gecko)
+	
 	# Set random spawn position by adding markers to the geckomanager in main
 	if spawn_positions.size() > 0:
 		var spawn_point = spawn_positions[randi() % spawn_positions.size()]

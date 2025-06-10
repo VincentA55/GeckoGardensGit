@@ -33,12 +33,7 @@ func remove_food_ui(food_id: int) -> void:
 
 func connect_gecko(gecko:Node3D)-> void:
 	#WORKING HERE -------------------------------------------------------------
-	
-	var newRing = healthRingWidget.instantiate()
-	newRing.setRingChar(gecko)
-	
-	#$Rings/HealthringWidget.setRingChar(gecko)
-	$Rings.add_child(newRing)
+	pass
 "
 
 [node name="HUD" type="Control"]
@@ -71,26 +66,4 @@ horizontal_scroll_mode = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="FoodListLabel/ScrollContainer"]
 layout_mode = 2
 
-[node name="Rings" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.812
-anchor_top = 0.009
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.57593
-offset_top = 1.168
-offset_right = 865.0
-offset_bottom = 889.0
-grow_horizontal = 0
-grow_vertical = 2
-scale = Vector2(0.2, 0.2)
-alignment = 2
-
-[node name="HealthringWidget" parent="Rings" instance=ExtResource("2_x1yjs")]
-layout_mode = 2
-size_flags_vertical = 3
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[editable path="Rings/HealthringWidget"]
