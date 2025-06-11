@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 FoodManager="*res://FoodRelated/food_manager.tscn"
 Hud="*res://UserInterface/hud.tscn"
+GeckoManagerScript="*res://GeckoManager/Gecko_Manager_script.gd"
 
 [global_group]
 

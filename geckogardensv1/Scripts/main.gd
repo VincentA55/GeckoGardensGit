@@ -20,7 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		#food.connect("eaten", Callable(hud, "remove_food_ui").bind(food.get_instance_id()))
 #
 		#print("Food spawned:", food.typeString)
-		gecko_manager.spawn_rand_gecko()
-		if gecko_manager.current_geckos.size() > 0:
-			hud.connect_gecko(gecko_manager.current_geckos[-1])
-			gecko_manager.current_geckos[-1].global_position = get_viewport().get_camera_3d().project_position(get_viewport().get_mouse_position(), 10)
+		
+		GeckoManagerScript.spawn_rand_gecko()
+		if GeckoManagerScript.current_geckos.size() > 0:
+			GeckoManagerScript.current_geckos[-1].global_position = get_viewport().get_camera_3d().project_position(get_viewport().get_mouse_position(), 10)

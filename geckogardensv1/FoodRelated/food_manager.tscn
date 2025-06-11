@@ -14,8 +14,8 @@ func add_food(type: int) -> Node3D:
 	var food = food_scene.instantiate().getSpecificType(type)
 	get_parent().add_child(food)
 	food_items.append(food)
-	print(\"Adding food: \", food)
-	print(\"Calling HUD: \", hud)
+	#print(\"Adding food: \", food)
+	#print(\"Calling HUD: \", hud)
 
 	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
 	#	# Update HUD UI
@@ -30,7 +30,7 @@ func remove_food(food: Node3D) -> void:
 		food_items.erase(food)
 		if is_instance_valid(food):
 			food.queue_free()
-	print(\"remove_food:\", food)
+	#print(\"remove_food:\", food)
 
 
 func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
@@ -84,7 +84,7 @@ func get_fav_only(from_position: Vector3, fav_type: int) -> Node3D:
 
 # Handle the signal when the food is eaten
 func _on_food_eaten(food: Node3D) -> void:
-		print(\"_on_food_eaten: \", food)
+		#print(\"_on_food_eaten: \", food)
 	# Remove the food from the list
 		if food in food_items:
 			food_items.erase(food)

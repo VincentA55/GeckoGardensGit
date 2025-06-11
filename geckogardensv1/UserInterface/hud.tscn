@@ -1,22 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdai15w516wen"]
-
-[ext_resource type="PackedScene" uid="uid://bvacp6if2o5v3" path="res://Healthring/Healthring.tscn" id="1_clfgx"]
-[ext_resource type="PackedScene" uid="uid://ufjjxom7751r" path="res://Healthring/healthring_widget.tscn" id="2_x1yjs"]
+[gd_scene load_steps=2 format=3 uid="uid://cdai15w516wen"]
 
 [sub_resource type="GDScript" id="GDScript_8ish4"]
 script/source = "extends Control
-@export var GeckoManage : Node
+
 @onready var food_list_container: VBoxContainer = $FoodListLabel/ScrollContainer/VBoxContainer # The container for labels
-@export var healthRing: PackedScene
-@export var healthRingWidget: PackedScene
+const healthRingScene = preload(\"res://Healthring/Healthring.tscn\")
+@export var healthRingWidgetScene: PackedScene
 
-
-func _update() -> void:
-	# Update health bar value
-	$Rings/HealthringWidget/Healthring._update()
+func _ready():
+	# Connect to the global signal. When GameEvents emits 'character_added',
+	# the '_on_character_added' function below will be called.
+	GeckoManagerScript.geckoAdded.connect(_on_gecko_added)
 	pass
 
 
+
+func _on_gecko_added(gecko_node):
+	# Create a new instance of our HealthBar scene.
+	var health_ring = healthRingScene.instantiate()
+	
+	# Add the new health bar to our VBoxContainer on the right of the screen.
+	$CanvasLayer/MarginContainer/HealthRingContainer.add_child(health_ring)
+	
+
+	gecko_node.hunger_changed.connect(health_ring.update_hunger)
+	health_ring.setRingChar(gecko_node)
+	# When this character dies, the bar's self-destruct function is called.
+	#gecko_node.died.connect(health_bar._on_character_died)
+	
+	# Immediately update the health bar to the character's starting health.
+	health_ring.update_hunger(gecko_node.current_hunger, gecko_node.hungerMax)
 
 # Function to add a food item to the UI
 func add_food_ui(food_name: String,type:String, food_id: int) -> void:
@@ -30,10 +43,6 @@ func remove_food_ui(food_id: int) -> void:
 	var food_label = food_list_container.get_node_or_null(str(food_id))
 	if food_label:
 		food_label.queue_free()  # Remove the label
-
-func connect_gecko(gecko:Node3D)-> void:
-	#WORKING HERE -------------------------------------------------------------
-	pass
 "
 
 [node name="HUD" type="Control"]
@@ -45,8 +54,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = SubResource("GDScript_8ish4")
-healthRing = ExtResource("1_clfgx")
-healthRingWidget = ExtResource("2_x1yjs")
 
 [node name="FoodListLabel" type="Label" parent="."]
 layout_mode = 2
@@ -67,3 +74,15 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="HealthRingContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8

@@ -1,12 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cf5hbcy3urvgx"]
+extends Node
 
-[ext_resource type="PackedScene" uid="uid://tdt5gdk3lgnu" path="res://Characters/new_geck.tscn" id="1_ve811"]
-
-[sub_resource type="GDScript" id="GDScript_37172"]
-resource_name = "GeckoManager"
-script/source = "extends Node
 @export var HUd : Control
-@export var gecko_scene: PackedScene  # Assign your Gecko scene in the inspector
+# Load the scene file from the path and store it as a PackedScene blueprint.
+const gecko_scene: PackedScene = preload("res://Characters/new_geck.tscn")
 var current_geckos: Array[Node3D] = []
 
 # Optional spawn area or positions
@@ -16,7 +12,7 @@ signal geckoAdded(gecko)
 
 func spawn_rand_gecko() -> void:
 	if gecko_scene == null:
-		print(\"Gecko scene not assigned!\")
+		print("Gecko scene not assigned!")
 		return
 
 	var gecko = gecko_scene.instantiate()
@@ -67,8 +63,3 @@ func spawn_specific_gecko(fav: int, nature :int)-> void:
 	
 	
 	pass
-"
-
-[node name="GeckoManager" type="Node3D"]
-script = SubResource("GDScript_37172")
-gecko_scene = ExtResource("1_ve811")

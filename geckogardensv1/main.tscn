@@ -39,8 +39,7 @@ size = 18.5462
 
 [node name="FoodManager" parent="." instance=ExtResource("8_00cgl")]
 
-[node name="HUD" parent="." node_paths=PackedStringArray("GeckoManage") instance=ExtResource("9_34ofc")]
-GeckoManage = NodePath("../GeckoManager")
+[node name="HUD" parent="." instance=ExtResource("9_34ofc")]
 
 [node name="NavigationRegion3D2" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_v42ya")

@@ -84,14 +84,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	#velocity.y -= gravity * delta thses 2 are to try and make it fall when spawned
-	#move_and_slide()
+	
 	if not isdead:
 		if state == States.Walking or state == States.Pursuit:
-			print("Moving towards:", navigation_agent.get_target_position())
+			#print("Moving towards:", navigation_agent.get_target_position())
 			move_to_location(delta)
 
 		if state == States.Pursuit and (target == null or not is_instance_valid(target)):
-			print("Lost food target, finding new food...")
+			#print("Lost food target, finding new food...")
 			velocity = Vector3.ZERO
 			move_and_slide()  # Apply the stop immediately
 			navigation_agent.set_target_position(global_position)  # Cancel navigation
@@ -118,7 +118,7 @@ func move_to_location(delta:float)->void:
 		navigation_agent.set_target_position(target.global_position)
 		lastTargetPosition = target.global_position
 	if navigation_agent.is_navigation_finished():  
-		print("nav_finished")
+		#print("nav_finished")
 		velocity = Vector3.ZERO  
 		return  
 	var destination = navigation_agent.get_next_path_position()
@@ -171,6 +171,7 @@ func ChangeState(newState : States) -> void:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
 				hunger_changed.emit(current_hunger)
+				print(name, " EATING hunger is now ", current_hunger) # <-- DEBUG
 				if nature == Natures.Greedy:
 					if current_hunger < 200:
 						ChangeState(States.Hungry)
@@ -185,7 +186,7 @@ func ChangeState(newState : States) -> void:
 						ChangeState(States.Neutral)
 			States.Dead:
 				isdead = true
-				print("dead")
+				#print("dead")
 				$AnimationPlayer.play("die")
 				emit_signal("Starved")
 	print("State:", stateString)
@@ -199,7 +200,7 @@ func _on_wander_timer_timeout() -> void:
 func perform_wander_action():
 	var action = choose_wander_action()
 	$AnimationPlayer.play("RESET")
-	print("Gecko chose: ", action)  # Debugging
+	#print("Gecko chose: ", action)  # Debugging
 
 	if action == "spin":
 		$AnimationPlayer.play("spin")
@@ -233,6 +234,7 @@ func choose_wander_action() -> String:
 func _on_hunger_timer_timeout() -> void:
 	if not isdead and state != States.Eating:
 		hunger_changed.emit(current_hunger)
+		print(name, " TIMOUT hunger is now ", current_hunger) # <-- DEBUG
 		if current_hunger <= -40:
 			die()
 		if current_hunger >= -40:
@@ -268,4 +270,4 @@ func find_food() -> void:
 		if nearest_food and nearest_food != target:
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
-			print("Gecko is now pursuing food:", target)
+			#print("Gecko is now pursuing food:", target)

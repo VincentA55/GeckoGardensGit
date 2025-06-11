@@ -17,9 +17,10 @@ func _ready():
 	# Get the active camera
 	#camera = get_viewport().get_camera_3d()
 	
-	if character:
-		$TextureProgressBar.value = character.current_hunger
-		#$TextureRect.texture = character.
+	#if character:
+		#$TextureProgressBar.value = character.current_hunger
+		##$TextureRect.texture = character.
+	pass
 
 func setRingChar(char: Node3D) -> void:
 	character = char
@@ -29,9 +30,21 @@ func setRingChar(char: Node3D) -> void:
 func _update() -> void:
 	# Update health bar value
 	$TextureProgressBar.value = character.current_hunger
+	pass
+
+func update_hunger(current_hunger, hungerMax):
+	# ProgressBar's value is a float from 0 to 100 by default.
+	# We can also set max_value to match the character's max_health.
+	print(\"HealthRing for \", character.name, \" received update: \", current_hunger, \"/\", hungerMax) # <-- DEBUG
+	$TextureProgressBar.max_value = hungerMax
+	$TextureProgressBar.value = current_hunger
+	
+	#WORKINHHERER------------------------------------------------------
+	
 "
 
 [node name="Healthring" type="Control"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -40,6 +53,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = SubResource("GDScript_mus4l")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
