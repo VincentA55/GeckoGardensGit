@@ -1,36 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://dj1aofiab3pg4"]
+extends Node
 
-[ext_resource type="PackedScene" uid="uid://sl57bli8u2q" path="res://FoodRelated/food.tscn" id="1_ahxyk"]
-
-[sub_resource type="GDScript" id="GDScript_osbvm"]
-script/source = "extends Node
-
-@export var food_scene: PackedScene  
+const food_scene: PackedScene = preload("res://FoodRelated/food.tscn") 
 var food_items: Array[Node3D] = []  # Stores all food objects
-@onready var hud = $\"../HUD\"  # Finds the HUD in the scene
+const hud: PackedScene = preload("res://UserInterface/hud.tscn")  
 
 # Add food to the list
 func add_food(type: int) -> Node3D:
 	var food = food_scene.instantiate().getSpecificType(type)
 	get_parent().add_child(food)
 	food_items.append(food)
-	#print(\"Adding food: \", food)
-	#print(\"Calling HUD: \", hud)
+	#print("Adding food: ", food)
+	#print("Calling HUD: ", hud)
 
-	food.connect(\"eaten\", Callable(self, \"_on_food_eaten\").bind(food))  # Connect the \"eaten\" signal to the handler method \"_on_food_eaten\"
+	food.connect("eaten", Callable(self, "_on_food_eaten").bind(food))  # Connect the "eaten" signal to the handler method "_on_food_eaten"
 	#	# Update HUD UI
-	if hud:
-		hud.add_food_ui(food.foodName,food.typeString, food.get_instance_id())
+	if Hud:
+		Hud.add_food_ui(food.foodName,food.typeString, food.get_instance_id())
 	return food
 
 
 func remove_food(food: Node3D) -> void:
 	if food in food_items:
-		hud.remove_food_ui(food.get_instance_id())
+		Hud.remove_food_ui(food.get_instance_id())
 		food_items.erase(food)
 		if is_instance_valid(food):
 			food.queue_free()
-	#print(\"remove_food:\", food)
+	#print("remove_food:", food)
 
 
 func get_nearest_food(from_position: Vector3, fav_type: int) -> Node3D:
@@ -84,16 +79,11 @@ func get_fav_only(from_position: Vector3, fav_type: int) -> Node3D:
 
 # Handle the signal when the food is eaten
 func _on_food_eaten(food: Node3D) -> void:
-		#print(\"_on_food_eaten: \", food)
+		#print("_on_food_eaten: ", food)
 	# Remove the food from the list
 		if food in food_items:
 			food_items.erase(food)
 		# Remove from HUD UI
-		if hud:
-			hud.remove_food_ui(food.get_instance_id())
+		if Hud:
+			Hud.remove_food_ui(food.get_instance_id())
 		food.queue_free()  # Free the food object
-"
-
-[node name="FoodManager" type="Node3D" groups=["food_manager"]]
-script = SubResource("GDScript_osbvm")
-food_scene = ExtResource("1_ahxyk")

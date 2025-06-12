@@ -18,7 +18,6 @@ func _ready():
 func _on_gecko_added(gecko_node):
 	# Create a new instance of our HealthBar scene.
 	var health_ring = healthRingScene.instantiate()
-	
 	# Add the new health bar to our VBoxContainer on the right of the screen.
 	$CanvasLayer/MarginContainer/HealthRingContainer.add_child(health_ring)
 	

@@ -2,7 +2,6 @@ extends CharacterBody3D
 
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var food_manager = get_node("/root/Main/FoodManager")
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -261,11 +260,11 @@ func _on_mouth_zone_entered(body: Node3D) -> void:
 
 func find_food() -> void:
 	var nearest_food = null
-	if food_manager and state != States.Pursuit:
+	if FoodManagerScript and state != States.Pursuit:
 		if nature == Natures.Picky:
-			nearest_food = food_manager.get_fav_only(global_position, favouriteFood)
+			nearest_food = FoodManagerScript.get_fav_only(global_position, favouriteFood)
 		else:
-			nearest_food = food_manager.get_nearest_food(global_position, favouriteFood)
+			nearest_food = FoodManagerScript.get_nearest_food(global_position, favouriteFood)
 				
 		if nearest_food and nearest_food != target:
 			target = nearest_food

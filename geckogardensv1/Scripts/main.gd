@@ -1,12 +1,7 @@
 extends Node
 
-# Scene to instantiate when dropping food
-@export var geck_scene: PackedScene
-@export var food_scene: PackedScene  
 
-@onready var food_manager = $FoodManager  # Reference to FoodManager
-@onready var gecko_manager = $GeckoManager
-@onready var hud = $HUD  # Reference to HUD
+
 
 
 

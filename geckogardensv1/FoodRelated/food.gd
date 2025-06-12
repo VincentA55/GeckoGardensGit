@@ -75,7 +75,7 @@ func getSpecificType(type: int):
 
 func _process(delta: float) -> void:
 	if global_position.y < -10: 
-		food_manager.remove_food(self)
+		FoodManagerScript.remove_food(self)
 
 func get_fill_amount() -> int:
 	return fill_amount
@@ -84,7 +84,7 @@ func on_eaten()-> void:
 	$AnimationPlayer.play("eaten")
 	await $AnimationPlayer.animation_finished
 	eaten.emit(fill_amount)
-	food_manager._on_food_eaten(self)
+	FoodManagerScript._on_food_eaten(self)
 	
 func getType() -> Types:
 	return self.type
