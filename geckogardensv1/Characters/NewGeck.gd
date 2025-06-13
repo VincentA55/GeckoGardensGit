@@ -170,6 +170,7 @@ func ChangeState(newState : States) -> void:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
 				hunger_changed.emit(current_hunger)
+				#NEED A WAY FOR EACH INDIVIDUAL GECKO TO SIGNAL ITS OWN HEALTH RING!?!?!?!?!?!?!'
 				print(name, " EATING hunger is now ", current_hunger) # <-- DEBUG
 				if nature == Natures.Greedy:
 					if current_hunger < 200:
