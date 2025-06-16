@@ -1,6 +1,6 @@
 extends Node
 
-@export var HUd : Control
+
 # Load the scene file from the path and store it as a PackedScene blueprint.
 const gecko_scene: PackedScene = preload("res://Characters/new_geck.tscn")
 var current_geckos: Array[Node3D] = []
@@ -21,9 +21,10 @@ func spawn_rand_gecko() -> void:
 	gecko.favouriteFood = gecko.FavTypes.values()[randi() % gecko.FavTypes.size()]
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	
-	#HUd.connect_gecko(gecko)#////////////////////////////////////////////////////here
+	
 	add_child(gecko)
-	geckoAdded.emit(gecko)
+	#geckoAdded.emit(gecko)
+	Hud._on_gecko_added(gecko)
 	
 	# Set random spawn position by adding markers to the geckomanager in main
 	if spawn_positions.size() > 0:
@@ -50,7 +51,7 @@ func spawn_specific_gecko(fav: int, nature :int)-> void:
 	gecko.nature = nature
 	
 	add_child(gecko)
-	HUd.connect_gecko(gecko)#////////////////////////////////////////////////////here
+	
 
 	# Set random spawn position by adding markers to the geckomanager in main
 	if spawn_positions.size() > 0:

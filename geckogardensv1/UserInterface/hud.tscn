@@ -5,7 +5,7 @@ script/source = "extends Control
 
 @onready var food_list_container: VBoxContainer = $FoodListLabel/ScrollContainer/VBoxContainer # The container for labels
 const healthRingScene = preload(\"res://Healthring/Healthring.tscn\")
-@export var healthRingWidgetScene: PackedScene
+#@export var healthRingWidgetScene: PackedScene
 
 func _ready():
 	# Connect to the global signal. When GameEvents emits 'character_added',
@@ -16,19 +16,20 @@ func _ready():
 
 
 func _on_gecko_added(gecko_node):
-	# Create a new instance of our HealthBar scene.
+	# 1. Instantiate
 	var health_ring = healthRingScene.instantiate()
-	# Add the new health bar to our VBoxContainer on the right of the screen.
+	
 	$CanvasLayer/MarginContainer/HealthRingContainer.add_child(health_ring)
 	
-
-	gecko_node.hunger_changed.connect(health_ring.update_hunger)
-	health_ring.setRingChar(gecko_node)
-	# When this character dies, the bar's self-destruct function is called.
-	#gecko_node.died.connect(health_bar._on_character_died)
 	
-	# Immediately update the health bar to the character's starting health.
-	health_ring.update_hunger(gecko_node.current_hunger, gecko_node.hungerMax)
+	
+	# 3. Call YOUR setup function to initialize it. That's it!
+	health_ring.setRingChar(gecko_node)
+	
+	# --- ANNOUNCE THE CONNECTION ---
+	print_rich(\"[color=yellow]HUD is connecting Gecko #%d to HealthRing #%d[/color]\" % [gecko_node.get_instance_id(), health_ring.get_instance_id()])
+
+
 
 # Function to add a food item to the UI
 func add_food_ui(food_name: String,type:String, food_id: int) -> void:

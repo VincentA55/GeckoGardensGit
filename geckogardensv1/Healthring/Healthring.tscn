@@ -7,40 +7,42 @@
 [sub_resource type="GDScript" id="GDScript_mus4l"]
 script/source = "@tool
 extends Control
-# The 3D character whose health this bar represents
-@export var character: Node3D
-# Camera to calculate screen-space position
-#var camera: Camera3D
-var value: int = 0
 
-func _ready():
-	# Get the active camera
-	#camera = get_viewport().get_camera_3d()
-	
-	#if character:
-		#$TextureProgressBar.value = character.current_hunger
-		##$TextureRect.texture = character.
-	pass
+# The 3D character whose health this bar represents
+var character: Node3D
 
 func setRingChar(char: Node3D) -> void:
+	
 	character = char
-	#await get_tree().create_timer(0.5).timeout
+	if not is_instance_valid(character):
+		print(\"HealthRing was given an invalid character.\")
+		return
+
+	#Connect this script's functions to the character's signals.
+	character.hunger_changed.connect(Callable(self, \"update_hunger\"))
+	character.died.connect(Callable(self, \"_on_character_died\")) 
+	
+	# --- ANNOUNCE THE SETUP ---
+	print_rich(\"[color=green]HealthRing #%d is now tracking Gecko #%d[/color]\" % [get_instance_id(), character.get_instance_id()])
+	
+
+	update_hunger(character.current_hunger, character.hungerMax)
 
 
-func _update() -> void:
-	# Update health bar value
-	$TextureProgressBar.value = character.current_hunger
-	pass
 
 func update_hunger(current_hunger, hungerMax):
-	# ProgressBar's value is a float from 0 to 100 by default.
-	# We can also set max_value to match the character's max_health.
-	print(\"HealthRing for \", character.name, \" received update: \", current_hunger, \"/\", hungerMax) # <-- DEBUG
-	$TextureProgressBar.max_value = hungerMax
+
+	if not is_instance_valid(character):
+		return
+
+	print(\"HealthRing for '\", character.name, \"' received update: \", current_hunger, \"/\", hungerMax)
+
 	$TextureProgressBar.value = current_hunger
-	
-	#WORKINHHERER------------------------------------------------------
-	
+
+
+# Add this function so the ring can remove itself when the character dies.
+func _on_character_died():
+	queue_free()
 "
 
 [node name="Healthring" type="Control"]

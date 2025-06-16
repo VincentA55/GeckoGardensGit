@@ -17,7 +17,7 @@ extends Sprite3D
 func _ready() -> void:
 	$SubViewport/Hungerbar.character = character
 	
-	$SubViewport/Healthring.setRingChar(character)
+	#$SubViewport/Healthring.setRingChar(character)
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
 	if character and \"current_hunger\" in character:
 		$SubViewport/Hungerbar.value = character.current_hunger	
@@ -37,7 +37,7 @@ func _update() -> void:
 	if character and \"current_hunger\" in character:
 		$SubViewport/Hungerbar.value = character.current_hunger
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
-		$SubViewport/Healthring._update()
+		$SubViewport/Healthring.update_hunger(character.current_hunger,character.hungerMax)
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
 	$SubViewport/FavLabel.text = str(character.favString)

@@ -45,6 +45,7 @@ signal hunger_changed(current_hunger)
 
 var isHungry : bool = false
 var isdead : bool = false
+signal died
 var isStarving : bool = false
 signal Starved
 var invalid_targets: Array = []  # List of targets that should be ignored to prevent every frame interactions
@@ -103,6 +104,19 @@ func _process(_delta: float) -> void:
 	if not isdead:
 		if current_hunger <= 50 and not isHungry:
 			ChangeState(States.Hungry)
+	# --- THE SMOKING GUN TEST ---
+	# Get all active connections for this signal right now.
+	var connections = hunger_changed.get_connections()
+
+	# If this array is empty, it means NOTHING is listening anymore!
+	if connections.is_empty():
+		print_rich("[color=orange]Gecko #%d is emitting, but NO ONE is listening![/color]" % get_instance_id())
+	else:
+		# If it's NOT empty, let's see who is connected.
+		print_rich("[color=cyan]Gecko #%d is emitting. Listeners: %s[/color]" % [get_instance_id(), connections])
+
+	# Now, emit the signal.
+	hunger_changed.emit(current_hunger, hungerMax)
 
 func _on_navigation_finished() -> void:
 	velocity = Vector3.ZERO 
@@ -188,7 +202,7 @@ func ChangeState(newState : States) -> void:
 				isdead = true
 				#print("dead")
 				$AnimationPlayer.play("die")
-				emit_signal("Starved")
+				died.emit()
 	print("State:", stateString)
 
 #This is when it makes the "decision" to do next
