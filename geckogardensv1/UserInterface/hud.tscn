@@ -5,6 +5,8 @@ script/source = "extends Control
 
 @onready var food_list_container: VBoxContainer = $FoodListLabel/ScrollContainer/VBoxContainer # The container for labels
 const healthRingScene = preload(\"res://Healthring/Healthring.tscn\")
+
+@onready var health_rings_container = $CanvasLayer/MarginContainer/GridContainer
 #@export var healthRingWidgetScene: PackedScene
 
 func _ready():
@@ -16,14 +18,13 @@ func _ready():
 
 
 func _on_gecko_added(gecko_node):
-	# 1. Instantiate
+	
 	var health_ring = healthRingScene.instantiate()
 	
-	$CanvasLayer/MarginContainer/HealthRingContainer.add_child(health_ring)
+	health_rings_container.add_child(health_ring)
 	
 	
-	
-	# 3. Call YOUR setup function to initialize it. That's it!
+
 	health_ring.setRingChar(gecko_node)
 	
 	# --- ANNOUNCE THE CONNECTION ---
@@ -82,7 +83,15 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 50
 
 [node name="HealthRingContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
+columns = 2

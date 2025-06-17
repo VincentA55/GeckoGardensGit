@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvacp6if2o5v3"]
+[gd_scene load_steps=4 format=3 uid="uid://bvacp6if2o5v3"]
 
-[ext_resource type="Texture2D" uid="uid://bj2ut8klimjri" path="res://Healthring/ringempty.png" id="1_s7dsd"]
-[ext_resource type="Texture2D" uid="uid://cts6vjb7arhj7" path="res://Healthring/ringbase.png" id="2_8mo57"]
-[ext_resource type="Texture2D" uid="uid://c88ir3qsg34mw" path="res://Healthring/ringfill.png" id="3_0sit1"]
+[ext_resource type="Texture2D" uid="uid://b8cqhee2pasge" path="res://Healthring/HealthringTextures/ringbase.png" id="1_npmdv"]
+[ext_resource type="Texture2D" uid="uid://bt713ej16n8bd" path="res://Healthring/HealthringTextures/ringfillfoodGRAD.png" id="2_11a7v"]
 
 [sub_resource type="GDScript" id="GDScript_mus4l"]
 script/source = "@tool
@@ -25,6 +24,10 @@ func setRingChar(char: Node3D) -> void:
 	# --- ANNOUNCE THE SETUP ---
 	print_rich(\"[color=green]HealthRing #%d is now tracking Gecko #%d[/color]\" % [get_instance_id(), character.get_instance_id()])
 	
+	var gecko_subviewport = character.find_child(\"HeadViewport\") 
+	if gecko_subviewport:
+		# Now we get the texture from THIS specific viewport
+		$TextureRect.texture = gecko_subviewport.get_texture()
 
 	update_hunger(character.current_hunger, character.hungerMax)
 
@@ -46,7 +49,7 @@ func _on_character_died():
 "
 
 [node name="Healthring" type="Control"]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -60,17 +63,20 @@ size_flags_vertical = 4
 script = SubResource("GDScript_mus4l")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
-layout_mode = 2
-offset_left = -271.0
-offset_top = -274.0
-offset_right = 809.0
-offset_bottom = 806.0
-scale = Vector2(0.5, 0.5)
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 195.0
+offset_bottom = 194.0
+scale = Vector2(0.7, 0.7)
 max_value = 200.0
 value = 33.0
 allow_lesser = true
 fill_mode = 5
-texture_under = ExtResource("1_s7dsd")
-texture_over = ExtResource("2_8mo57")
-texture_progress = ExtResource("3_0sit1")
+texture_under = ExtResource("1_npmdv")
+texture_progress = ExtResource("2_11a7v")
 tint_under = Color(0, 0, 0, 0.227451)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

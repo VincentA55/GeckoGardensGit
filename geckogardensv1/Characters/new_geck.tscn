@@ -791,10 +791,8 @@ character = NodePath("..")
 [node name="HungerTimer" type="Timer" parent="."]
 autostart = true
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.95398, 0)
-
 [node name="HeadViewport" type="SubViewport" parent="."]
+transparent_bg = true
 size = Vector2i(200, 200)
 
 [node name="CamBall" type="MeshInstance3D" parent="HeadViewport"]
@@ -806,7 +804,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_w2l8j")
 
 [node name="Camera3D" type="Camera3D" parent="HeadViewport/CamBall"]
 transform = Transform3D(1, 0, 2.98023e-08, -3.72529e-09, 1, -7.45058e-09, 0, 0, 1, 0, 0, 0)
-cull_mask = 946179
+cull_mask = 2
 fov = 35.9
 far = 2.0
 
