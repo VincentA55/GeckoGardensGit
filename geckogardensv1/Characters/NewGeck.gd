@@ -65,11 +65,8 @@ func _ready() -> void:
 
 
 func get_SubViewport()->SubViewport:
-	return $SubViewport
-func get_Sprite2D()->Sprite2D:
-	return $Sprite2D
-func get_Camera()->Camera3D:
-	return $SubViewport/HeadCam
+	return $HeadViewport
+
 
 
 

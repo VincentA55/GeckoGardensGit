@@ -748,6 +748,7 @@ bones/51/rotation = Quaternion(-0.316293, -0.284419, 0.640998, 0.638894)
 bones/51/scale = Vector3(1, 1, 1)
 
 [node name="Sphere" type="MeshInstance3D" parent="Pivot/Gecko11/Armature/Skeleton3D"]
+layers = 3
 mesh = SubResource("ArrayMesh_c3dx7")
 skin = SubResource("Skin_obo6s")
 
@@ -793,20 +794,22 @@ autostart = true
 
 [node name="HeadViewport" type="SubViewport" parent="."]
 transparent_bg = true
+handle_input_locally = false
+canvas_cull_mask = 4293918723
 size = Vector2i(200, 200)
 
 [node name="CamBall" type="MeshInstance3D" parent="HeadViewport"]
-transform = Transform3D(-0.870371, 0.0704046, -0.487337, 0.0109803, 0.992254, 0.123739, 0.492273, 0.102348, -0.864403, -0.837839, 1.48506, -2.56872)
-layers = 7
+transform = Transform3D(-0.968398, 0.131825, -0.211722, 0.0433787, 0.924986, 0.377518, 0.245606, 0.356404, -0.901474, -1.10022, 2.86874, -5.14185)
+layers = 3
 mesh = SubResource("SphereMesh_vxtio")
 skeleton = NodePath("Camera3D")
 surface_material_override/0 = SubResource("StandardMaterial3D_w2l8j")
 
 [node name="Camera3D" type="Camera3D" parent="HeadViewport/CamBall"]
 transform = Transform3D(1, 0, 2.98023e-08, -3.72529e-09, 1, -7.45058e-09, 0, 0, 1, 0, 0, 0)
-cull_mask = 2
+cull_mask = 3
 fov = 35.9
-far = 2.0
+far = 13.79
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
 [connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]
