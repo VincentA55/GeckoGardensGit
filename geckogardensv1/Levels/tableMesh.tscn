@@ -5,7 +5,7 @@
 [node name="Table" instance=ExtResource("1_pbodd")]
 
 [node name="table" parent="." index="0"]
-layers = 2
+layers = 6
 
 [node name="Icosphere" parent="." index="2"]
 layers = 2

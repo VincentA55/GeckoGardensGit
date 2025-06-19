@@ -83,3 +83,6 @@ fill_mode = 5
 texture_under = ExtResource("1_npmdv")
 texture_progress = ExtResource("2_11a7v")
 tint_under = Color(0, 0, 0, 0.227451)
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true

@@ -28,6 +28,7 @@ mouse_control = false
 
 [node name="Camera3D" type="Camera3D" parent="CameraGimbal/InnerGimbal"]
 transform = Transform3D(1, 0, 0, 0, 0.91192, 0.410369, 0, -0.410369, 0.91192, 0, 3.0179, 11.9311)
+cull_mask = 7
 size = 18.5462
 
 [node name="NavigationRegion3D2" type="NavigationRegion3D" parent="."]
