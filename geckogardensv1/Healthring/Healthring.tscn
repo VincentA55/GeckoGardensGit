@@ -22,7 +22,7 @@ func setRingChar(char: Node3D) -> void:
 	character.died.connect(Callable(self, \"_on_character_died\")) 
 	
 	# --- ANNOUNCE THE SETUP ---
-	print_rich(\"[color=green]HealthRing #%d is now tracking Gecko #%d[/color]\" % [get_instance_id(), character.get_instance_id()])
+	#print_rich(\"[color=green]HealthRing #%d is now tracking Gecko #%d[/color]\" % [get_instance_id(), character.get_instance_id()])
 	
 	var gecko_subviewport = character.find_child(\"HeadViewport\") 
 	if gecko_subviewport:
@@ -41,7 +41,7 @@ func update_hunger(current_hunger, hungerMax):
 	if not is_instance_valid(character):
 		return
 
-	print(\"HealthRing for '\", character.name, \"' received update: \", current_hunger, \"/\", hungerMax)
+	#print(\"HealthRing for '\", character.name, \"' received update: \", current_hunger, \"/\", hungerMax)
 
 	$TextureProgressBar.value = current_hunger
 
@@ -83,6 +83,3 @@ fill_mode = 5
 texture_under = ExtResource("1_npmdv")
 texture_progress = ExtResource("2_11a7v")
 tint_under = Color(0, 0, 0, 0.227451)
-
-[node name="SubViewport" type="SubViewport" parent="."]
-transparent_bg = true

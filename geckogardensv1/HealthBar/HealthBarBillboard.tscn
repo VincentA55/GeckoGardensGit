@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://yf31asvmvsgl"]
+[gd_scene load_steps=10 format=3 uid="uid://yf31asvmvsgl"]
 
 [ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
@@ -16,7 +16,7 @@ extends Sprite3D
 
 func _ready() -> void:
 	$SubViewport/Hungerbar.character = character
-	
+	$SubViewport/TextureRect.texture = character.get_SubViewport().get_texture()
 	#$SubViewport/Healthring.setRingChar(character)
 	# set the initial value to a placeholder (e.g., full health) or could hard code 100
 	if character and \"current_hunger\" in character:
@@ -86,6 +86,8 @@ outline_size = 3
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 2
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_h0ok3"]
+
 [node name="Billboard" type="Sprite3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 billboard = 1
@@ -152,5 +154,10 @@ anchor_top = 0.285
 anchor_right = 0.817
 anchor_bottom = 0.3
 grow_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("ViewportTexture_h0ok3")
 
 [editable path="SubViewport/Healthring"]

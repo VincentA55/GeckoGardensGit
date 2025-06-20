@@ -103,14 +103,14 @@ func _process(_delta: float) -> void:
 			ChangeState(States.Hungry)
 	# --- THE SMOKING GUN TEST ---
 	# Get all active connections for this signal right now.
-	var connections = hunger_changed.get_connections()
+	#var connections = hunger_changed.get_connections()
 
-	# If this array is empty, it means NOTHING is listening anymore!
-	if connections.is_empty():
-		print_rich("[color=orange]Gecko #%d is emitting, but NO ONE is listening![/color]" % get_instance_id())
-	else:
-		# If it's NOT empty, let's see who is connected.
-		print_rich("[color=cyan]Gecko #%d is emitting. Listeners: %s[/color]" % [get_instance_id(), connections])
+	## If this array is empty, it means NOTHING is listening anymore!
+	#if connections.is_empty():
+		#print_rich("[color=orange]Gecko #%d is emitting, but NO ONE is listening![/color]" % get_instance_id())
+	#else:
+		## If it's NOT empty, let's see who is connected.
+		#print_rich("[color=cyan]Gecko #%d is emitting. Listeners: %s[/color]" % [get_instance_id(), connections])
 
 	# Now, emit the signal.
 	hunger_changed.emit(current_hunger, hungerMax)
@@ -182,7 +182,7 @@ func ChangeState(newState : States) -> void:
 				await $AnimationPlayer.animation_finished
 				hunger_changed.emit(current_hunger)
 				#NEED A WAY FOR EACH INDIVIDUAL GECKO TO SIGNAL ITS OWN HEALTH RING!?!?!?!?!?!?!'
-				print(name, " EATING hunger is now ", current_hunger) # <-- DEBUG
+				#print(name, " EATING hunger is now ", current_hunger) # <-- DEBUG
 				if nature == Natures.Greedy:
 					if current_hunger < 200:
 						ChangeState(States.Hungry)
@@ -200,7 +200,7 @@ func ChangeState(newState : States) -> void:
 				#print("dead")
 				$AnimationPlayer.play("die")
 				died.emit()
-	print("State:", stateString)
+	#print("State:", stateString)
 
 #This is when it makes the "decision" to do next
 func _on_wander_timer_timeout() -> void:
@@ -245,7 +245,7 @@ func choose_wander_action() -> String:
 func _on_hunger_timer_timeout() -> void:
 	if not isdead and state != States.Eating:
 		hunger_changed.emit(current_hunger)
-		print(name, " TIMOUT hunger is now ", current_hunger) # <-- DEBUG
+		#print(name, " TIMOUT hunger is now ", current_hunger) # <-- DEBUG
 		if current_hunger <= -40:
 			die()
 		if current_hunger >= -40:
