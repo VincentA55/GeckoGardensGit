@@ -66,10 +66,24 @@ func _ready() -> void:
 
 func get_SubViewport()->SubViewport:
 	return $HeadViewport
+func get_Mesh()->MeshInstance3D:
+	return $Pivot/Gecko11/Armature/Skeleton3D/Sphere
 
+func randomize_Colour():
+	var mesh = get_Mesh()
+	if not mesh:
+		return
 
+	# This is often needed to make sure the surface override is not blocked.
+	mesh.material_override = null
 
+	var mat := StandardMaterial3D.new()
 
+	# Set the albedo to a completely random color.
+	mat.albedo_color = Color(randf(), randf(), randf())
+
+	# Apply the new material as an override.
+	mesh.set_surface_override_material(0, mat)
 
 #Gives random target position everytime jump is pressed
 func _unhandled_input(event: InputEvent) -> void:

@@ -357,30 +357,43 @@ _data = {
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="GDScript" id="GDScript_rr37k"]
-script/source = "extends Node3D
-# Script on CamPivot
+script/source = "@tool
+extends Node3D
 
-@export var target: Node3D # Assign gecko's head/body here
-@export var smoothness: float = 5.0
-@export var follow_offset: Vector3 = Vector3(0, 1.5, 2.0) # The \"selfie stick\" offset
+# The main body of the character to follow. Assign the Gecko node here.
+@export var target_body: Node3D 
+# A specific point to look at (e.g., a BoneAttachment3D on the head).
+@export var look_at_target: Node3D 
 
-# It's better to use _physics_process for following physics bodies to avoid jitter
+
+# X=side, Y=up, Z=behind. (Positive Z is \"behind\" in Godot's convention).
+@export var follow_offset: Vector3 = Vector3(0, 1.5, 2.5)
+
+@export var position_smoothness: float = 5.0
+@export var rotation_smoothness: float = 7.0
+
+
 func _physics_process(delta):
-	if not is_instance_valid(target):
+	if not is_instance_valid(target_body) or not is_instance_valid(look_at_target):
 		return
 
-	# --- NEW PART: UPDATE POSITION ---
-	# Set our global position to be the target's position plus our desired offset.
-	global_position = target.global_position + follow_offset
-	# ---------------------------------
+	# --- 1. CALCULATE THE DESIRED POSITION ---
+	# Start with the gecko's global position.
+	var desired_position = target_body.global_position
+	# Now, add the offset, but first, rotate the offset by the gecko's rotation.
+	# The 'basis' is the target's rotation matrix. Multiplying it by our
+	# offset vector effectively transforms the offset from local space to world space.
+	desired_position += target_body.global_transform.basis * follow_offset
 
-	# --- EXISTING PART: UPDATE ROTATION ---
-	# Get the rotation the camera *wants* to have.
-	var desired_rotation = transform.looking_at(target.global_position, Vector3.UP)
-	
-	# Smoothly move our current rotation towards the desired rotation.
-	# NOTE: We use 'delta' even in physics_process. It's the fixed timestep.
-	transform.basis = transform.basis.slerp(desired_rotation.basis, smoothness * delta)
+	# --- 2. SMOOTHLY MOVE TO THE DESIRED POSITION ---
+	# Lerp (Linear Interpolation) is great for smoothing positions.
+	global_position = global_position.lerp(desired_position, position_smoothness * delta)
+
+
+	# --- 3. SMOOTHLY ROTATE TO FACE THE TARGET ---
+	# This part is the same as before, ensuring we're always looking at the head.
+	var desired_rotation = transform.looking_at(look_at_target.global_position, Vector3.UP)
+	transform.basis = transform.basis.slerp(desired_rotation.basis, rotation_smoothness * delta)
 "
 
 [sub_resource type="PrismMesh" id="PrismMesh_jln7c"]
@@ -778,6 +791,11 @@ skin = SubResource("Skin_obo6s")
 transform = Transform3D(1, -2.1555e-10, 6.03535e-11, 8.0604e-10, 1, -7.6741e-07, -7.05285e-11, 7.22706e-07, 1, -0.014, -0.0229999, -0.987)
 shape = SubResource("ConcavePolygonShape3D_lkb3b")
 
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Pivot/Gecko11/Armature/Skeleton3D"]
+transform = Transform3D(1, 1.93268e-12, 2.20935e-06, 4.53654e-07, -0.978692, -0.205335, 2.16225e-06, 0.205335, -0.978702, 4.78992e-10, -1.58798, 0.524852)
+bone_name = "Head"
+bone_idx = 27
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
 target_desired_distance = 0.5
@@ -808,6 +826,7 @@ libraries = {
 
 [node name="Billboard" parent="." node_paths=PackedStringArray("character") instance=ExtResource("3_beqfe")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.79636, 0)
+visible = false
 layers = 2
 texture = SubResource("ViewportTexture_ot8bk")
 character = NodePath("..")
@@ -818,25 +837,28 @@ autostart = true
 [node name="HeadViewport" type="SubViewport" parent="."]
 transparent_bg = true
 canvas_cull_mask = 4293918721
-size = Vector2i(500, 500)
+size = Vector2i(200, 200)
 
-[node name="CamPivot" type="Node3D" parent="HeadViewport" node_paths=PackedStringArray("target")]
+[node name="CamPivot" type="Node3D" parent="HeadViewport" node_paths=PackedStringArray("target_body", "look_at_target")]
 script = SubResource("GDScript_rr37k")
-target = NodePath("../..")
+target_body = NodePath("../../Pivot/Gecko11")
+look_at_target = NodePath("../../Pivot/Gecko11/Armature/Skeleton3D/BoneAttachment3D")
+position_smoothness = 50.0
+rotation_smoothness = 50.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="HeadViewport/CamPivot"]
-transform = Transform3D(-0.998057, 0.0620308, 0.00591483, -0.0174687, -0.369649, 0.929007, 0.0598136, 0.927099, 0.370014, -0.0687879, 2.2776, -3.7956)
+transform = Transform3D(-0.998057, 0.0609321, 0.0130414, -0.0174687, -0.474499, 0.880082, 0.0598136, 0.878145, 0.474641, -0.311087, 1.01998, -5.86671)
+visible = false
 layers = 2
 mesh = SubResource("PrismMesh_jln7c")
 skeleton = NodePath("../..")
 
 [node name="Camera3D" type="Camera3D" parent="HeadViewport/CamPivot/MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 0.0416315, -0.999133, 0, 0.999133, 0.0416315, 0.291577, -0.0599836, 0.168426)
+transform = Transform3D(0.999748, 0.00160462, 0.0223856, 0.0224236, -0.0298925, -0.999302, -0.000934338, 0.999552, -0.029921, 0.200999, 0.360248, -0.020326)
 cull_mask = 1
-projection = 1
-fov = 90.7
-size = 2.57571
-far = 12.63
+fov = 37.0
+size = 1.81112
+far = 2.5
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
 [connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]

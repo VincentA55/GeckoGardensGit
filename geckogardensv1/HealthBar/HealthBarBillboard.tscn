@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://yf31asvmvsgl"]
+[gd_scene load_steps=9 format=3 uid="uid://yf31asvmvsgl"]
 
 [ext_resource type="Texture2D" uid="uid://dqjyxtuoafc7" path="res://HealthBar/BarUnder.png" id="1_qbtn7"]
 [ext_resource type="Texture2D" uid="uid://l6dnstai4wpc" path="res://HealthBar/healthfill.png" id="1_twr61"]
-[ext_resource type="PackedScene" uid="uid://bvacp6if2o5v3" path="res://Healthring/Healthring.tscn" id="3_avwoh"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iu8tj"]
 viewport_path = NodePath("SubViewport")
@@ -37,7 +36,7 @@ func _update() -> void:
 	if character and \"current_hunger\" in character:
 		$SubViewport/Hungerbar.value = character.current_hunger
 		$SubViewport/IsHungryBool.text = \" Hungry: \" + str(character.isHungry)
-		$SubViewport/Healthring.update_hunger(character.current_hunger,character.hungerMax)
+		#$SubViewport/Healthring.update_hunger(character.current_hunger,character.hungerMax)
 	
 	$SubViewport/StateLabel.text = \"State: \" + str(character.stateString)
 	$SubViewport/FavLabel.text = str(character.favString)
@@ -147,17 +146,7 @@ text = "FavLabel
 label_settings = SubResource("LabelSettings_iqh5g")
 vertical_alignment = 1
 
-[node name="Healthring" parent="SubViewport" instance=ExtResource("3_avwoh")]
-anchors_preset = -1
-anchor_left = 0.633
-anchor_top = 0.285
-anchor_right = 0.817
-anchor_bottom = 0.3
-grow_horizontal = 0
-
 [node name="TextureRect" type="TextureRect" parent="SubViewport"]
 offset_right = 40.0
 offset_bottom = 40.0
 texture = SubResource("ViewportTexture_h0ok3")
-
-[editable path="SubViewport/Healthring"]

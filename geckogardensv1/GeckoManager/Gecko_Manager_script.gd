@@ -21,6 +21,7 @@ func spawn_rand_gecko() -> void:
 	gecko.favouriteFood = gecko.FavTypes.values()[randi() % gecko.FavTypes.size()]
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	
+	gecko.randomize_Colour()
 	
 	add_child(gecko)
 	#geckoAdded.emit(gecko)

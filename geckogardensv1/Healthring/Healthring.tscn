@@ -27,7 +27,7 @@ func setRingChar(char: Node3D) -> void:
 	var gecko_subviewport = character.find_child(\"HeadViewport\") 
 	if gecko_subviewport:
 		# Now we get the texture from THIS specific viewport
-		$TextureRect.texture = character.get_SubViewport()
+		$TextureRect.texture = character.get_SubViewport().get_texture()
 		
 	else:
 		print(\"Could not find a SubViewport on the assigned gecko.\")
@@ -66,10 +66,10 @@ size_flags_vertical = 4
 script = SubResource("GDScript_mus4l")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(200, 200)
+z_index = 1
 layout_mode = 0
-offset_right = 176.0
-offset_bottom = 50.0
+offset_right = 137.0
+offset_bottom = 136.0
 stretch_mode = 3
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
