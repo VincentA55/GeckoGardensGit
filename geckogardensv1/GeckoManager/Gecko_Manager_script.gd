@@ -1,6 +1,5 @@
 extends Node
 
-
 # Load the scene file from the path and store it as a PackedScene blueprint.
 const gecko_scene: PackedScene = preload("res://Characters/new_geck.tscn")
 var current_geckos: Array[Node3D] = []
@@ -20,7 +19,6 @@ func spawn_rand_gecko() -> void:
 	#sets the geckos favfood and nature randomly
 	gecko.favouriteFood = gecko.FavTypes.values()[randi() % gecko.FavTypes.size()]
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
-	
 	gecko.randomize_Colour()
 	
 	add_child(gecko)

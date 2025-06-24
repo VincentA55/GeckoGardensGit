@@ -840,14 +840,15 @@ canvas_cull_mask = 4293918721
 size = Vector2i(200, 200)
 
 [node name="CamPivot" type="Node3D" parent="HeadViewport" node_paths=PackedStringArray("target_body", "look_at_target")]
+transform = Transform3D(0.999989, 0.00182421, -0.00437799, -1.74623e-10, 0.923074, 0.384623, 0.00474284, -0.384619, 0.923063, 5.18804e-06, 2.5081, 2.13134)
 script = SubResource("GDScript_rr37k")
 target_body = NodePath("../../Pivot/Gecko11")
 look_at_target = NodePath("../../Pivot/Gecko11/Armature/Skeleton3D/BoneAttachment3D")
-position_smoothness = 50.0
+position_smoothness = 90.0
 rotation_smoothness = 50.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="HeadViewport/CamPivot"]
-transform = Transform3D(-0.998057, 0.0609321, 0.0130414, -0.0174687, -0.474499, 0.880082, 0.0598136, 0.878145, 0.474641, -0.311087, 1.01998, -5.86671)
+transform = Transform3D(-0.992285, 0.12329, 0.0130414, -0.0471376, -0.472475, 0.880082, 0.114667, 0.872678, 0.474641, -0.219105, 1.17479, -5.75207)
 visible = false
 layers = 2
 mesh = SubResource("PrismMesh_jln7c")
@@ -858,7 +859,8 @@ transform = Transform3D(0.999748, 0.00160462, 0.0223856, 0.0224236, -0.0298925, 
 cull_mask = 1
 fov = 37.0
 size = 1.81112
-far = 2.5
+near = 1.5
+far = 2.43
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_finished"]
 [connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]
