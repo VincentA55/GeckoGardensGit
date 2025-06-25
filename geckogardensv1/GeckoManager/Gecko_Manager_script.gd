@@ -4,6 +4,10 @@ extends Node
 const gecko_scene: PackedScene = preload("res://Characters/new_geck.tscn")
 var current_geckos: Array[Node3D] = []
 
+# This tracks the next visibility layer to assign.
+var next_available_layer: int = 10
+const MAX_LAYER: int = 20
+
 # Optional spawn area or positions
 @export var spawn_positions: Array[Node3D] = []  # Assign Position3D nodes in editor
 signal geckoAdded(gecko)
@@ -14,12 +18,18 @@ func spawn_rand_gecko() -> void:
 		print("Gecko scene not assigned!")
 		return
 
+	if next_available_layer > MAX_LAYER:
+		printerr("Cannot spawn new gecko: Maximum render layer reached.")
+	
 	var gecko = gecko_scene.instantiate()
 	
 	#sets the geckos favfood and nature randomly
 	gecko.favouriteFood = gecko.FavTypes.values()[randi() % gecko.FavTypes.size()]
 	gecko.nature = gecko.Natures.values()[randi() % gecko.Natures.size()]
 	gecko.randomize_Colour()
+	gecko.set_layer(next_available_layer)
+	#increment the layer for the next spawn.
+	next_available_layer += 1
 	
 	add_child(gecko)
 	#geckoAdded.emit(gecko)

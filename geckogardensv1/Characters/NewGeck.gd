@@ -4,7 +4,8 @@ extends CharacterBody3D
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-
+@export var gecko_mesh : MeshInstance3D
+@export var selfie_cam : Camera3D
 
 enum States {
 	Neutral,
@@ -62,7 +63,12 @@ func _ready() -> void:
 	ChangeState(States.Neutral)
 	get_random_position()
 
-
+#Set the layers for the selfie cam ui
+func set_layer(layer_number: int)->void:
+	var unique_layer_bitmask = 1 << (layer_number - 1)
+	gecko_mesh.layers = 1 | unique_layer_bitmask
+	selfie_cam.cull_mask = unique_layer_bitmask
+	pass
 
 func get_SubViewport()->SubViewport:
 	return $HeadViewport
