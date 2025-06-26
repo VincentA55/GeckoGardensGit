@@ -33,6 +33,7 @@ func spawn_rand_gecko() -> void:
 	
 	add_child(gecko)
 	#geckoAdded.emit(gecko)
+	gecko.died.connect(Callable(self, "remove_gecko"))
 	Hud._on_gecko_added(gecko)
 	
 	# Set random spawn position by adding markers to the geckomanager in main
@@ -48,8 +49,10 @@ func spawn_rand_gecko() -> void:
 
 func remove_gecko(gecko: Node3D) -> void:
 	if gecko in current_geckos:
+		await get_tree().create_timer(0.5).timeout
 		current_geckos.erase(gecko)
 		gecko.queue_free()
+		next_available_layer -= 1
 
 #this is for spawning specific geckos 
 func spawn_specific_gecko(fav: int, nature :int)-> void: 

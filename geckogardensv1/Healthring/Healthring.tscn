@@ -37,17 +37,13 @@ func setRingChar(char: Node3D) -> void:
 
 
 func update_hunger(current_hunger, hungerMax):
-
 	if not is_instance_valid(character):
 		return
-
-	#print(\"HealthRing for '\", character.name, \"' received update: \", current_hunger, \"/\", hungerMax)
-
 	$TextureProgressBar.value = current_hunger
 
 
 # Add this function so the ring can remove itself when the character dies.
-func _on_character_died():
+func _on_character_died(char: Node3D):
 	queue_free()
 "
 

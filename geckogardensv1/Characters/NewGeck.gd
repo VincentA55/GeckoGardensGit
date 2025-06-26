@@ -219,7 +219,8 @@ func ChangeState(newState : States) -> void:
 				isdead = true
 				#print("dead")
 				$AnimationPlayer.play("die")
-				died.emit()
+				await $AnimationPlayer.animation_finished
+				died.emit(self)
 	#print("State:", stateString)
 
 #This is when it makes the "decision" to do next
