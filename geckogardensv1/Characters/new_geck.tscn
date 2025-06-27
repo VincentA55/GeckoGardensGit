@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://yf31asvmvsgl" path="res://HealthBar/HealthBarBillboard.tscn" id="3_beqfe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2cuwr"]
-size = Vector3(1.42759, 1.02844, 4.21759)
+size = Vector3(1.42759, 0.934356, 1.84248)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74pob"]
 resource_name = "Gecko"
@@ -406,9 +406,8 @@ selfie_cam = NodePath("HeadViewport/CamPivot/MeshInstance3D/Camera3D")
 hungerMax = 100
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, -0.00353073, 0.509944, 0.572955)
+transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, 1.92439e-05, 0.556986, 0.230543)
 shape = SubResource("BoxShape3D_2cuwr")
-disabled = true
 
 [node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -2.53518e-06, 0, 1, 0, 2.53518e-06, 0, -1, 0, 0, -0.0103471)

@@ -3,7 +3,8 @@ extends CharacterBody3D
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity = 150
+
 @export var gecko_mesh : MeshInstance3D
 @export var selfie_cam : Camera3D
 
@@ -100,39 +101,44 @@ func _unhandled_input(event: InputEvent) -> void:
 		navigation_agent.set_target_position(random_position)
 
 func _physics_process(delta: float) -> void:
-	#velocity.y -= gravity * delta thses 2 are to try and make it fall when spawned
-	
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+
+	# This variable will hold the movement determined by the state machine
+	var horizontal_velocity = Vector3.ZERO
+
+	# 2. Handle state machine logic to determine horizontal movement.
 	if not isdead:
 		if state == States.Walking or state == States.Pursuit:
-			#print("Moving towards:", navigation_agent.get_target_position())
-			move_to_location(delta)
+			# Get the movement velocity from our helper function
+			horizontal_velocity = update_movement_and_rotation(delta)
 
-		if state == States.Pursuit and (target == null or not is_instance_valid(target)):
-			#print("Lost food target, finding new food...")
-			velocity = Vector3.ZERO
-			move_and_slide()  # Apply the stop immediately
-			navigation_agent.set_target_position(global_position)  # Cancel navigation
+		velocity.x = horizontal_velocity.x
+		velocity.z = horizontal_velocity.z
+
+		# Logic for when a target is lost
+		if state == States.Pursuit and not is_instance_valid(target):
+			navigation_agent.set_target_position(global_position)
 			find_food()
-			
-		stateString = States.keys()[state]#for debugging and billboard
+
+		# Update Billboard/Debug info
+		stateString = States.keys()[state]
 		$Billboard._update()
+	else:
+		# If dead, ensure the character stops moving horizontally
+		velocity.x = 0
+		velocity.z = 0
+
+	# 3. Call move_and_slide() ONCE at the very end.
+	# This applies the final combined velocity (gravity + movement)
+	# and handles all physics collisions with the world.
+	move_and_slide()
 
 func _process(_delta: float) -> void:
 	if not isdead:
 		if current_hunger <= 50 and not isHungry:
 			ChangeState(States.Hungry)
-	# --- THE SMOKING GUN TEST ---
-	# Get all active connections for this signal right now.
-	#var connections = hunger_changed.get_connections()
-
-	## If this array is empty, it means NOTHING is listening anymore!
-	#if connections.is_empty():
-		#print_rich("[color=orange]Gecko #%d is emitting, but NO ONE is listening![/color]" % get_instance_id())
-	#else:
-		## If it's NOT empty, let's see who is connected.
-		#print_rich("[color=cyan]Gecko #%d is emitting. Listeners: %s[/color]" % [get_instance_id(), connections])
-
-	# Now, emit the signal.
+			
 	hunger_changed.emit(current_hunger, hungerMax)
 
 func _on_navigation_finished() -> void:
@@ -168,6 +174,35 @@ func move_to_location(delta:float)->void:
 	velocity = direction * walkSpeed
 	move_and_slide() 
 
+#calculates rotation and returns the desired horizontal velocity.
+func update_movement_and_rotation(delta: float) -> Vector3:
+	# (Your navigation_agent.set_target_position logic stays here)
+	if target != null and lastTargetPosition != target.global_position:
+		navigation_agent.set_target_position(target.global_position)
+		lastTargetPosition = target.global_position
+
+	if navigation_agent.is_navigation_finished():
+		return Vector3.ZERO
+
+	var destination = navigation_agent.get_next_path_position()
+	var direction = (destination - global_position).normalized()
+
+
+	# 1. Create a flattened copy of the direction vector for rotation.
+	var flat_direction = direction
+	flat_direction.y = 0
+
+	# 2. Only perform the look_at if there is a horizontal direction.
+	# This prevents a "zero-vector" error if the next point is directly above or below.
+	if flat_direction.length() > 0:
+		# 3. Use the FLATTENED vector for rotation.
+		# This ensures the gecko only ever turns left or right, never tilts.
+		look_at(global_position + flat_direction, Vector3.UP)
+
+
+	# Return the ORIGINAL direction vector for movement.
+	# This is important so the gecko can walk up and down slopes correctly.
+	return direction * walkSpeed
 
 func get_random_position()->void:
 	var random_position := Vector3.ZERO
