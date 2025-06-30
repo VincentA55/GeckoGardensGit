@@ -4,6 +4,8 @@ extends CharacterBody3D
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 
 var gravity = 150
+# This variable will hold the "safe" velocity calculated by the agent.
+var safe_velocity = Vector3.ZERO
 
 @export var gecko_mesh : MeshInstance3D
 @export var selfie_cam : Camera3D
@@ -63,6 +65,7 @@ func _ready() -> void:
 	current_hunger = hungerMax
 	ChangeState(States.Neutral)
 	get_random_position()
+	navigation_agent.velocity_computed.connect(_on_navigation_agent_velocity_computed)
 
 #Set the layers for the selfie cam ui
 func set_layer(layer_number: int)->void:
@@ -80,16 +83,11 @@ func randomize_Colour():
 	var mesh = get_Mesh()
 	if not mesh:
 		return
-
 	# This is often needed to make sure the surface override is not blocked.
 	mesh.material_override = null
-
 	var mat := StandardMaterial3D.new()
-
 	# Set the albedo to a completely random color.
 	mat.albedo_color = Color(randf(), randf(), randf())
-
-	# Apply the new material as an override.
 	mesh.set_surface_override_material(0, mat)
 
 #Gives random target position everytime jump is pressed
@@ -100,23 +98,31 @@ func _unhandled_input(event: InputEvent) -> void:
 		random_position.z = randf_range(-9,15.0)
 		navigation_agent.set_target_position(random_position)
 
+#receives the safe velocity from the agent.
+func _on_navigation_agent_velocity_computed(new_safe_velocity: Vector3):
+	safe_velocity = new_safe_velocity
+	
+# Your current _physics_process, modified to use avoidance.
+
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	# This variable will hold the movement determined by the state machine
-	var horizontal_velocity = Vector3.ZERO
+	var desired_velocity = Vector3.ZERO
 
-	# 2. Handle state machine logic to determine horizontal movement.
 	if not isdead:
 		if state == States.Walking or state == States.Pursuit:
-			# Get the movement velocity from our helper function
-			horizontal_velocity = update_movement_and_rotation(delta)
+			# Get the IDEAL movement velocity from our helper function.
+			desired_velocity = update_movement_and_rotation(delta)
+			
+		navigation_agent.set_velocity(desired_velocity)
 
-		velocity.x = horizontal_velocity.x
-		velocity.z = horizontal_velocity.z
-
-		# Logic for when a target is lost
+		# The agent processes our desired_velocity, adds avoidance, and emits the
+		# `velocity_computed` signal, which updates our `safe_velocity` variable.
+		velocity.x = safe_velocity.x
+		velocity.z = safe_velocity.z
+		
+		# Logic for when a target is lost 
 		if state == States.Pursuit and not is_instance_valid(target):
 			navigation_agent.set_target_position(global_position)
 			find_food()
@@ -125,13 +131,12 @@ func _physics_process(delta: float) -> void:
 		stateString = States.keys()[state]
 		$Billboard._update()
 	else:
-		# If dead, ensure the character stops moving horizontally
+		# If dead, ensure the character stops moving
+		navigation_agent.set_velocity(Vector3.ZERO)
 		velocity.x = 0
 		velocity.z = 0
-
-	# 3. Call move_and_slide() ONCE at the very end.
-	# This applies the final combined velocity (gravity + movement)
-	# and handles all physics collisions with the world.
+		
+	#uses the velocity that has been corrected for avoidance.
 	move_and_slide()
 
 func _process(_delta: float) -> void:
