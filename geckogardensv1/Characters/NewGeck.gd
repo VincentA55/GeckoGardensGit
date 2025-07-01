@@ -166,12 +166,12 @@ func move_to_location(delta:float)->void:
 	var local_destination = destination - global_position
 	var direction = local_destination.normalized()
 	
-	# 🔄 Rotate only on the Y-axis (prevent flipping)--
+	#Rotate only on the Y-axis (prevent flipping)--
 	if direction.length() > 0.01:
 		var target_basis = Basis().looking_at(direction, Vector3.UP)  
 		var target_rotation = target_basis.get_euler()  
 
-		# Lock rotation to Y-axis only (ignore X and Z tilting)--
+		#Lock rotation to Y-axis only (ignore X and Z tilting)--
 		var flat_rotation = Vector3(0, target_rotation.y, 0)  
 
 		rotation.y = lerp_angle(rotation.y, flat_rotation.y, delta * 10.0)
@@ -181,7 +181,6 @@ func move_to_location(delta:float)->void:
 
 #calculates rotation and returns the desired horizontal velocity.
 func update_movement_and_rotation(delta: float) -> Vector3:
-	# (Your navigation_agent.set_target_position logic stays here)
 	if target != null and lastTargetPosition != target.global_position:
 		navigation_agent.set_target_position(target.global_position)
 		lastTargetPosition = target.global_position
@@ -193,20 +192,20 @@ func update_movement_and_rotation(delta: float) -> Vector3:
 	var direction = (destination - global_position).normalized()
 
 
-	# 1. Create a flattened copy of the direction vector for rotation.
+	#Create a flattened copy of the direction vector for rotation.
 	var flat_direction = direction
 	flat_direction.y = 0
 
-	# 2. Only perform the look_at if there is a horizontal direction.
-	# This prevents a "zero-vector" error if the next point is directly above or below.
+	#Only perform the look_at if there is a horizontal direction.
+	#This prevents a "zero-vector" error if the next point is directly above or below.
 	if flat_direction.length() > 0:
-		# 3. Use the FLATTENED vector for rotation.
-		# This ensures the gecko only ever turns left or right, never tilts.
+		#Use the FLATTENED vector for rotation.
+		#This ensures the gecko only ever turns left or right, never tilts.
 		look_at(global_position + flat_direction, Vector3.UP)
 
 
-	# Return the ORIGINAL direction vector for movement.
-	# This is important so the gecko can walk up and down slopes correctly.
+	#Return the ORIGINAL direction vector for movement.
+	#This is important so the gecko can walk up and down slopes correctly.
 	return direction * walkSpeed
 
 func get_random_position()->void:
@@ -241,8 +240,6 @@ func ChangeState(newState : States) -> void:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
 				hunger_changed.emit(current_hunger)
-				#NEED A WAY FOR EACH INDIVIDUAL GECKO TO SIGNAL ITS OWN HEALTH RING!?!?!?!?!?!?!'
-				#print(name, " EATING hunger is now ", current_hunger) # <-- DEBUG
 				if nature == Natures.Greedy:
 					if current_hunger < 200:
 						ChangeState(States.Hungry)
@@ -257,7 +254,6 @@ func ChangeState(newState : States) -> void:
 						ChangeState(States.Neutral)
 			States.Dead:
 				isdead = true
-				#print("dead")
 				$AnimationPlayer.play("die")
 				await $AnimationPlayer.animation_finished
 				died.emit(self)
@@ -343,3 +339,45 @@ func find_food() -> void:
 			target = nearest_food
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
 			#print("Gecko is now pursuing food:", target)
+
+# --- 1. ADD THIS TO YOUR STATES ENUM ---
+# enum States { Walking, Pursuit, Following, ... } # Add "Following"
+
+
+# --- 2. ADD THESE VARIABLES AT THE TOP OF YOUR SCRIPT ---
+# This will hold a reference to the gecko we are following.
+var following_target: CharacterBody3D = null
+
+# Add a Timer node named "FollowTimer" to your gecko scene in the editor.
+# Make sure its "One Shot" property is checked ON.
+@onready var follow_timer = $FollowTimer
+
+
+# --- 3. ADD THIS PUBLIC FUNCTION TO START FOLLOWING ---
+# Call this function from another script to make this gecko follow another one.
+func follow_gecko(gecko_to_follow: CharacterBody3D, duration: float):
+	# Don't try to follow nothing or yourself.
+	if not is_instance_valid(gecko_to_follow) or gecko_to_follow == self:
+		return
+
+	print(self.name + " is now following " + gecko_to_follow.name)
+	state = States.Following
+	following_target = gecko_to_follow
+	
+	# Set the timer and start it.
+	follow_timer.wait_time = duration
+	follow_timer.start()
+
+
+# --- 4. ADD THIS FUNCTION TO HANDLE THE TIMER'S TIMEOUT ---
+# Connect the "timeout()" signal from your FollowTimer node to this function
+# in the editor (Node tab -> Signals).
+func _on_follow_timer_timeout():
+	# The timer has finished, so we stop following.
+	if state == States.Following:
+		print(self.name + " stopped following.")
+		following_target = null
+		
+		# Give the gecko a new purpose.
+		# This will automatically switch its state to Pursuit.
+		find_food()
