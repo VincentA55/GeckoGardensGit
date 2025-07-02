@@ -16,13 +16,15 @@ enum States {
 	Pursuit,
 	Hungry,
 	Eating,
-	Dead}
+	Dead,
+	Following}
 var state : States = States.Neutral
 var stateString : String  #for the billboard
 # Gecko's action weights
 var Spin: int = 4
 var Sit: int = 5
 var Wander: int = 8
+var Follow: int = 20
 
 enum Natures {
 	Neutral,
@@ -57,6 +59,9 @@ var invalid_targets: Array = []  # List of targets that should be ignored to pre
 var target : Node3D = null
 var targetPosition : Vector3 = Vector3.ZERO
 var lastTargetPosition : Vector3 = Vector3.ZERO
+
+var following_target: CharacterBody3D = null
+@onready var follow_timer = $FollowTimer
 
 func _ready() -> void:	
 	#hungerGreed = randi_range(5, 15)
@@ -111,7 +116,16 @@ func _physics_process(delta: float) -> void:
 	var desired_velocity = Vector3.ZERO
 
 	if not isdead:
-		if state == States.Walking or state == States.Pursuit:
+		if state == States.Following:
+			# If we are following, make sure our target still exists.
+			if is_instance_valid(following_target):
+				# The core follow logic: keep updating our destination.
+				navigation_agent.set_target_position(following_target.global_position)
+			else:
+				# If the target disappears, stop following immediately.
+				_on_follow_timer_timeout()
+				
+		if state == States.Walking or state == States.Pursuit or state == States.Following:
 			# Get the IDEAL movement velocity from our helper function.
 			desired_velocity = update_movement_and_rotation(delta)
 			
@@ -223,7 +237,7 @@ func ChangeState(newState : States) -> void:
 			States.Neutral:
 				target = null
 				$WanderTimer.start()
-			
+				
 			States.Walking: 
 				$AnimationPlayer.play("wander")
 				
@@ -232,10 +246,12 @@ func ChangeState(newState : States) -> void:
 				find_food()
 				if target:
 					ChangeState(States.Pursuit)
+					
 			States.Pursuit:
 				$AnimationPlayer.play("wander")  # Change to walk animation
 				lastTargetPosition = target.global_position
 				navigation_agent.set_target_position(target.global_position)  # move to target
+			
 			States.Eating:
 				$AnimationPlayer.play("eat")
 				await $AnimationPlayer.animation_finished
@@ -252,6 +268,11 @@ func ChangeState(newState : States) -> void:
 					else:
 						isHungry = false
 						ChangeState(States.Neutral)
+						
+			States.Following:
+				print(self.name + " has decided to follow " + following_target.name)
+				follow_timer.start()
+
 			States.Dead:
 				isdead = true
 				$AnimationPlayer.play("die")
@@ -279,13 +300,15 @@ func perform_wander_action():
 	elif action == "wander":
 		ChangeState(States.Walking)
 		get_random_position()
+	elif action == "follow":
+		decide_and_start_following()
 	else:
 		$AnimationPlayer.play("idle")  
 		
 	
 #using math and numbers to choose return an actions string
 func choose_wander_action() -> String:
-	var total = Spin + Sit + Wander  # Get total weight 
+	var total = Spin + Sit + Wander + Follow # Get total weight 
 	if total == 0:
 		return "idle"  # No valid actions  
 
@@ -295,6 +318,8 @@ func choose_wander_action() -> String:
 		return "spin"  
 	elif r <= Spin + Sit:
 		return "sit"  
+	elif r<= Spin + Sit + Follow:
+		return "follow"
 	else:
 		return "wander" 
 
@@ -340,44 +365,27 @@ func find_food() -> void:
 			ChangeState(States.Pursuit)  #Switch to pursuit and move toward food
 			#print("Gecko is now pursuing food:", target)
 
-# --- 1. ADD THIS TO YOUR STATES ENUM ---
-# enum States { Walking, Pursuit, Following, ... } # Add "Following"
+func _on_follow_timer_timeout() -> void:
+	if state == States.Following:
+		print(self.name + " is done following and is now wandering.")
+		# Clear the target and give the gecko a new purpose.
+		following_target = null
 
+# Call this function to make the gecko attempt to follow a random
+func decide_and_start_following():
+	# Don't start following if we're already busy following someone.
+	if state == States.Following:
+		return
+	
+	var potential_targets = []
+	for gecko in GeckoManagerScript.current_geckos:
+		if gecko != self:
+			potential_targets.append(gecko)
 
-# --- 2. ADD THESE VARIABLES AT THE TOP OF YOUR SCRIPT ---
-# This will hold a reference to the gecko we are following.
-var following_target: CharacterBody3D = null
-
-# Add a Timer node named "FollowTimer" to your gecko scene in the editor.
-# Make sure its "One Shot" property is checked ON.
-@onready var follow_timer = $FollowTimer
-
-
-# --- 3. ADD THIS PUBLIC FUNCTION TO START FOLLOWING ---
-# Call this function from another script to make this gecko follow another one.
-func follow_gecko(gecko_to_follow: CharacterBody3D, duration: float):
-	# Don't try to follow nothing or yourself.
-	if not is_instance_valid(gecko_to_follow) or gecko_to_follow == self:
+	if potential_targets.is_empty():
+		print(self.name + " wanted to follow, but is alone.")
 		return
 
-	print(self.name + " is now following " + gecko_to_follow.name)
-	state = States.Following
-	following_target = gecko_to_follow
+	self.following_target = potential_targets.pick_random()
+	ChangeState(States.Following)
 	
-	# Set the timer and start it.
-	follow_timer.wait_time = duration
-	follow_timer.start()
-
-
-# --- 4. ADD THIS FUNCTION TO HANDLE THE TIMER'S TIMEOUT ---
-# Connect the "timeout()" signal from your FollowTimer node to this function
-# in the editor (Node tab -> Signals).
-func _on_follow_timer_timeout():
-	# The timer has finished, so we stop following.
-	if state == States.Following:
-		print(self.name + " stopped following.")
-		following_target = null
-		
-		# Give the gecko a new purpose.
-		# This will automatically switch its state to Pursuit.
-		find_food()

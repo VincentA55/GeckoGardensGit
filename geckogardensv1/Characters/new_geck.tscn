@@ -403,13 +403,7 @@ size = Vector3(0.405, 0.995, 0.435)
 script = ExtResource("1_istnc")
 gecko_mesh = NodePath("Pivot/Gecko11/Armature/Skeleton3D/Sphere")
 selfie_cam = NodePath("HeadViewport/CamPivot/MeshInstance3D/Camera3D")
-nature = null
-walkSpeed = null
-runSpeed = null
-favouriteFood = null
-current_hunger = null
 hungerMax = 100
-hungerGreed = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-0.999946, 0, 0.010367, 0, 1, 0, -0.010367, 0, -0.999946, 1.92439e-05, 0.556986, 0.230543)
@@ -828,6 +822,13 @@ shape = SubResource("BoxShape3D_isjmx")
 wait_time = 2.0
 one_shot = true
 
+[node name="HungerTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="FollowTimer" type="Timer" parent="."]
+wait_time = 120.0
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_my5t1")
@@ -840,16 +841,13 @@ layers = 2
 texture = SubResource("ViewportTexture_ot8bk")
 character = NodePath("..")
 
-[node name="HungerTimer" type="Timer" parent="."]
-autostart = true
-
 [node name="HeadViewport" type="SubViewport" parent="."]
 transparent_bg = true
 canvas_cull_mask = 4293918721
 size = Vector2i(200, 200)
 
 [node name="CamPivot" type="Node3D" parent="HeadViewport" node_paths=PackedStringArray("target_body", "look_at_target")]
-transform = Transform3D(0.999989, 0.00182421, -0.00437799, -5.82077e-11, 0.923074, 0.384623, 0.00474284, -0.384619, 0.923063, 5.18804e-06, 2.5081, 2.13134)
+transform = Transform3D(0.999989, 0.00182421, -0.00437799, -1.16415e-10, 0.923074, 0.384623, 0.00474284, -0.384619, 0.923063, 5.18804e-06, 2.5081, 2.13134)
 script = SubResource("GDScript_rr37k")
 target_body = NodePath("../../Pivot/Gecko11")
 look_at_target = NodePath("../../Pivot/Gecko11/Armature/Skeleton3D/BoneAttachment3D")
@@ -875,3 +873,4 @@ far = 2.43
 [connection signal="body_entered" from="MouthZone" to="." method="_on_mouth_zone_entered"]
 [connection signal="timeout" from="WanderTimer" to="." method="_on_wander_timer_timeout"]
 [connection signal="timeout" from="HungerTimer" to="." method="_on_hunger_timer_timeout"]
+[connection signal="timeout" from="FollowTimer" to="." method="_on_follow_timer_timeout"]
