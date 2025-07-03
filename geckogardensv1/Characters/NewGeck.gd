@@ -307,6 +307,7 @@ func perform_wander_action():
 		
 	
 #using math and numbers to choose return an actions string
+#HERE NEED TO CHANGE THIS IT IS NOT VERY SCALEBALEE!!!!!!!!!!!!!!!!!!!!!!!!!
 func choose_wander_action() -> String:
 	var total = Spin + Sit + Wander + Follow # Get total weight 
 	if total == 0:
