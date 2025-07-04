@@ -847,7 +847,7 @@ canvas_cull_mask = 4293918721
 size = Vector2i(200, 200)
 
 [node name="CamPivot" type="Node3D" parent="HeadViewport" node_paths=PackedStringArray("target_body", "look_at_target")]
-transform = Transform3D(0.999989, 0.00182421, -0.00437799, -1.16415e-10, 0.923074, 0.384623, 0.00474284, -0.384619, 0.923063, 5.18804e-06, 2.5081, 2.13134)
+transform = Transform3D(0.999989, 0.00182421, -0.00437799, -5.82077e-11, 0.923074, 0.384623, 0.00474284, -0.384619, 0.923063, 5.18804e-06, 2.5081, 2.13134)
 script = SubResource("GDScript_rr37k")
 target_body = NodePath("../../Pivot/Gecko11")
 look_at_target = NodePath("../../Pivot/Gecko11/Armature/Skeleton3D/BoneAttachment3D")

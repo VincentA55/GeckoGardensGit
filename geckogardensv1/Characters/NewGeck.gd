@@ -62,6 +62,7 @@ var lastTargetPosition : Vector3 = Vector3.ZERO
 
 var following_target: CharacterBody3D = null
 @onready var follow_timer = $FollowTimer
+var follow_stop_distance = 1
 
 func _ready() -> void:	
 	#hungerGreed = randi_range(5, 15)
@@ -279,6 +280,10 @@ func ChangeState(newState : States) -> void:
 				await $AnimationPlayer.animation_finished
 				died.emit(self)
 	#print("State:", stateString)
+	if state == States.Following:
+		navigation_agent.target_desired_distance = 3
+	else:
+		navigation_agent.target_desired_distance = 1
 
 #This is when it makes the "decision" to do next
 func _on_wander_timer_timeout() -> void:
@@ -388,5 +393,7 @@ func decide_and_start_following():
 		return
 
 	self.following_target = potential_targets.pick_random()
+	# Tell the navigation agent to stop when it gets this close.
+	navigation_agent.target_desired_distance = 3
 	ChangeState(States.Following)
 	
